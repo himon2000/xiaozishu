@@ -1,0 +1,125 @@
+<!-- 下山历练 - 发布机会 -->
+<view class="page">
+
+  <!-- 页面标题 -->
+  <view class="page-header">
+    <text class="page-title">发布历练机会</text>
+    <text class="page-sub">分享实习/兼职/就业机会，帮助更多道友历练</text>
+  </view>
+
+  <!-- 岗位类型 -->
+  <view class="form-section">
+    <view class="form-label">岗位类型 <text class="required">*</text></view>
+    <view class="type-grid">
+      <view
+        class="type-item {{jobType === item.id ? 'active' : ''}}"
+        wx:for="{{jobTypes}}"
+        wx:key="id"
+        bindtap="onJobTypeSelect"
+        data-type="{{item.id}}"
+      >
+        <text class="type-icon">{{item.icon}}</text>
+        <text class="type-name">{{item.name}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 岗位名称 -->
+  <view class="form-section">
+    <view class="form-label">岗位名称 <text class="required">*</text></view>
+    <input
+      class="form-input"
+      placeholder="例如：腾讯产品经理实习"
+      value="{{title}}"
+      bindinput="onTitleInput"
+      maxlength="50"
+    />
+  </view>
+
+  <!-- 公司名称 -->
+  <view class="form-section">
+    <view class="form-label">公司名称 <text class="required">*</text></view>
+    <input
+      class="form-input"
+      placeholder="请输入公司名称"
+      value="{{company}}"
+      bindinput="onCompanyInput"
+      maxlength="50"
+    />
+  </view>
+
+  <!-- 薪资待遇 -->
+  <view class="form-section">
+    <view class="form-label">薪资待遇</view>
+    <input
+      class="form-input"
+      placeholder="例如：300-400/天 或 面议"
+      value="{{salary}}"
+      bindinput="onSalaryInput"
+    />
+  </view>
+
+  <!-- 工作地点 -->
+  <view class="form-section">
+    <view class="form-label">工作地点</view>
+    <input
+      class="form-input"
+      placeholder="例如：北京·海淀区"
+      value="{{location}}"
+      bindinput="onLocationInput"
+    />
+  </view>
+
+  <!-- 岗位描述 -->
+  <view class="form-section">
+    <view class="form-label">岗位描述 <text class="required">*</text></view>
+    <textarea
+      class="form-textarea"
+      placeholder="描述岗位职责、工作内容、团队氛围等..."
+      value="{{description}}"
+      bindinput="onDescInput"
+      maxlength="500"
+    />
+    <view class="char-count">{{description.length}}/500</view>
+  </view>
+
+  <!-- 岗位要求 -->
+  <view class="form-section">
+    <view class="form-label">岗位要求</view>
+    <textarea
+      class="form-textarea"
+      placeholder="描述学历、专业、技能要求等..."
+      value="{{requirements}}"
+      bindinput="onReqInput"
+      maxlength="500"
+    />
+    <view class="char-count">{{requirements.length}}/500</view>
+  </view>
+
+  <!-- 联系方式 -->
+  <view class="form-section">
+    <view class="form-label">联系方式 <text class="required">*</text></view>
+    <input
+      class="form-input"
+      placeholder="微信号/手机号/邮箱"
+      value="{{contact}}"
+      bindinput="onContactInput"
+    />
+  </view>
+
+  <!-- 提交按钮 -->
+  <button
+    class="submit-btn {{submiting ? 'disabled' : ''}}"
+    bindtap="onSubmit"
+    disabled="{{submiting}}"
+  >
+    {{submiting ? '发布中...' : '发布机会'}}
+  </button>
+
+  <!-- 安全提示 -->
+  <view class="safe-tip">
+    <text class="tip-icon">🔒</text>
+    <text class="tip-text">请注意保护个人隐私，谨防诈骗</text>
+  </view>
+
+</view>

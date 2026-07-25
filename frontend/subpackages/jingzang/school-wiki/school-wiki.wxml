@@ -1,0 +1,96 @@
+<!-- subpackages/jingzang/school-wiki/school-wiki.wxml -->
+<view class="page">
+  <!-- 导航栏 -->
+  <view class="nav-bar safe-area-top">
+    <view class="nav-inner">
+      <view class="nav-back" bindtap="onBack">←</view>
+      <text class="nav-title">🏫 万宗宝鉴</text>
+      <view class="nav-history" bindtap="onShowHistory">历史</view>
+    </view>
+  </view>
+
+  <!-- 简介卡片 -->
+  <view class="intro-card">
+    <text class="intro-title">高校百科 AI 助手</text>
+    <text class="intro-desc">输入你想了解的高校或相关问题，AI 助手为你解答关于录取、选专业、校园生活等各类问题</text>
+  </view>
+
+  <!-- 高校选择 -->
+  <view class="school-section">
+    <view class="section-label">选择目标高校（可选）</view>
+    <scroll-view scroll-x class="school-scroll">
+      <view
+        class="school-chip {{selectedSchool === item.name ? 'selected' : ''}}"
+        wx:for="{{schools}}"
+        wx:key="name"
+        bindtap="onSelectSchool"
+        data-name="{{item.name}}"
+      >
+        {{item.name}}
+      </view>
+    </scroll-view>
+  </view>
+
+  <!-- 快捷问题 -->
+  <view class="quick-questions">
+    <text class="section-label">快捷问题</text>
+    <view class="question-chips">
+      <view
+        class="q-chip"
+        wx:for="{{quickQuestions}}"
+        wx:key="index"
+        bindtap="onQuickQuestion"
+        data-q="{{item}}"
+      >{{item}}</view>
+    </view>
+  </view>
+
+  <!-- 问答区 -->
+  <scroll-view scroll-y class="qa-area">
+    <!-- AI 回复 -->
+    <view class="ai-intro" wx:if="{{messages.length === 0 && !loading}}">
+      <text class="ai-avatar">🤖</text>
+      <view class="ai-bubble">
+        <text>你好！我是万宗宝鉴 AI 助手。你可以问我关于任何高校的问题，例如：\n• XX大学的录取分数线是多少？\n• XX大学的王牌专业有哪些？\n• XX大学的校园环境怎么样？</text>
+      </view>
+    </view>
+
+    <!-- 消息列表 -->
+    <view wx:for="{{messages}}" wx:key="index" class="message-item {{item.role}}">
+      <text class="msg-avatar">{{item.role === 'user' ? '🧑' : '🤖'}}</text>
+      <view class="msg-bubble">
+        <text class="msg-text">{{item.content}}</text>
+        <text class="msg-time" wx:if="{{item.time}}">{{item.time}}</text>
+      </view>
+    </view>
+
+    <!-- 加载指示 -->
+    <view class="loading-msg" wx:if="{{loading}}">
+      <text class="msg-avatar">🤖</text>
+      <view class="loading-dots">
+        <text>思考中</text>
+        <view class="dot"></view>
+        <view class="dot"></view>
+        <view class="dot"></view>
+      </view>
+    </view>
+  </scroll-view>
+
+  <!-- 输入区 -->
+  <view class="input-area safe-area-bottom">
+    <input
+      class="question-input"
+      placeholder="输入关于高校的问题..."
+      bindconfirm="onAsk"
+      bindinput="onInput"
+      value="{{inputText}}"
+    />
+    <view class="ask-btn" bindtap="onAsk">提问</view>
+  </view>
+
+  <!-- 悬浮发布需求按钮 -->
+  <view class="fab" bindtap="onPublishRequest">
+    <text class="fab-icon">📝</text>
+    <text class="fab-text">发布需求</text>
+  </view>
+</view>

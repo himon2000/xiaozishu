@@ -1,0 +1,21 @@
+{
+  "containerPort": 80,
+  "dockerfilePath": "Dockerfile",
+  "buildDir": "",
+  "minNum": 0,
+  "maxNum": 5,
+  "cpu": 0.5,
+  "mem": 1,
+  "policyType": "cpu",
+  "policyThreshold": 70,
+  "envParams": {
+    "WECHAT_APPID": "your_wechat_appid",
+    "WECHAT_SECRET": "set_in_wechat_cloud_hosting",
+    "JWT_SECRET": "set_in_wechat_cloud_hosting",
+    "DATABASE_URL": "mysql+pymysql://user:password@mysql-host:3306/xunlongge?charset=utf8mb4",
+    "ENVIRONMENT": "production",
+    "DEBUG": "false"
+  },
+  "customLogs": "stdout",
+  "initialDelaySeconds": 3
+}

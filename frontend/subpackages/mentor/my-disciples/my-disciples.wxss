@@ -1,0 +1,115 @@
+/* subpackages/mentor/my-disciples/my-disciples.wxss */
+.page {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: #faf7ff;
+}
+.nav-bar {
+  background: linear-gradient(135deg, #9b59b6, #7d3c98);
+  padding: 20rpx 30rpx;
+  flex-shrink: 0;
+}
+.nav-inner { display: flex; align-items: center; gap: 20rpx; }
+.nav-back { font-size: 36rpx; color: #fff; }
+.nav-title { font-size: 32rpx; font-weight: 600; color: #fff; }
+.tab-bar {
+  display: flex;
+  background: #fff;
+  border-bottom: 1rpx solid #ede8f3;
+  flex-shrink: 0;
+}
+.tab-item {
+  flex: 1;
+  text-align: center;
+  font-size: 28rpx;
+  color: #888;
+  padding: 24rpx 0;
+  border-bottom: 4rpx solid transparent;
+  transition: all 0.2s;
+}
+.tab-item.active {
+  color: #9b59b6;
+  border-bottom-color: #9b59b6;
+  font-weight: 600;
+}
+.list-area {
+  flex: 1;
+  padding: 20rpx 24rpx;
+  overflow-y: auto;
+}
+.disciple-card {
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+  background: #fff;
+  border-radius: 12rpx;
+  padding: 20rpx;
+  margin-bottom: 16rpx;
+  border: 1rpx solid #ede8f3;
+}
+.disciple-avatar {
+  width: 80rpx;
+  height: 80rpx;
+  border-radius: 50%;
+  background: #eee;
+  flex-shrink: 0;
+}
+.disciple-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4rpx;
+  min-width: 0;
+}
+.disciple-name {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: #333;
+}
+.disciple-school {
+  font-size: 24rpx;
+  color: #999;
+}
+.type-tag { display: flex; align-items: center; gap: 8rpx; margin-bottom: 2rpx; }
+.enterprise-tag {
+  font-size: 20rpx;
+  padding: 3rpx 10rpx;
+  background: rgba(52, 152, 219, 0.12);
+  color: #2980b9;
+  border-radius: 8rpx;
+  font-weight: 600;
+}
+.academic-tag {
+  font-size: 20rpx;
+  padding: 3rpx 10rpx;
+  background: rgba(155, 89, 182, 0.12);
+  color: #7d3c98;
+  border-radius: 8rpx;
+  font-weight: 600;
+}
+.direction-text { font-size: 20rpx; color: #999; }
+.disciple-status {
+  font-size: 22rpx;
+  color: #9b59b6;
+}
+.tree-btn {
+  padding: 10rpx 24rpx;
+  background: linear-gradient(135deg, #9b59b6, #7d3c98);
+  color: #fff;
+  border-radius: 30rpx;
+  font-size: 24rpx;
+  flex-shrink: 0;
+}
+.empty-list {
+  text-align: center;
+  padding: 80rpx 0;
+  font-size: 28rpx;
+  color: #aaa;
+}
+.load-more {
+  text-align: center;
+  padding: 20rpx 0;
+  font-size: 24rpx;
+  color: #aaa;
+}

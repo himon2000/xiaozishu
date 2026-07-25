@@ -1,0 +1,71 @@
+<view class="page">
+  <!-- 顶部灵石余额 -->
+  <view class="balance-card">
+    <text class="balance-icon">💎</text>
+    <view class="balance-info">
+      <text class="balance-label">当前灵石</text>
+      <text class="balance-value">{{balance}}</text>
+      <text class="balance-unit">颗</text>
+    </view>
+    <text class="balance-tip">1元=100灵石</text>
+  </view>
+
+  <!-- 充值套餐 -->
+  <view class="section">
+    <text class="section-title">选择充值套餐</text>
+    <text class="section-desc">灵石可用于购买服务和悬赏</text>
+    <view class="package-grid">
+      <view
+        wx:for="{{packages}}"
+        wx:key="id"
+        class="package-item {{selectedPackage === item.id ? 'selected' : ''}}"
+        bindtap="onSelectPackage"
+        data-id="{{item.id}}">
+        <view class="package-tag-wrap" wx:if="{{item.bonus > 0}}">
+          <text class="package-tag">赠{{item.bonus}}</text>
+        </view>
+        <text class="package-icon">💎</text>
+        <text class="package-stones">{{item.stones}}</text>
+        <text class="package-label">颗灵石</text>
+        <text class="package-price">¥{{item.price}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 自定义金额 -->
+  <view class="section">
+    <text class="section-title">自定义金额</text>
+    <view class="custom-wrap">
+      <text class="custom-prefix">¥</text>
+      <input
+        class="custom-input"
+        type="digit"
+        placeholder="最低1元"
+        value="{{customAmount}}"
+        bindinput="onCustomInput"
+      />
+    </view>
+    <text wx:if="{{customAmount && customAmount > 0}}" class="custom-hint">可得 {{customAmount * 100}} 颗灵石</text>
+  </view>
+
+  <!-- 协议 -->
+  <view class="agreement-row">
+    <checkbox-group bindchange="onAgreementChange">
+      <label class="agreement-label">
+        <checkbox value="agree" color="#9b59b6"/>
+        <text class="agreement-text">我已阅读并同意</text>
+        <text class="agreement-link" bindtap="onViewAgreement">《灵石充值协议》</text>
+      </label>
+    </checkbox-group>
+  </view>
+
+  <!-- 底部栏 -->
+  <view class="bottom-bar">
+    <view wx:if="{{totalPrice > 0}}" class="total-info">
+      <text class="total-label">应付 </text>
+      <text class="total-price">¥{{totalPrice}}</text>
+      <text class="total-stones">（{{totalStones}}灵石）</text>
+    </view>
+    <button class="recharge-btn" bindtap="onRecharge">确认充值</button>
+  </view>
+</view>

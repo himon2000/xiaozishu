@@ -1,0 +1,134 @@
+<!--
+  飞花令牌页面
+  路径：subpackages/profile/referral-code/referral-code
+-->
+<view class="container">
+  <!-- 我的飞花令牌卡片 -->
+  <view class="my-code-card">
+    <view class="card-header">
+      <text class="card-title">🎫 我的飞花令牌</text>
+      <text class="invite-count">{{totalInvited}} 人已加入</text>
+    </view>
+
+    <view class="code-display">
+      <text class="code-text">{{myCode || '加载中...'}}</text>
+      <view class="copy-btn" bindtap="onCopyCode">
+        <text>复制</text>
+      </view>
+    </view>
+
+    <view class="share-hint">
+      <text>分享给好友，好友注册时填写你的飞花令牌，双方都能获得奖励哦！</text>
+    </view>
+
+    <button class="share-btn" open-type="share" hover-class="btn-active">
+      <text>📤 邀请好友加入</text>
+    </button>
+  </view>
+
+  <!-- 邀请统计 -->
+  <view class="stats-card">
+    <view class="stat-item">
+      <text class="stat-value">{{totalInvited}}</text>
+      <text class="stat-label">已邀请人数</text>
+    </view>
+    <view class="stat-divider"></view>
+    <view class="stat-item">
+      <text class="stat-value">{{inviteTreeDepth}}</text>
+      <text class="stat-label">传承代数</text>
+    </view>
+  </view>
+
+  <!-- 兑换飞花令牌 -->
+  <view class="redeem-section">
+    <view class="section-title">
+      <text>🎁 输入飞花令牌</text>
+    </view>
+
+    <view class="redeem-card" wx:if="{{!hasRedeemed}}">
+      <text class="redeem-hint">填写好友的飞花令牌，获得迎新奖励</text>
+      <button class="redeem-btn" bindtap="onOpenRedeem">
+        <text>📝 填写飞花令牌</text>
+      </button>
+    </view>
+
+    <view class="redeemed-card" wx:else>
+      <text class="redeemed-text">✅ 您已使用过飞花令牌</text>
+      <text class="redeemed-hint">感谢您的好友推荐！</text>
+    </view>
+  </view>
+
+  <!-- 奖励规则 -->
+  <view class="rules-section" bindtap="onShowRules">
+    <text class="rules-text">📜 查看奖励规则</text>
+  </view>
+
+  <!-- 信任体系说明 -->
+  <view class="trust-section">
+    <view class="section-title">
+      <text>🛡️ 飞花令牌与信任体系</text>
+    </view>
+    <view class="trust-content">
+      <text>飞花令牌是小紫薯信任体系的重要组成部分：</text>
+      <view class="trust-item">
+        <text class="trust-icon">✓</text>
+        <text>通过可信好友的推荐加入，更有保障</text>
+      </view>
+      <view class="trust-item">
+        <text class="trust-icon">✓</text>
+        <text>推荐关系可追溯，形成校园社交网络</text>
+      </view>
+      <view class="trust-item">
+        <text class="trust-icon">✓</text>
+        <text>与灵根认证、宗门认证共同构建信任闭环</text>
+      </view>
+    </view>
+  </view>
+</view>
+
+<!-- 兑换弹窗 -->
+<view class="modal-mask" wx:if="{{showRedeemModal}}" bindtap="onCloseRedeem"></view>
+<view class="redeem-modal" wx:if="{{showRedeemModal}}">
+  <view class="modal-content">
+    <view class="modal-header">
+      <text class="modal-title">输入飞花令牌</text>
+      <text class="modal-close" bindtap="onCloseRedeem">✕</text>
+    </view>
+
+    <view class="modal-body">
+      <input
+        class="code-input"
+        type="text"
+        maxlength="8"
+        placeholder="请输入6位飞花令牌"
+        value="{{redeemCode}}"
+        bindinput="onRedeemInput"
+        disabled="{{redeemLoading}}"
+      />
+
+      <!-- 兑换结果 -->
+      <view class="redeem-result" wx:if="{{redeemResult}}">
+        <view class="result-icon" wx:if="{{redeemResult.success}}">✅</view>
+        <view class="result-icon" wx:else>❌</view>
+        <text class="result-message">{{redeemResult.message}}</text>
+      </view>
+
+      <button
+        class="submit-btn"
+        bindtap="onSubmitRedeem"
+        wx:if="{{!redeemResult}}"
+        loading="{{redeemLoading}}"
+      >
+        确认兑换
+      </button>
+
+      <button
+        class="close-result-btn"
+        bindtap="onCloseResult"
+        wx:if="{{redeemResult}}"
+      >
+        {{redeemResult.success ? '太棒了！' : '重新填写'}}
+      </button>
+    </view>
+  </view>
+</view>

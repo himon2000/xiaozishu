@@ -1,0 +1,165 @@
+<!-- 传功授法 - 搜索页 -->
+<view class="page">
+
+  <!-- 搜索栏 -->
+  <view class="search-bar">
+    <view class="search-input-wrap">
+      <text class="search-icon">🔍</text>
+      <input
+        class="search-input"
+        placeholder="搜索科目、导师..."
+        value="{{search}}"
+        bindconfirm="onSearch"
+        bindinput="onSearchInput"
+        confirm-type="search"
+      />
+      <text class="clear-btn" wx:if="{{search}}" bindtap="onClearSearch">✕</text>
+    </view>
+    <view class="filter-btn {{showFilter ? 'active' : ''}}" bindtap="onToggleFilter">
+      <text>⚙️ 筛选</text>
+    </view>
+  </view>
+
+  <!-- Tab 切换 -->
+  <view class="tab-bar">
+    <view
+      class="tab {{tab === 'services' ? 'active' : ''}}"
+      bindtap="onTabChange"
+      data-tab="services"
+    >
+      <text>服务</text>
+      <text class="tab-count" wx:if="{{tab === 'services'}}">{{total}}</text>
+    </view>
+    <view
+      class="tab {{tab === 'mentors' ? 'active' : ''}}"
+      bindtap="onTabChange"
+      data-tab="mentors"
+    >
+      <text>导师</text>
+      <text class="tab-count" wx:if="{{tab === 'mentors'}}">{{total}}</text>
+    </view>
+  </view>
+
+  <!-- 筛选面板 -->
+  <view class="filter-panel" wx:if="{{showFilter}}">
+    <view class="filter-section">
+      <view class="filter-title">科目</view>
+      <view class="filter-chips">
+        <view
+          class="filter-chip {{selectedSubject === item.id ? 'active' : ''}}"
+          wx:for="{{subjects}}"
+          wx:key="id"
+          bindtap="onSubjectChange"
+          data-subject="{{item.id}}"
+        >{{item.icon}} {{item.name}}</view>
+      </view>
+    </view>
+
+    <view class="filter-section">
+      <view class="filter-title">服务类型</view>
+      <view class="filter-chips">
+        <view
+          class="filter-chip {{selectedType === item.id ? 'active' : ''}}"
+          wx:for="{{serviceTypes}}"
+          wx:key="id"
+          bindtap="onTypeChange"
+          data-type="{{item.id}}"
+        >{{item.icon}} {{item.name}}</view>
+      </view>
+    </view>
+
+    <view class="filter-section">
+      <view class="filter-title">排序方式</view>
+      <view class="filter-chips">
+        <view
+          class="filter-chip {{sort === item.value ? 'active' : ''}}"
+          wx:for="{{sortOptions}}"
+          wx:key="value"
+          bindtap="onSortChange"
+          data-value="{{item.value}}"
+        >{{item.label}}</view>
+      </view>
+    </view>
+
+    <view class="filter-actions">
+      <view class="reset-btn" bindtap="onResetFilter">重置</view>
+      <view class="confirm-btn" bindtap="onApplyFilter">完成</view>
+    </view>
+  </view>
+
+  <!-- 结果统计 -->
+  <view class="stats-bar" wx:if="{{!showFilter}}">
+    <text class="stats-text">共 {{total}} 个{{tab === 'services' ? '服务' : '导师'}}</text>
+  </view>
+
+  <!-- 服务列表 -->
+  <view class="content-list" wx:if="{{tab === 'services' && services.length > 0}}">
+    <view
+      class="service-card"
+      wx:for="{{services}}"
+      wx:key="id"
+      bindtap="onServiceTap"
+      data-id="{{item.id}}"
+    >
+      <image class="card-cover" src="{{item.cover_image || '/assets/default-service.png'}}" mode="aspectFill" />
+      <view class="card-body">
+        <view class="service-title">{{item.title}}</view>
+        <view class="service-tags">
+          <text class="mini-tag" wx:for="{{item.subjects}}" wx:for-item="sub" wx:if="{{index < 3}}">{{sub}}</text>
+        </view>
+        <view class="provider-row">
+          <image class="provider-avatar" src="{{item.provider.avatar_url || '/assets/default-avatar.png'}}" mode="aspectFill" />
+          <text class="provider-name">{{item.provider.nickname}}</text>
+          <text class="provider-level">{{item.provider.level_icon}} {{item.provider.level_name}}</text>
+        </view>
+        <view class="card-footer">
+          <text class="service-price">💎{{item.price}}</text>
+          <text class="service-rating">⭐ {{item.rating || '暂无'}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 导师列表 -->
+  <view class="mentor-grid" wx:if="{{tab === 'mentors' && mentors.length > 0}}">
+    <view
+      class="mentor-card"
+      wx:for="{{mentors}}"
+      wx:key="openid"
+      bindtap="onMentorTap"
+      data-openid="{{item.openid}}"
+    >
+      <image class="mentor-avatar" src="{{item.avatar_url || '/assets/default-avatar.png'}}" mode="aspectFill" />
+      <view class="mentor-info">
+        <view class="mentor-name">{{item.nickname}}</view>
+        <view class="mentor-level">{{item.level_icon}} {{item.level_name}}</view>
+        <view class="mentor-school" wx:if="{{item.school}}">{{item.school}}</view>
+        <view class="mentor-tags">
+          <text class="mini-tag" wx:for="{{item.specialties}}" wx:for-item="s" wx:if="{{index < 2}}">{{s}}</text>
+        </view>
+        <view class="mentor-footer">
+          <text class="mentor-rating">⭐ {{item.rating || '5.0'}}</text>
+          <text class="mentor-orders">{{item.total_orders_done || 0}}单</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 加载中 -->
+  <view class="loading-row" wx:if="{{loading}}">
+    <view class="loading-spinner"></view>
+    <text class="loading-text">加载中...</text>
+  </view>
+
+  <!-- 空状态 -->
+  <view class="empty-state" wx:if="{{!loading && ((tab === 'services' && services.length === 0) || (tab === 'mentors' && mentors.length === 0))}}">
+    <text class="empty-title">未找到相关结果</text>
+    <text class="empty-sub">试试其他关键词或筛选条件</text>
+  </view>
+
+  <!-- 底部提示 -->
+  <view class="bottom-tip" wx:if="{{noMore && ((tab === 'services' && services.length > 0) || (tab === 'mentors' && mentors.length > 0))}}">
+    <text>— 没有更多了 —</text>
+  </view>
+
+</view>

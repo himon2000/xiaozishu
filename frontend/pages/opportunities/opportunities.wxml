@@ -1,0 +1,351 @@
+<!-- pages/opportunities/opportunities.wxml -->
+<view class="page">
+  <!-- 顶部标题 -->
+  <view class="page-header">
+    <text class="page-title">🏔️ 下山历练</text>
+    <text class="page-subtitle">实习·内推·就业机会</text>
+  </view>
+
+  <!-- 搜索栏 -->
+  <view class="search-bar">
+    <input
+      class="search-input"
+      placeholder="搜索公司/职位/关键词..."
+      value="{{search}}"
+      bindconfirm="onSearch"
+      bindinput="onSearchInput"
+    />
+    <button class="search-btn" size="mini" bindtap="onSearch">🔍</button>
+    <button class="filter-btn" size="mini" bindtap="onToggleFilter">⚙️</button>
+  </view>
+
+  <!-- 分组切换 -->
+  <view class="group-tabs">
+    <view
+      class="group-tab {{activeGroup === '问道' ? 'active' : ''}}"
+      bindtap="onGroupChange"
+      data-group="问道"
+    >
+      <text>🔬 问道</text>
+    </view>
+    <view
+      class="group-tab {{activeGroup === '历练' ? 'active' : ''}}"
+      bindtap="onGroupChange"
+      data-group="历练"
+    >
+      <text>🏔️ 历练</text>
+    </view>
+  </view>
+
+  <!-- 分类切换 -->
+  <scroll-view scroll-x class="category-scroll">
+    <view class="category-list">
+      <view
+        wx:for="{{categories}}"
+        wx:key="id"
+        class="category-item {{activeCategory === item.id ? 'active' : ''}} {{item.group !== activeGroup ? 'hidden' : ''}}"
+        bindtap="onCategoryChange"
+        data-category="{{item.id}}"
+      >
+        <text class="cat-icon">{{item.icon}}</text>
+        <text class="cat-name">{{item.name}}</text>
+      </view>
+    </view>
+  </scroll-view>
+
+  <!-- 当前筛选状态 -->
+  <view class="filter-status" wx:if="{{filters.location || filters.sort !== 'latest'}}">
+    <text class="filter-tag" wx:if="{{filters.location}}">📍 {{filters.location}}</text>
+    <text class="filter-tag" wx:if="{{filters.sort === 'hottest'}}">🔥 最热</text>
+    <text class="filter-reset" bindtap="onResetFilter">清除</text>
+  </view>
+
+  <!-- 操作栏 -->
+  <view class="action-bar">
+    <text class="result-count">共 {{total}} 个资源</text>
+    <button class="publish-btn" bindtap="onOpenCreate" wx:if="{{activeGroup === '历练'}}">
+      <text decode="{{true}}">➕ 发布机会</text>
+    </button>
+  </view>
+
+  <!-- 资源列表 -->
+  <view class="opportunity-list">
+    <view
+      wx:for="{{opportunities}}"
+      wx:key="id"
+      class="opportunity-card card card-glow"
+      bindtap="onOpportunityTap"
+      data-id="{{item.id}}"
+    >
+      <!-- 头部 -->
+      <view class="opp-header">
+        <view class="opp-type tag-{{item.opportunity_type}}">
+          <text>{{item.opportunity_type_name || item.opportunity_type}}</text>
+        </view>
+        <view class="opp-favorite" catchtap="onToggleFavorite" data-id="{{item.id}}">
+          <text class="fav-icon {{item.is_favorited ? 'active' : ''}}">{{item.is_favorited ? '❤️' : '🤍'}}</text>
+        </view>
+      </view>
+
+      <!-- 标题 -->
+      <view class="opp-title">{{item.title}}</view>
+
+      <!-- 公司信息 -->
+      <view class="opp-company" wx:if="{{item.company_name}}">
+        <text class="company-icon">🏢</text>
+        <text>{{item.company_name}}</text>
+        <text class="company-industry" wx:if="{{item.company_industry}}">{{item.company_industry}}</text>
+      </view>
+
+      <!-- 职位信息 -->
+      <view class="opp-position" wx:if="{{item.position || item.work_location}}">
+        <text wx:if="{{item.position}}">📋 {{item.position}}</text>
+        <text wx:if="{{item.work_location}}">📍 {{item.work_location}}</text>
+      </view>
+
+      <!-- 薪资 -->
+      <view class="opp-salary" wx:if="{{item.salary_range}}">
+        <text class="salary-tag">{{item.salary_range}}</text>
+      </view>
+
+      <!-- 标签 -->
+      <view class="opp-tags" wx:if="{{item.tags.length > 0}}">
+        <text wx:for="{{item.tags}}" wx:for-item="tag" wx:key="tag" class="mini-tag">{{tag}}</text>
+      </view>
+
+      <!-- 底部信息 -->
+      <view class="opp-footer">
+        <view class="opp-stats">
+          <text class="stat">👁️ {{item.view_count}}</text>
+          <text class="stat">⭐ {{item.favorite_count}}</text>
+          <text class="stat">📮 {{item.apply_count}}</text>
+        </view>
+        <view class="opp-time">
+          <text>{{item.created_at}}</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 空状态 -->
+    <view class="empty-state" wx:if="{{!loading && opportunities.length === 0}}">
+      <text class="icon">🏔️</text>
+      <text>暂无相关机会</text>
+      <text class="text-secondary">成为第一批发布者，分享你的职场资源</text>
+      <button class="publish-btn-lg" bindtap="onOpenCreate" wx:if="{{activeGroup === '历练'}}">
+        <text decode="{{true}}">➕ 发布机会</text>
+      </button>
+    </view>
+
+    <!-- 加载状态 -->
+    <view class="loading-container" wx:if="{{loading}}">
+      <text>加载中...</text>
+    </view>
+    <view class="loading-container" wx:if="{{noMore && opportunities.length > 0}}">
+      <text class="text-secondary">— 没有更多了 —</text>
+    </view>
+  </view>
+
+  <!-- 筛选面板 -->
+  <view class="filter-modal" wx:if="{{showFilter}}">
+    <view class="filter-mask" bindtap="onToggleFilter"></view>
+    <view class="filter-content">
+      <view class="filter-header">
+        <text class="filter-title">筛选条件</text>
+        <text class="filter-close" bindtap="onToggleFilter">✕</text>
+      </view>
+      <view class="filter-body">
+        <!-- 工作地点 -->
+        <view class="filter-section">
+          <text class="filter-section-title">工作地点</text>
+          <view class="filter-options">
+            <view
+              wx:for="{{locationOptions}}"
+              wx:key="index"
+              class="filter-option {{filters.location === item ? 'active' : ''}}"
+              bindtap="onFilterChange"
+              data-field="location"
+              data-value="{{item}}"
+            >
+              {{item}}
+            </view>
+          </view>
+        </view>
+        <!-- 排序 -->
+        <view class="filter-section">
+          <text class="filter-section-title">排序方式</text>
+          <view class="filter-options">
+            <view
+              wx:for="{{sortOptions}}"
+              wx:key="value"
+              class="filter-option {{filters.sort === item.value ? 'active' : ''}}"
+              bindtap="onFilterChange"
+              data-field="sort"
+              data-value="{{item.value}}"
+            >
+              {{item.label}}
+            </view>
+          </view>
+        </view>
+      </view>
+      <view class="filter-footer">
+        <button class="filter-reset-btn" bindtap="onResetFilter">重置</button>
+        <button class="filter-apply-btn" bindtap="onApplyFilter">应用</button>
+      </view>
+    </view>
+  </view>
+
+  <!-- 创建资源弹窗 -->
+  <view class="modal" wx:if="{{showCreateModal}}">
+    <view class="modal-mask" bindtap="onCloseCreate"></view>
+    <view class="modal-content create-modal">
+      <view class="modal-header">
+        <text class="modal-title">🏔️ 发布下山历练机会</text>
+        <text class="modal-close" bindtap="onCloseCreate">✕</text>
+      </view>
+      <view class="modal-body">
+        <!-- 资源类型 -->
+        <view class="form-item">
+          <text class="form-label">机会类型 *</text>
+          <picker mode="selector" range="{{['寻觅道场（实习）', '求取推荐（内推）', '问道职涯（求职）', '布施机缘（资源）']}}" bindchange="onTypeChange">
+            <view class="form-picker">
+              {{createForm.opportunity_type === 'internship' ? '寻觅道场（实习）' :
+                createForm.opportunity_type === 'referral' ? '求取推荐（内推）' :
+                createForm.opportunity_type === 'job' ? '问道职涯（求职）' : '布施机缘（资源）'}}
+            </view>
+          </picker>
+        </view>
+        <!-- 资源标题 -->
+        <view class="form-item">
+          <text class="form-label">机会标题 *</text>
+          <input
+            class="form-input"
+            placeholder="如：大厂实习内推名额"
+            value="{{createForm.title}}"
+            bindinput="onFormInput"
+            data-field="title"
+          />
+        </view>
+        <!-- 公司名称 -->
+        <view class="form-item">
+          <text class="form-label">公司/机构名称</text>
+          <input
+            class="form-input"
+            placeholder="如：腾讯、字节跳动"
+            value="{{createForm.company_name}}"
+            bindinput="onFormInput"
+            data-field="company_name"
+          />
+        </view>
+        <!-- 职位名称 -->
+        <view class="form-item">
+          <text class="form-label">职位名称</text>
+          <input
+            class="form-input"
+            placeholder="如：产品经理实习生"
+            value="{{createForm.position}}"
+            bindinput="onFormInput"
+            data-field="position"
+          />
+        </view>
+        <!-- 工作地点 -->
+        <view class="form-item">
+          <text class="form-label">工作地点</text>
+          <input
+            class="form-input"
+            placeholder="如：北京、深圳、远程"
+            value="{{createForm.work_location}}"
+            bindinput="onFormInput"
+            data-field="work_location"
+          />
+        </view>
+        <!-- 薪资 -->
+        <view class="form-item">
+          <text class="form-label">薪资待遇</text>
+          <input
+            class="form-input"
+            placeholder="如：200-300/天 或 20-30K/月"
+            value="{{createForm.salary_range}}"
+            bindinput="onFormInput"
+            data-field="salary_range"
+          />
+        </view>
+        <!-- 截止日期 -->
+        <view class="form-item">
+          <text class="form-label">截止日期</text>
+          <picker mode="date" value="{{createForm.deadline}}" bindchange="onDeadlineChange">
+            <view class="form-picker {{createForm.deadline ? '' : 'placeholder'}}">
+              {{createForm.deadline || '请选择截止日期'}}
+            </view>
+          </picker>
+        </view>
+        <!-- 职位描述 -->
+        <view class="form-item">
+          <text class="form-label">职位描述 *</text>
+          <textarea
+            class="form-textarea"
+            placeholder="详细描述职位信息、工作内容、申请要求..."
+            value="{{createForm.description}}"
+            bindinput="onFormInput"
+            data-field="description"
+          ></textarea>
+        </view>
+        <!-- 任职要求 -->
+        <view class="form-item">
+          <text class="form-label">任职要求</text>
+          <textarea
+            class="form-textarea"
+            placeholder="描述任职要求、所需技能..."
+            value="{{createForm.requirements}}"
+            bindinput="onFormInput"
+            data-field="requirements"
+          ></textarea>
+        </view>
+        <!-- 联系方式 -->
+        <view class="form-item">
+          <text class="form-label">联系方式</text>
+          <input
+            class="form-input"
+            placeholder="微信号或其他联系方式"
+            value="{{createForm.contact_wx}}"
+            bindinput="onFormInput"
+            data-field="contact_wx"
+          />
+        </view>
+        <!-- 外部链接 -->
+        <view class="form-item">
+          <text class="form-label">外部申请链接</text>
+          <input
+            class="form-input"
+            placeholder="如牛客、Boss直聘链接"
+            value="{{createForm.apply_url}}"
+            bindinput="onFormInput"
+            data-field="apply_url"
+          />
+        </view>
+        <!-- 标签 -->
+        <view class="form-item">
+          <text class="form-label">标签（可选）</text>
+          <view class="tag-input-wrap">
+            <input
+              class="form-input tag-input"
+              placeholder="输入标签后点击添加"
+              value="{{tagInput}}"
+              bindinput="onTagInput"
+              bindconfirm="onAddTag"
+            />
+            <button class="add-tag-btn" size="mini" bindtap="onAddTag">添加</button>
+          </view>
+          <view class="tag-list" wx:if="{{createForm.tags.length > 0}}">
+            <view wx:for="{{createForm.tags}}" wx:key="index" class="tag-item">
+              {{item}} <text class="tag-remove" bindtap="onRemoveTag" data-index="{{index}}">×</text>
+            </view>
+          </view>
+        </view>
+      </view>
+      <view class="modal-footer">
+        <button class="cancel-btn" bindtap="onCloseCreate">取消</button>
+        <button class="confirm-btn" bindtap="onCreateOpportunity">发布机会</button>
+      </view>
+    </view>
+  </view>
+</view>

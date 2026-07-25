@@ -1,0 +1,167 @@
+<!-- pages/search/search.wxml - 全局搜索页面 -->
+<view class="page">
+  <!-- 搜索栏 -->
+  <view class="search-header">
+    <view class="search-input-wrap">
+      <text class="search-icon">🔍</text>
+      <input
+        class="search-input"
+        placeholder="搜索服务、用户、需求..."
+        value="{{searchValue}}"
+        bindinput="onSearchInput"
+        bindconfirm="onSearch"
+        focus
+      />
+      <text class="search-clear" wx:if="{{searchValue}}" bindtap="onClearInput">✕</text>
+    </view>
+    <text class="search-cancel" bindtap="onCancel">取消</text>
+  </view>
+
+  <!-- 搜索结果 -->
+  <view wx:if="{{searchValue}}">
+    <!-- 标签切换 -->
+    <view class="tab-bar">
+      <view
+        class="tab-item {{activeTab === 'service' ? 'active' : ''}}"
+        bindtap="onTabChange"
+        data-tab="service"
+      >服务</view>
+      <view
+        class="tab-item {{activeTab === 'demand' ? 'active' : ''}}"
+        bindtap="onTabChange"
+        data-tab="demand"
+      >需求</view>
+      <view
+        class="tab-item {{activeTab === 'user' ? 'active' : ''}}"
+        bindtap="onTabChange"
+        data-tab="user"
+      >用户</view>
+    </view>
+
+    <!-- 服务列表 -->
+    <view class="result-list" wx:if="{{activeTab === 'service'}}">
+      <view
+        class="service-card"
+        wx:for="{{services}}"
+        wx:key="id"
+        bindtap="onServiceTap"
+        data-id="{{item.id}}"
+      >
+        <image class="card-cover" src="{{item.cover_image || '/assets/default-service.png'}}" mode="aspectFill" />
+        <view class="card-body">
+          <view class="card-title">{{item.title}}</view>
+          <view class="card-desc">{{item.description}}</view>
+          <view class="card-footer">
+            <text class="card-price">¥{{item.price}}</text>
+            <text class="card-sales">已售 {{item.sales || 0}}</text>
+          </view>
+        </view>
+      </view>
+
+      <view class="empty-state" wx:if="{{!loading && services.length === 0}}">
+        <text class="empty-icon">🔍</text>
+        <text class="empty-text">未找到相关服务</text>
+      </view>
+    </view>
+
+    <!-- 需求列表 -->
+    <view class="result-list" wx:if="{{activeTab === 'demand'}}">
+      <view
+        class="demand-card"
+        wx:for="{{demands}}"
+        wx:key="id"
+        bindtap="onDemandTap"
+        data-id="{{item.id}}"
+      >
+        <view class="demand-header">
+          <text class="demand-title">{{item.title}}</text>
+          <text class="demand-budget">¥{{item.budget_min}}-{{item.budget_max}}</text>
+        </view>
+        <view class="demand-desc">{{item.description}}</view>
+        <view class="demand-tags">
+          <text class="tag" wx:for="{{item.tags}}" wx:for-item="tag">{{tag}}</text>
+        </view>
+        <view class="demand-footer">
+          <text class="demand-time">{{item.created_at}}</text>
+          <text class="demand-views">👁 {{item.views || 0}}</text>
+        </view>
+      </view>
+
+      <view class="empty-state" wx:if="{{!loading && demands.length === 0}}">
+        <text class="empty-icon">🔍</text>
+        <text class="empty-text">未找到相关需求</text>
+      </view>
+    </view>
+
+    <!-- 用户列表 -->
+    <view class="result-list" wx:if="{{activeTab === 'user'}}">
+      <view
+        class="user-card"
+        wx:for="{{users}}"
+        wx:key="openid"
+        bindtap="onUserTap"
+        data-openid="{{item.openid}}"
+      >
+        <image class="user-avatar" src="{{item.avatar_url || '/assets/default-avatar.png'}}" mode="aspectFill" />
+        <view class="user-info">
+          <view class="user-name">{{item.nickname}}</view>
+          <view class="user-bio">{{item.bio || '暂无简介'}}</view>
+          <view class="user-stats">
+            <text>服务 {{item.service_count || 0}}</text>
+            <text>订单 {{item.order_count || 0}}</text>
+          </view>
+        </view>
+        <view class="user-follow">关注</view>
+      </view>
+
+      <view class="empty-state" wx:if="{{!loading && users.length === 0}}">
+        <text class="empty-icon">🔍</text>
+        <text class="empty-text">未找到相关用户</text>
+      </view>
+    </view>
+
+    <!-- 加载状态 -->
+    <view class="loading-more" wx:if="{{loading}}">
+      <text>加载中...</text>
+    </view>
+  </view>
+
+  <!-- 搜索前：历史和热门 -->
+  <view wx:else class="search-before">
+    <!-- 搜索历史 -->
+    <view class="history-section" wx:if="{{historySearch.length > 0}}">
+      <view class="section-header">
+        <text class="section-title">搜索历史</text>
+        <text class="section-action" bindtap="onClearHistory">清除</text>
+      </view>
+      <view class="history-tags">
+        <text
+          class="history-tag"
+          wx:for="{{historySearch}}"
+          wx:key="index"
+          bindtap="onHistoryTap"
+          data-keyword="{{item}}"
+        >{{item}}</text>
+      </view>
+    </view>
+
+    <!-- 热门搜索 -->
+    <view class="hot-section">
+      <view class="section-header">
+        <text class="section-title">🔥 热门搜索</text>
+      </view>
+      <view class="hot-list">
+        <view
+          class="hot-item"
+          wx:for="{{hotSearch}}"
+          wx:key="id"
+          bindtap="onHistoryTap"
+          data-keyword="{{item.keyword}}"
+        >
+          <text class="hot-rank {{index < 3 ? 'top' : ''}}">{{index + 1}}</text>
+          <text class="hot-keyword">{{item.keyword}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>

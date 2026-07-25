@@ -1,0 +1,193 @@
+/* pages/splash/splash.wxss */
+.splash {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: 100rpx 60rpx 80rpx;
+  background: linear-gradient(180deg, #0a0f1e 0%, #0d1628 100%);
+  box-sizing: border-box;
+}
+
+/* 背景特效 */
+.bg-grid {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-image:
+    linear-gradient(rgba(0,212,255,0.03) 1rpx, transparent 1rpx),
+    linear-gradient(90deg, rgba(0,212,255,0.03) 1rpx, transparent 1rpx);
+  background-size: 60rpx 60rpx;
+  pointer-events: none;
+}
+
+.bg-glow {
+  position: fixed;
+  top: -200rpx; left: 50%;
+  transform: translateX(-50%);
+  width: 600rpx; height: 600rpx;
+  background: radial-gradient(circle, rgba(0,212,255,0.15), transparent 70%);
+  pointer-events: none;
+}
+
+/* Logo */
+.logo-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 60rpx;
+}
+
+.logo-icon {
+  width: 160rpx; height: 160rpx;
+  margin-bottom: 24rpx;
+  filter: drop-shadow(0 0 20rpx rgba(0,212,255,0.6));
+}
+
+.logo-text {
+  font-size: 64rpx;
+  font-weight: 800;
+  background: linear-gradient(135deg, #00d4ff, #ffd700);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 0 0 30rpx rgba(0,212,255,0.5);
+  letter-spacing: 8rpx;
+}
+
+.slogan {
+  margin-top: 16rpx;
+  font-size: 32rpx;
+  color: var(--primary);
+  font-weight: 600;
+  letter-spacing: 4rpx;
+  text-shadow: 0 0 15rpx rgba(0,212,255,0.4);
+}
+
+.sub-slogan {
+  margin-top: 12rpx;
+  font-size: 26rpx;
+  color: var(--text-secondary);
+  letter-spacing: 2rpx;
+}
+
+/* 登录按钮 */
+.login-section {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.btn-login {
+  width: 100%;
+  max-width: 600rpx;
+  height: 96rpx;
+  font-size: 32rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16rpx;
+  background: linear-gradient(135deg, #00d4ff, #0088aa);
+  box-shadow: 0 4rpx 30rpx rgba(0,212,255,0.4);
+}
+
+.wechat-icon {
+  font-size: 40rpx;
+}
+
+.login-tip {
+  margin-top: 24rpx;
+  font-size: 22rpx;
+  color: var(--text-secondary);
+}
+
+.cloud-status {
+  width: 100%;
+  max-width: 600rpx;
+  margin-bottom: 20rpx;
+  padding: 16rpx 24rpx;
+  background: rgba(255, 71, 87, 0.1);
+  border: 1rpx solid rgba(255, 71, 87, 0.3);
+  border-radius: 12rpx;
+}
+
+.cloud-error {
+  font-size: 24rpx;
+  color: #ff4757;
+  text-align: center;
+}
+
+/* 角色选择 */
+.role-select {
+  width: 100%;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding-top: 40rpx;
+}
+
+.role-title {
+  text-align: center;
+  font-size: 30rpx;
+  color: var(--text);
+  margin-bottom: 40rpx;
+}
+
+.role-list {
+  display: flex;
+  flex-direction: column;
+  gap: 24rpx;
+}
+
+.role-card {
+  background: var(--surface);
+  border: 1rpx solid var(--border);
+  border-radius: 24rpx;
+  padding: 32rpx;
+  display: flex;
+  align-items: center;
+  position: relative;
+  transition: all 0.2s;
+}
+
+.role-card:active {
+  transform: scale(0.98);
+  border-color: var(--primary);
+}
+
+.role-card.provider {
+  border-color: rgba(155, 89, 182, 0.3);
+}
+
+.role-card.elder {
+  border-color: rgba(232, 160, 191, 0.3);
+}
+
+.role-icon {
+  font-size: 60rpx;
+  margin-right: 24rpx;
+}
+
+.role-name {
+  font-size: 34rpx;
+  font-weight: 700;
+  color: var(--text);
+  flex: 1;
+}
+
+.role-desc {
+  font-size: 22rpx;
+  color: var(--text-secondary);
+  position: absolute;
+  bottom: 16rpx;
+  left: 116rpx;
+}
+
+.role-btn {
+  background: var(--primary);
+  color: #fff;
+  font-size: 24rpx;
+  font-weight: 600;
+  padding: 8rpx 24rpx;
+  border-radius: 20rpx;
+}

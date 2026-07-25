@@ -1,0 +1,21 @@
+<view class="mentor-card {{compact ? 'compact' : ''}}" bindtap="onTap">
+  <view class="avatar-wrap">
+    <image class="avatar" src="{{mentor.avatar_url || '/assets/default-avatar.png'}}" mode="aspectFill" />
+  </view>
+
+  <view class="info">
+    <view class="name-row">
+      <text class="name">{{mentor.nickname}}</text>
+      <view class="level-badge">
+        {{mentor.level_name}}
+      </view>
+    </view>
+    <text class="school">{{mentor.school}}</text>
+    <text class="tagline" wx:if="{{!compact}}">{{mentor.provider_tagline}}</text>
+  </view>
+
+  <view class="stats" wx:if="{{!compact}}">
+    <text class="rating">★ {{mentor.rating}}</text>
+    <text class="disciples">{{mentor.active_disciples}} 弟子</text>
+  </view>
+</view>

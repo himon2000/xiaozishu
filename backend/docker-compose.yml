@@ -1,0 +1,58 @@
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: xunlongge-mysql
+    restart: unless-stopped
+    ports:
+      - "3307:3306"
+    environment:
+      MYSQL_DATABASE: ${MYSQL_DATABASE:-xunlongge}
+      MYSQL_USER: ${MYSQL_USER:-xunlongge}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD:-local_password}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-local_root_password}
+    command:
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
+    volumes:
+      - xunlongge_mysql_data:/var/lib/mysql
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "mysqladmin ping -h 127.0.0.1 -uroot -p$${MYSQL_ROOT_PASSWORD} --silent",
+        ]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+      start_period: 20s
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: xunlongge-api:latest
+    container_name: xunlongge-api
+    restart: unless-stopped
+    ports:
+      - "8000:80"
+    environment:
+      - WECHAT_APPID=${WECHAT_APPID:-wx616f58ee521ab283}
+      - WECHAT_SECRET=${WECHAT_SECRET:-}
+      - JWT_SECRET=${JWT_SECRET:-xiaozishu_test_jwt_secret_change_me}
+      - DATABASE_URL=mysql+pymysql://${MYSQL_USER:-xunlongge}:${MYSQL_PASSWORD:-local_password}@mysql:3306/${MYSQL_DATABASE:-xunlongge}?charset=utf8mb4
+      - DEBUG=false
+      - ENVIRONMENT=testing
+      - PORT=80
+    depends_on:
+      mysql:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:80/health')"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 15s
+
+volumes:
+  xunlongge_mysql_data:
+    driver: local

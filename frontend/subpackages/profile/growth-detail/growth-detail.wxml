@@ -1,0 +1,105 @@
+<!-- subpackages/profile/growth-detail/growth-detail.wxml - 我的角色 & 我的修为 -->
+<view class="page">
+
+  <!-- 标签页切换 -->
+  <view class="tab-bar">
+    <view class="tab-item {{currentTab === 'role' ? 'active' : ''}}" bindtap="onTabChange" data-tab="role">
+      <text>我的角色</text>
+    </view>
+    <view class="tab-item {{currentTab === 'growth' ? 'active' : ''}}" bindtap="onTabChange" data-tab="growth">
+      <text>我的修为</text>
+    </view>
+  </view>
+
+  <!-- ===== Tab 1: 我的角色 ===== -->
+  <view class="content" wx:if="{{currentTab === 'role'}}">
+    <view class="section">
+      <view class="section-title">🎭 角色管理</view>
+      <view class="role-list">
+        <view class="role-item {{item.role === currentRole.role ? 'active' : ''}} {{!item.enabled ? 'locked' : ''}}"
+              wx:for="{{roles}}" wx:key="role"
+              bindtap="onRoleTap" data-role="{{item.role}}" data-enabled="{{item.enabled}}">
+          <text class="role-icon">{{item.icon}}</text>
+          <view class="role-info">
+            <text class="role-name">{{item.name}}</text>
+            <text class="role-desc">{{item.desc}}</text>
+          </view>
+          <view class="role-status">
+            <text wx:if="{{item.role === currentRole.role}}" class="current-tag">当前</text>
+            <text wx:elif="{{item.enabled}}" class="enabled-tag">可用</text>
+            <text wx:else class="locked-tag">🔒</text>
+          </view>
+        </view>
+      </view>
+
+      <!-- 添加人生阶段 -->
+      <view class="add-stage-btn" bindtap="onAddStage">
+        <text>+ 添加人生阶段</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- ===== Tab 2: 我的修为 ===== -->
+  <view class="content" wx:if="{{currentTab === 'growth'}}">
+
+    <!-- 修仙等级（境界） -->
+    <view class="section">
+      <view class="section-title">🔮 修仙等级</view>
+      <view class="level-card">
+        <view class="level-header">
+          <text class="level-current-icon">{{levelConfig.icon}}</text>
+          <view class="level-current-info">
+            <text class="level-current-name">{{levelConfig.name}}</text>
+            <text class="level-current-desc">当前境界</text>
+          </view>
+        </view>
+        <view class="level-progress">
+          <view class="progress-track">
+            <view class="progress-fill" style="width: {{levelProgress}}%"></view>
+          </view>
+          <text class="progress-label">{{levelProgress}}% → {{nextLevelConfig.name}}</text>
+        </view>
+        <!-- 境界一览 -->
+        <view class="level-list">
+          <view class="level-item {{index === currentLevel - 1 ? 'current' : ''}} {{index < currentLevel - 1 ? 'passed' : ''}}"
+                wx:for="{{allLevels}}" wx:key="name">
+            <text class="level-item-icon">{{item.icon}}</text>
+            <text class="level-item-name">{{item.name}}</text>
+            <text class="level-item-status" wx:if="{{index < currentLevel - 1}}">✓</text>
+            <text class="level-item-status" wx:elif="{{index === currentLevel - 1}}">当前</text>
+            <text class="level-item-status" wx:else>🔒</text>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 成就 -->
+    <view class="section">
+      <view class="section-title">🏆 成就 ({{achievements.length}})</view>
+      <view class="grid-list">
+        <view class="grid-item {{item.unlocked ? 'unlocked' : 'locked'}}"
+              wx:for="{{achievements}}" wx:key="id">
+          <text class="grid-icon">{{item.icon}}</text>
+          <text class="grid-name">{{item.name}}</text>
+          <text class="grid-desc">{{item.desc}}</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 勋章 -->
+    <view class="section">
+      <view class="section-title">🎖️ 勋章 ({{badges.length}})</view>
+      <view class="grid-list">
+        <view class="grid-item {{item.unlocked ? 'unlocked' : 'locked'}}"
+              wx:for="{{badges}}" wx:key="id">
+          <text class="grid-icon">{{item.icon}}</text>
+          <text class="grid-name">{{item.name}}</text>
+          <text class="grid-desc">{{item.desc}}</text>
+        </view>
+      </view>
+    </view>
+
+  </view>
+
+  <view class="safe-area-bottom"></view>
+</view>

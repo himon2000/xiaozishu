@@ -1,0 +1,36 @@
+<view class="container">
+  <block wx:if="{{serviceInfo}}">
+    <view class="service-card">
+      <view class="service-header">
+        <image class="service-avatar" src="{{serviceInfo.provider.avatar_url || serviceInfo.avatar || '/assets/default-avatar.png'}}" mode="aspectFill"/>
+        <view class="service-info">
+          <text class="service-title">{{serviceInfo.title}}</text>
+          <text class="service-provider">{{serviceInfo.provider.nickname || serviceInfo.provider_name || '服务者'}}</text>
+        </view>
+      </view>
+      <view class="service-price">{{serviceInfo.pricing.price || serviceInfo.price}} 灵石 / {{serviceInfo.pricing.unit || serviceInfo.unit || '次'}}</view>
+    </view>
+
+    <view class="order-form">
+      <view class="form-item">
+        <text class="form-label">课次数量</text>
+        <input type="number" value="{{orderForm.sessions}}" bindchange="onQuantityChange" min="1" class="form-input"/>
+      </view>
+      <view class="form-item">
+        <text class="form-label">留言</text>
+        <textarea placeholder="可填写你的时间偏好、学习目标或补充说明" value="{{orderForm.message}}" bindinput="onMessageInput" class="form-textarea"/>
+      </view>
+    </view>
+
+    <view class="price-summary">
+      <text class="summary-label">合计</text>
+      <text class="summary-price">{{totalPrice}} 灵石</text>
+    </view>
+
+    <button class="confirm-btn" loading="{{submitting}}" disabled="{{submitting}}" bindtap="onConfirmOrder">确认下单</button>
+  </block>
+
+  <block wx:else>
+    <view class="loading">加载中...</view>
+  </block>
+</view>

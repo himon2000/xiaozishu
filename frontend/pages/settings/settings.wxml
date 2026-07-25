@@ -1,0 +1,80 @@
+<!-- pages/settings/settings.wxml - 我的设置 -->
+<view class="page">
+
+  <!-- 通用设置 -->
+  <view class="group-label">🔧 通用设置</view>
+  <view class="menu-group">
+
+    <view class="menu-item" bindtap="onToggleNotify">
+      <text class="menu-icon">🔔</text>
+      <text class="menu-title">消息通知</text>
+      <switch checked="{{notifyEnabled}}" color="#9b59b6" bindchange="onNotifyChange" />
+    </view>
+
+    <view class="menu-item" bindtap="onToggleSound">
+      <text class="menu-icon">🔊</text>
+      <text class="menu-title">提示音</text>
+      <switch checked="{{soundEnabled}}" color="#9b59b6" bindchange="onSoundChange" />
+    </view>
+
+  </view>
+
+  <!-- 隐私与安全 -->
+  <view class="group-label">🔒 隐私与安全</view>
+  <view class="menu-group">
+
+    <view class="menu-item" bindtap="onPrivacy">
+      <text class="menu-icon">📄</text>
+      <text class="menu-title">隐私协议</text>
+      <text class="menu-arrow">›</text>
+    </view>
+
+    <view class="menu-item" bindtap="onUserAgreement">
+      <text class="menu-icon">📋</text>
+      <text class="menu-title">用户协议</text>
+      <text class="menu-arrow">›</text>
+    </view>
+
+  </view>
+
+  <!-- 存储 -->
+  <view class="group-label">💾 存储管理</view>
+  <view class="menu-group">
+
+    <view class="menu-item" bindtap="onClearCache">
+      <text class="menu-icon">🧹</text>
+      <text class="menu-title">清除缓存</text>
+      <text class="menu-desc">{{cacheSize}}</text>
+      <text class="menu-arrow">›</text>
+    </view>
+
+  </view>
+
+  <!-- 关于 -->
+  <view class="group-label">ℹ️ 关于</view>
+  <view class="menu-group">
+
+    <view class="menu-item" bindtap="onAbout">
+      <text class="menu-icon">🍑</text>
+      <text class="menu-title">关于小紫薯</text>
+      <text class="menu-arrow">›</text>
+    </view>
+
+    <view class="menu-item">
+      <text class="menu-icon">📦</text>
+      <text class="menu-title">当前版本</text>
+      <text class="menu-desc">{{version}}</text>
+    </view>
+
+    <view class="menu-item" bindtap="onCheckUpdate">
+      <text class="menu-icon">🔄</text>
+      <text class="menu-title">检查更新</text>
+      <text class="menu-arrow">›</text>
+    </view>
+
+  </view>
+
+  <view class="safe-area-bottom"></view>
+</view>
+
+<custom-tab-bar />

@@ -1,0 +1,192 @@
+/* pages/review/review.wxss */
+
+/* 服务信息 */
+.service-info {
+  padding: 30rpx;
+  background: linear-gradient(135deg, #9b59b6, #bb8fce);
+  color: #fff;
+}
+
+.service-title {
+  display: block;
+  font-size: 32rpx;
+  font-weight: bold;
+  margin-bottom: 8rpx;
+}
+
+.provider-name {
+  font-size: 26rpx;
+  opacity: 0.9;
+}
+
+/* 评分区域 */
+.rating-row {
+  display: flex;
+  align-items: center;
+  padding: 20rpx 0;
+}
+
+.star {
+  font-size: 56rpx;
+  color: #ddd;
+  margin-right: 10rpx;
+  transition: all 0.2s;
+}
+
+.star-active {
+  color: #ff9800;
+}
+
+.rating-text {
+  margin-left: 20rpx;
+  font-size: 32rpx;
+  color: #ff9800;
+  font-weight: bold;
+}
+
+/* 评价标签 */
+.tags-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16rpx;
+  padding: 10rpx 0;
+}
+
+.tag-item {
+  padding: 12rpx 24rpx;
+  background: #f5f5f5;
+  border-radius: 30rpx;
+  font-size: 26rpx;
+  color: #666;
+  border: 2rpx solid transparent;
+}
+
+.tag-selected {
+  background: #f3e5f5;
+  color: #7b1fa2;
+  border-color: #9b59b6;
+}
+
+/* 评价内容 */
+.content-input {
+  width: 100%;
+  min-height: 200rpx;
+  padding: 20rpx;
+  background: #f8f8f8;
+  border-radius: 12rpx;
+  font-size: 28rpx;
+  line-height: 1.6;
+  box-sizing: border-box;
+}
+
+.char-count {
+  text-align: right;
+  font-size: 24rpx;
+  color: #999;
+  margin-top: 10rpx;
+}
+
+/* 图片上传 */
+.images-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20rpx;
+  padding: 10rpx 0;
+}
+
+.image-item {
+  width: 200rpx;
+  height: 200rpx;
+  border-radius: 12rpx;
+  overflow: hidden;
+  position: relative;
+}
+
+.image-item image {
+  width: 100%;
+  height: 100%;
+}
+
+.remove-btn {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 40rpx;
+  height: 40rpx;
+  background: rgba(0,0,0,0.5);
+  color: #fff;
+  font-size: 32rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0 0 0 12rpx;
+}
+
+.add-image-btn {
+  width: 200rpx;
+  height: 200rpx;
+  background: #f8f8f8;
+  border: 2rpx dashed #ddd;
+  border-radius: 12rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.add-icon {
+  font-size: 60rpx;
+  color: #9b59b6;
+}
+
+.add-text {
+  font-size: 24rpx;
+  color: #999;
+  margin-top: 8rpx;
+}
+
+/* 匿名评价 */
+.anonymous-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.anonymous-text {
+  font-size: 28rpx;
+  color: #333;
+}
+
+.anonymous-hint {
+  display: block;
+  font-size: 24rpx;
+  color: #999;
+  margin-top: 8rpx;
+}
+
+/* 提交按钮 */
+.submit-bar {
+  padding: 20rpx 30rpx;
+  background: #fff;
+  border-top: 1rpx solid #eee;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+.submit-btn {
+  width: 100%;
+  padding: 24rpx;
+  background: linear-gradient(135deg, #9b59b6, #bb8fce);
+  color: #fff;
+  font-size: 32rpx;
+  font-weight: bold;
+  border-radius: 40rpx;
+  border: none;
+}
+
+.btn-disabled {
+  background: #ccc;
+  opacity: 0.7;
+}

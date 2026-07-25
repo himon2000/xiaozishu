@@ -1,0 +1,4 @@
+<!-- components/level-badge/level-badge.wxml -->
+<view class="level-badge level-{{level}} size-{{size}}">
+  <text class="level-name">{{config.name}}</text>
+</view>

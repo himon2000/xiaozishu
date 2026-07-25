@@ -1,0 +1,138 @@
+<!-- subpackages/jingzang/publish-resource/publish-resource.wxml -->
+<view class="page">
+  <!-- 提示卡片 -->
+  <view class="notice-card">
+    <text class="notice-icon">📖</text>
+    <view class="notice-text">
+      <text class="notice-title">发布须知</text>
+      <text class="notice-desc">可发布学习笔记、经验攻略、复习资料、模板范本、视频课程等。所有内容需遵守平台规范，禁止发布违规信息。</text>
+    </view>
+  </view>
+
+  <!-- 标题 -->
+  <view class="form-card">
+    <view class="form-title">标题 <text class="required">*</text></view>
+    <input
+      class="input-field"
+      placeholder="给你的道藏起个响亮的名字"
+      maxlength="50"
+      bindinput="onTitleInput"
+      value="{{formData.title}}"
+    />
+    <text class="char-count">{{formData.title.length || 0}}/50</text>
+  </view>
+
+  <!-- 分类 -->
+  <view class="form-card">
+    <view class="form-title">分类 <text class="required">*</text></view>
+    <view class="category-grid">
+      <view
+        wx:for="{{categories}}"
+        wx:key="id"
+        class="category-chip {{formData.category === item.id ? 'selected' : ''}}"
+        bindtap="onCategorySelect"
+        data-id="{{item.id}}"
+      >
+        {{item.icon}} {{item.label}}
+      </view>
+    </view>
+  </view>
+
+  <!-- 封面图片 -->
+  <view class="form-card">
+    <view class="form-title">封面图片 <text class="optional">(选填)</text></view>
+    <view class="upload-area">
+      <view wx:if="{{formData.cover_image}}" class="upload-preview">
+        <image src="{{formData.cover_image}}" mode="aspectFill" class="cover-preview" />
+        <view class="remove-btn" bindtap="onRemoveCover">×</view>
+      </view>
+      <view
+        wx:else
+        class="upload-btn-cover"
+        bindtap="onChooseCover"
+      >
+        <text class="upload-icon">🖼️</text>
+        <text class="upload-text">添加封面</text>
+      </view>
+    </view>
+    <text class="upload-hint">建议尺寸 750×400，支持 JPG/PNG，建议小于 2MB</text>
+  </view>
+
+  <!-- 详细内容 -->
+  <view class="form-card">
+    <view class="form-title">详细内容 <text class="required">*</text></view>
+    <textarea
+      class="textarea"
+      placeholder="详细描述你的道藏内容，越详细越容易被收藏哦～"
+      maxlength="2000"
+      bindinput="onContentInput"
+      value="{{formData.content}}"
+    ></textarea>
+    <text class="char-count">{{formData.content.length || 0}}/2000</text>
+  </view>
+
+  <!-- 标签 -->
+  <view class="form-card">
+    <view class="form-title">标签 <text class="optional">(选填，用逗号分隔)</text></view>
+    <input
+      class="input-field"
+      placeholder="例如：高等数学，期末复习，知识点总结"
+      maxlength="100"
+      bindinput="onTagsInput"
+      value="{{formData.tags}}"
+    />
+    <view class="tags-hint">
+      <text>常用标签：</text>
+      <text class="tag-suggestion" bindtap="onAppendTag" data-tag="期末复习">期末复习</text>
+      <text class="tag-suggestion" bindtap="onAppendTag" data-tag="知识点">知识点</text>
+      <text class="tag-suggestion" bindtap="onAppendTag" data-tag="考研">考研</text>
+      <text class="tag-suggestion" bindtap="onAppendTag" data-tag="笔记">笔记</text>
+    </view>
+  </view>
+
+  <!-- 发布方式 -->
+  <view class="form-card">
+    <view class="form-title">获取方式 <text class="required">*</text></view>
+    <view class="access-options">
+      <view
+        class="access-item {{formData.access_mode === 'free' ? 'selected' : ''}}"
+        bindtap="onAccessSelect"
+        data-mode="free"
+      >
+        <text class="access-icon">🆓</text>
+        <text class="access-label">免费</text>
+        <text class="access-desc">所有修士可免费查看</text>
+      </view>
+      <view
+        class="access-item {{formData.access_mode === 'points' ? 'selected' : ''}}"
+        bindtap="onAccessSelect"
+        data-mode="points"
+      >
+        <text class="access-icon">💎</text>
+        <text class="access-label">灵石兑换</text>
+        <text class="access-desc">修士需消耗灵石解锁</text>
+      </view>
+    </view>
+    <view class="points-input" wx:if="{{formData.access_mode === 'points'}}">
+      <text class="points-label">设置灵石价格：</text>
+      <input
+        class="points-field"
+        type="number"
+        placeholder="1-100"
+        min="1"
+        max="100"
+        bindinput="onPointsInput"
+        value="{{formData.points_price}}"
+      />
+      <text class="points-unit">灵石</text>
+    </view>
+  </view>
+
+  <!-- 提交按钮 -->
+  <view class="submit-area safe-area-bottom">
+    <button class="btn btn-primary" bindtap="onSubmit" loading="{{submitting}}">
+      🚀 发布道藏
+    </button>
+    <text class="submit-hint">发布后可在「我的发布」中管理</text>
+  </view>
+</view>

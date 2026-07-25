@@ -1,0 +1,148 @@
+<!-- pages/my-opportunities/my-opportunities.wxml -->
+<view class="page">
+  <!-- 标签切换 -->
+  <view class="tab-bar">
+    <view
+      class="tab-item {{activeTab === 'published' ? 'active' : ''}}"
+      bindtap="onTabChange"
+      data-tab="published"
+    >
+      <text>📤 我发布的</text>
+    </view>
+    <view
+      class="tab-item {{activeTab === 'applied' ? 'active' : ''}}"
+      bindtap="onTabChange"
+      data-tab="applied"
+    >
+      <text>📮 我申请的</text>
+    </view>
+    <view
+      class="tab-item {{activeTab === 'favorites' ? 'active' : ''}}"
+      bindtap="onTabChange"
+      data-tab="favorites"
+    >
+      <text>⭐ 我收藏的</text>
+    </view>
+  </view>
+
+  <!-- 我发布的 -->
+  <view class="list-container" wx:if="{{activeTab === 'published'}}">
+    <view
+      wx:for="{{published}}"
+      wx:key="id"
+      class="item-card card"
+      bindtap="onOpportunityTap"
+      data-id="{{item.id}}"
+    >
+      <view class="item-header">
+        <view class="item-type tag-{{item.opportunity_type}}">
+          {{item.opportunity_type_name}}
+        </view>
+        <view class="item-status status-{{item.status}}">
+          {{item.status === 'active' ? '进行中' : item.status === 'closed' ? '已关闭' : '已过期'}}
+        </view>
+      </view>
+      <view class="item-title">{{item.title}}</view>
+      <view class="item-company" wx:if="{{item.company_name}}">
+        🏢 {{item.company_name}}
+      </view>
+      <view class="item-stats">
+        <text>👁️ {{item.view_count}}</text>
+        <text>⭐ {{item.favorite_count}}</text>
+        <text>📮 {{item.apply_count}}人申请</text>
+      </view>
+      <view class="item-actions">
+        <button class="action-btn" bindtap="onDeleteOpportunity" data-id="{{item.id}}">
+          删除
+        </button>
+      </view>
+    </view>
+  </view>
+
+  <!-- 我申请的 -->
+  <view class="list-container" wx:if="{{activeTab === 'applied'}}">
+    <view
+      wx:for="{{applied}}"
+      wx:key="id"
+      class="item-card card"
+      bindtap="onOpportunityTap"
+      data-id="{{item.opportunity.id}}"
+    >
+      <view class="item-header">
+        <view class="item-type tag-{{item.opportunity.opportunity_type}}">
+          {{item.opportunity.opportunity_type_name}}
+        </view>
+        <view class="item-status application-status status-{{item.application.status}}">
+          {{item.application.status_name}}
+        </view>
+      </view>
+      <view class="item-title">{{item.opportunity.title}}</view>
+      <view class="item-company" wx:if="{{item.opportunity.company_name}}">
+        🏢 {{item.opportunity.company_name}}
+      </view>
+      <view class="item-message" wx:if="{{item.application.message}}">
+        {{item.application.message}}
+      </view>
+      <view class="item-time">
+        申请时间：{{item.application.created_at}}
+      </view>
+      <view class="item-actions" wx:if="{{item.application.status === 'pending'}}">
+        <button class="action-btn withdraw" bindtap="onWithdrawApplication" data-id="{{item.application.id}}">
+          撤回申请
+        </button>
+      </view>
+    </view>
+  </view>
+
+  <!-- 我收藏的 -->
+  <view class="list-container" wx:if="{{activeTab === 'favorites'}}">
+    <view
+      wx:for="{{favorites}}"
+      wx:key="id"
+      class="item-card card"
+      bindtap="onOpportunityTap"
+      data-id="{{item.id}}"
+    >
+      <view class="item-header">
+        <view class="item-type tag-{{item.opportunity_type}}">
+          {{item.opportunity_type_name}}
+        </view>
+        <view class="item-favorite" catchtap="onToggleFavorite" data-id="{{item.id}}">
+          ❤️
+        </view>
+      </view>
+      <view class="item-title">{{item.title}}</view>
+      <view class="item-company" wx:if="{{item.company_name}}">
+        🏢 {{item.company_name}}
+      </view>
+      <view class="item-salary" wx:if="{{item.salary_range}}">
+        <text class="salary-tag">{{item.salary_range}}</text>
+      </view>
+      <view class="item-stats">
+        <text>👁️ {{item.view_count}}</text>
+        <text>📮 {{item.apply_count}}人申请</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 空状态 -->
+  <view class="empty-state" wx:if="{{!loading && ((activeTab === 'published' && published.length === 0) || (activeTab === 'applied' && applied.length === 0) || (activeTab === 'favorites' && favorites.length === 0))}}">
+    <text class="empty-icon">
+      {{activeTab === 'published' ? '📤' : activeTab === 'applied' ? '📮' : '⭐'}}
+    </text>
+    <text class="empty-text">
+      {{activeTab === 'published' ? '暂无发布的资源' : activeTab === 'applied' ? '暂无申请记录' : '暂无收藏'}}
+    </text>
+    <button class="empty-btn" wx:if="{{activeTab !== 'applied'}}" bindtap="goToPublish">
+      {{activeTab === 'published' ? '发布第一个机会' : '去逛逛'}}
+    </button>
+  </view>
+
+  <!-- 加载状态 -->
+  <view class="loading-container" wx:if="{{loading}}">
+    <text>加载中...</text>
+  </view>
+  <view class="loading-container" wx:if="{{noMore && ((activeTab === 'published' && published.length > 0) || (activeTab === 'applied' && applied.length > 0) || (activeTab === 'favorites' && favorites.length > 0))}}">
+    <text class="text-secondary">— 没有更多了 —</text>
+  </view>
+</view>

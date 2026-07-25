@@ -1,0 +1,123 @@
+/* subpackages/mentor/lineage-tree/lineage-tree.wxss */
+.page {
+  min-height: 100vh;
+  background: #faf7ff;
+  display: flex;
+  flex-direction: column;
+}
+.nav-bar {
+  background: linear-gradient(135deg, #9b59b6, #7d3c98);
+  padding: 20rpx 30rpx;
+  flex-shrink: 0;
+}
+.nav-inner { display: flex; align-items: center; gap: 20rpx; }
+.nav-back { font-size: 36rpx; color: #fff; }
+.nav-title { font-size: 32rpx; font-weight: 600; color: #fff; }
+.intro-bar {
+  padding: 16rpx 24rpx;
+  background: rgba(155,89,182,0.06);
+  border-bottom: 1rpx solid #ede8f3;
+  flex-shrink: 0;
+}
+.intro-text { font-size: 24rpx; color: #999; }
+.loading {
+  text-align: center;
+  padding: 120rpx 0;
+  font-size: 28rpx;
+  color: #aaa;
+}
+.tree-container {
+  flex: 1;
+  padding: 40rpx 24rpx;
+  overflow-y: auto;
+}
+.tree-level {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 20rpx;
+}
+.node-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8rpx;
+  padding: 20rpx;
+  background: #fff;
+  border-radius: 16rpx;
+  border: 1rpx solid #ede8f3;
+  box-shadow: 0 4rpx 16rpx rgba(0,0,0,0.05);
+}
+.mentor-node { border-color: rgba(155,89,182,0.3); }
+.node-avatar {
+  width: 100rpx;
+  height: 100rpx;
+  border-radius: 50%;
+  background: #eee;
+}
+.node-name {
+  font-size: 26rpx;
+  font-weight: 600;
+  color: #333;
+}
+.node-level {
+  font-size: 20rpx;
+  padding: 4rpx 12rpx;
+  border-radius: 20rpx;
+  font-weight: 600;
+}
+.mentor-type-tag { margin-bottom: 4rpx; }
+.node-type-tag { margin-bottom: 4rpx; }
+.enterprise-tag {
+  font-size: 20rpx;
+  padding: 3rpx 10rpx;
+  background: rgba(52, 152, 219, 0.12);
+  color: #2980b9;
+  border-radius: 8rpx;
+  font-weight: 600;
+}
+.academic-tag {
+  font-size: 20rpx;
+  padding: 3rpx 10rpx;
+  background: rgba(155, 89, 182, 0.12);
+  color: #7d3c98;
+  border-radius: 8rpx;
+  font-weight: 600;
+}
+.connector {
+  display: flex;
+  justify-content: center;
+  padding: 16rpx 0;
+}
+.connector-line {
+  width: 4rpx;
+  height: 40rpx;
+  background: linear-gradient(#9b59b6, #3498db);
+  border-radius: 2rpx;
+}
+.disciple-level { gap: 16rpx; }
+.disciple-node { padding: 16rpx; }
+.disciple-node .node-avatar { width: 80rpx; height: 80rpx; }
+.empty-disciples {
+  text-align: center;
+  padding: 40rpx;
+  font-size: 26rpx;
+  color: #aaa;
+}
+.empty-state {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20rpx;
+}
+.empty-icon { font-size: 80rpx; }
+.empty-text { font-size: 28rpx; color: #aaa; }
+.empty-btn {
+  padding: 16rpx 48rpx;
+  background: linear-gradient(135deg, #9b59b6, #7d3c98);
+  color: #fff;
+  border-radius: 40rpx;
+  font-size: 28rpx;
+}

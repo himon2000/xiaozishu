@@ -1,0 +1,115 @@
+<!-- 传功授法 - 发布需求页 -->
+<view class="page">
+
+  <!-- 提示卡片 -->
+  <view class="tip-card">
+    <text class="tip-icon">💡</text>
+    <text class="tip-text">描述您的辅导需求，导师会主动联系您</text>
+  </view>
+
+  <!-- 表单 -->
+  <view class="form-card">
+    <!-- 科目选择 -->
+    <view class="form-section">
+      <view class="form-label">辅导科目 <text class="required">*</text></view>
+      <view class="option-grid">
+        <view
+          class="option-tag {{subject === item.id ? 'active' : ''}}"
+          wx:for="{{subjects}}"
+          wx:key="id"
+          bindtap="onSubjectSelect"
+          data-subject="{{item.id}}"
+        >{{item.name}}</view>
+      </view>
+    </view>
+
+    <!-- 辅导类型 -->
+    <view class="form-section">
+      <view class="form-label">辅导类型 <text class="required">*</text></view>
+      <view class="option-row">
+        <view
+          class="option-tag {{serviceType === item.id ? 'active' : ''}}"
+          wx:for="{{serviceTypes}}"
+          wx:key="id"
+          bindtap="onTypeSelect"
+          data-type="{{item.id}}"
+        >{{item.name}}</view>
+      </view>
+    </view>
+
+    <!-- 学段 -->
+    <view class="form-section">
+      <view class="form-label">您的学段</view>
+      <view class="option-row">
+        <view
+          class="option-tag {{schoolLevel === item.id ? 'active' : ''}}"
+          wx:for="{{schoolLevels}}"
+          wx:key="id"
+          bindtap="onLevelSelect"
+          data-level="{{item.id}}"
+        >{{item.name}}</view>
+      </view>
+    </view>
+
+    <!-- 辅导目标 -->
+    <view class="form-section">
+      <view class="form-label">辅导目标</view>
+      <input
+        class="form-input"
+        placeholder="如：期末高数90+，考研数学120+"
+        value="{{target}}"
+        bindinput="onTargetInput"
+      />
+    </view>
+
+    <!-- 预算 -->
+    <view class="form-section">
+      <view class="form-label">预算范围</view>
+      <input
+        class="form-input"
+        type="number"
+        placeholder="如：200"
+        value="{{budget}}"
+        bindinput="onBudgetInput"
+      />
+      <text class="form-hint">元/次</text>
+    </view>
+
+    <!-- 详细描述 -->
+    <view class="form-section">
+      <view class="form-label">需求描述 <text class="required">*</text></view>
+      <textarea
+        class="form-textarea"
+        placeholder="详细描述您的需求：如目前的学习情况、期望的辅导方式、每周可安排的时间等"
+        value="{{description}}"
+        bindinput="onDescriptionInput"
+        maxlength="500"
+      />
+      <text class="char-count">{{description.length}}/500</text>
+    </view>
+
+    <!-- 联系方式 -->
+    <view class="form-section">
+      <view class="form-label">联系方式</view>
+      <input
+        class="form-input"
+        placeholder="手机号或微信（选填）"
+        value="{{contact}}"
+        bindinput="onContactInput"
+      />
+    </view>
+  </view>
+
+  <!-- 提交按钮 -->
+  <view class="submit-bar">
+    <button
+      class="submit-btn {{submitting ? 'disabled' : ''}}"
+      bindtap="onSubmit"
+      disabled="{{submitting}}"
+    >
+      <text wx:if="{{!submitting}}">发布需求</text>
+      <text wx:if="{{submitting}}">发布中...</text>
+    </button>
+  </view>
+
+</view>

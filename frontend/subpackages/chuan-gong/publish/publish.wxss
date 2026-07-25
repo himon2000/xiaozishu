@@ -1,0 +1,146 @@
+/* 传功授法 - 发布需求页样式 */
+.page {
+  min-height: 100vh;
+  background: var(--bg);
+  padding: 24rpx 24rpx 160rpx;
+}
+
+/* ===== 提示卡片 ===== */
+.tip-card {
+  display: flex;
+  align-items: center;
+  gap: 12rpx;
+  background: rgba(231, 76, 60, 0.1);
+  border: 1rpx solid rgba(231, 76, 60, 0.2);
+  border-radius: 16rpx;
+  padding: 20rpx 24rpx;
+  margin-bottom: 24rpx;
+}
+
+.tip-icon {
+  font-size: 32rpx;
+}
+
+.tip-text {
+  font-size: 26rpx;
+  color: #9b59b6;
+}
+
+/* ===== 表单卡片 ===== */
+.form-card {
+  background: var(--surface);
+  border-radius: 20rpx;
+  padding: 24rpx;
+}
+
+.form-section {
+  margin-bottom: 32rpx;
+}
+
+.form-section:last-child {
+  margin-bottom: 0;
+}
+
+.form-label {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 16rpx;
+}
+
+.required {
+  color: #9b59b6;
+}
+
+/* ===== 选项标签 ===== */
+.option-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12rpx;
+}
+
+.option-row {
+  display: flex;
+  gap: 12rpx;
+}
+
+.option-tag {
+  padding: 14rpx 28rpx;
+  background: var(--bg);
+  border: 1.5rpx solid var(--border);
+  border-radius: 32rpx;
+  font-size: 26rpx;
+  color: var(--text-secondary);
+}
+
+.option-tag.active {
+  background: #9b59b6;
+  border-color: #9b59b6;
+  color: #fff;
+}
+
+/* ===== 输入框 ===== */
+.form-input {
+  background: var(--bg);
+  border: 1.5rpx solid var(--border);
+  border-radius: 12rpx;
+  padding: 20rpx 24rpx;
+  font-size: 28rpx;
+  color: var(--text);
+}
+
+.form-hint {
+  font-size: 24rpx;
+  color: var(--text-secondary);
+  margin-top: 8rpx;
+  display: block;
+}
+
+/* ===== 多行文本 ===== */
+.form-textarea {
+  background: var(--bg);
+  border: 1.5rpx solid var(--border);
+  border-radius: 12rpx;
+  padding: 20rpx 24rpx;
+  font-size: 28rpx;
+  color: var(--text);
+  width: 100%;
+  min-height: 200rpx;
+  box-sizing: border-box;
+}
+
+.char-count {
+  font-size: 22rpx;
+  color: var(--text-secondary);
+  text-align: right;
+  margin-top: 8rpx;
+  display: block;
+}
+
+/* ===== 提交按钮 ===== */
+.submit-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 20rpx 24rpx;
+  padding-bottom: calc(20rpx + env(safe-area-inset-bottom));
+  background: var(--surface);
+  border-top: 1rpx solid var(--border);
+}
+
+.submit-btn {
+  width: 100%;
+  padding: 24rpx 0;
+  background: linear-gradient(135deg, #9b59b6, #8e44ad);
+  color: #fff;
+  border-radius: 48rpx;
+  font-size: 32rpx;
+  font-weight: 600;
+  text-align: center;
+  border: none;
+}
+
+.submit-btn.disabled {
+  opacity: 0.6;
+}

@@ -1,0 +1,113 @@
+<!-- 道藏天阁 - 资源广场 -->
+<view class="page">
+  <!-- 顶部导航 -->
+  <view class="nav-bar safe-area-top">
+    <view class="nav-inner">
+      <text class="nav-title">📖 道藏天阁</text>
+      <view class="nav-actions">
+        <view class="nav-btn" bindtap="onPublish">✏️ 发布</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 视图切换标签 -->
+  <view class="view-tabs">
+    <view
+      class="tab-item {{view === 'square' ? 'active' : ''}}"
+      bindtap="onViewChange"
+      data-view="square"
+    >广场</view>
+    <view
+      class="tab-item {{view === 'mine' ? 'active' : ''}}"
+      bindtap="onViewChange"
+      data-view="mine"
+    >我的发布</view>
+    <view
+      class="tab-item {{view === 'favorites' ? 'active' : ''}}"
+      bindtap="onViewChange"
+      data-view="favorites"
+    >我的收藏</view>
+  </view>
+
+  <!-- 分类筛选（仅广场视图显示） -->
+  <view class="category-bar" wx:if="{{view === 'square'}}">
+    <scroll-view scroll-x class="category-scroll">
+      <view
+        wx:for="{{categories}}"
+        wx:key="id"
+        class="category-chip {{category === item.id ? 'active' : ''}}"
+        bindtap="onCategoryChange"
+        data-id="{{item.id}}"
+      >{{item.label}}</view>
+    </scroll-view>
+  </view>
+
+  <!-- 搜索栏（仅广场视图显示） -->
+  <view class="search-bar" wx:if="{{view === 'square'}}">
+    <input
+      class="search-input"
+      placeholder="搜索道藏..."
+      value="{{search}}"
+      bindconfirm="onSearch"
+      bindinput="onSearchInput"
+    />
+    <view class="search-btn" bindtap="onSearch">搜索</view>
+  </view>
+
+  <!-- 结果统计 -->
+  <view class="result-summary" wx:if="{{view === 'square' && total > 0}}">
+    共找到 {{total}} 篇道藏
+  </view>
+
+  <!-- 资源列表 -->
+  <scroll-view scroll-y class="resource-list" bindscrolltolower="onReachBottom">
+    <view
+      wx:for="{{resources}}"
+      wx:key="id"
+      class="resource-card card"
+      bindtap="onResourceTap"
+      data-id="{{item.id}}"
+    >
+      <view class="resource-header">
+        <text class="resource-category {{item.category}}">
+          {{item.category === 'notes' ? '📝笔记' : item.category === 'guide' ? '📖攻略' : item.category === 'material' ? '📚资料' : item.category === 'template' ? '📋模板' : item.category === 'video' ? '🎬视频' : '📦其他'}}
+        </text>
+        <text wx:if="{{view === 'mine' && item.review_status === 'pending'}}">审核中</text>
+        <text wx:if="{{view === 'mine' && item.review_status === 'rejected'}}">未通过</text>
+        <text class="resource-date">{{item.created_at}}</text>
+      </view>
+      <view class="resource-title">{{item.title || item.name || '无标题'}}</view>
+      <view class="resource-desc" wx:if="{{item.shortDesc}}">{{item.shortDesc}}</view>
+      <view class="resource-footer">
+        <view class="resource-author">
+          <image class="author-avatar" src="{{item.author && item.author.avatar_url ? item.author.avatar_url : '/assets/default-avatar.png'}}" mode="aspectFill" />
+          <text class="author-name">{{item.author && item.author.nickname ? item.author.nickname : '匿名修士'}}</text>
+        </view>
+        <view class="resource-stats">
+          <text class="stat-eye">👁 {{item.views || 0}}</text>
+          <text class="stat-like" catchtap="onToggleFavorite" data-id="{{item.id}}" data-liked="{{item.is_favorited}}">
+            {{item.is_favorited ? '❤️' : '🤍'}} {{item.likes || 0}}
+          </text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 空状态 -->
+    <view class="empty-state" wx:if="{{!loading && resources.length === 0}}">
+      <text class="empty-icon">📭</text>
+      <text class="empty-text">{{view === 'square' ? '道藏天阁空空如也，暂无资源' : view === 'mine' ? '你还没有发布过道藏' : '你还没有收藏的道藏'}}</text>
+      <view class="empty-btn" bindtap="onPublish" wx:if="{{view !== 'square'}}">去发布</view>
+    </view>
+
+    <!-- 加载更多 -->
+    <view class="load-more" wx:if="{{loading}}">
+      <text>加载中...</text>
+    </view>
+    <view class="load-more no-more" wx:if="{{!loading && noMore && resources.length > 0}}">
+      <text>— 没有更多了 —</text>
+    </view>
+  </scroll-view>
+
+  <!-- 发布按钮 -->
+  <view class="fab" bindtap="onPublish">✏️</view>
+</view>

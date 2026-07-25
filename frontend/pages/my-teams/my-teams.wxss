@@ -1,0 +1,203 @@
+/* pages/my-teams/my-teams.wxss */
+
+/* 标签切换 */
+.tabs {
+  display: flex;
+  padding: 20rpx 30rpx;
+  background: #fff;
+  border-bottom: 1rpx solid #eee;
+}
+
+.tab {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16rpx 0;
+  font-size: 28rpx;
+  color: #666;
+  border-bottom: 4rpx solid transparent;
+  transition: all 0.2s;
+}
+
+.tab.active {
+  color: #9b59b6;
+  border-bottom-color: #9b59b6;
+  font-weight: bold;
+}
+
+.tab-count {
+  margin-left: 8rpx;
+  padding: 0 12rpx;
+  background: #9b59b6;
+  color: #fff;
+  border-radius: 20rpx;
+  font-size: 22rpx;
+  min-width: 36rpx;
+  text-align: center;
+}
+
+/* 组队卡片 */
+.team-list {
+  padding: 20rpx 30rpx;
+}
+
+.team-card {
+  margin-bottom: 24rpx;
+  padding: 24rpx;
+  background: #fff;
+  border-radius: 16rpx;
+  box-shadow: 0 4rpx 20rpx rgba(0,0,0,0.06);
+}
+
+.team-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12rpx;
+}
+
+.team-title {
+  font-size: 30rpx;
+  font-weight: bold;
+  color: #333;
+  flex: 1;
+}
+
+.team-status {
+  padding: 6rpx 16rpx;
+  border-radius: 20rpx;
+  font-size: 22rpx;
+}
+
+.tag-recruiting {
+  background: #fff3e0;
+  color: #ff9800;
+}
+
+.tag-full {
+  background: #e8f5e9;
+  color: #4caf50;
+}
+
+.tag-in_progress {
+  background: #e3f2fd;
+  color: #2196f3;
+}
+
+.tag-closed {
+  background: #f5f5f5;
+  color: #999;
+}
+
+.team-desc {
+  font-size: 26rpx;
+  color: #666;
+  line-height: 1.6;
+  margin-bottom: 12rpx;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+.team-tags {
+  display: flex;
+  flex-wrap: wrap;
+  margin-bottom: 12rpx;
+}
+
+.mini-tag {
+  padding: 4rpx 12rpx;
+  margin-right: 8rpx;
+  margin-bottom: 8rpx;
+  background: #f3e5f5;
+  color: #7b1fa2;
+  border-radius: 8rpx;
+  font-size: 22rpx;
+}
+
+.team-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 12rpx;
+  border-top: 1rpx solid #f0f0f0;
+}
+
+.member-info {
+  display: flex;
+  align-items: center;
+  gap: 20rpx;
+}
+
+.member-count {
+  font-size: 24rpx;
+  color: #666;
+}
+
+.deadline {
+  font-size: 24rpx;
+  color: #999;
+}
+
+.role-badge {
+  padding: 6rpx 16rpx;
+  border-radius: 20rpx;
+  font-size: 22rpx;
+}
+
+.leader {
+  background: linear-gradient(135deg, #ffd700, #ffb347);
+  color: #7d5a00;
+}
+
+.creator-info-mini {
+  font-size: 24rpx;
+  color: #999;
+}
+
+/* 空状态 */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 100rpx 40rpx;
+}
+
+.empty-state .icon {
+  font-size: 100rpx;
+  margin-bottom: 30rpx;
+}
+
+.empty-state text {
+  font-size: 28rpx;
+  color: #666;
+  margin-bottom: 12rpx;
+}
+
+.text-secondary {
+  color: #999;
+  font-size: 26rpx !important;
+  margin-bottom: 40rpx !important;
+}
+
+.create-btn-lg {
+  background: linear-gradient(135deg, #9b59b6, #bb8fce);
+  color: #fff;
+  font-size: 28rpx;
+  padding: 20rpx 60rpx;
+  border-radius: 40rpx;
+  border: none;
+}
+
+/* 加载状态 */
+.loading-container {
+  display: flex;
+  justify-content: center;
+  padding: 40rpx;
+  color: #999;
+  font-size: 26rpx;
+}

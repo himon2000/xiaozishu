@@ -1,0 +1,22 @@
+<!-- subpackages/jingzang/school-wiki-history/school-wiki-history.wxml -->
+<view class="page">
+  <view class="nav-bar safe-area-top">
+    <view class="nav-inner">
+      <view class="nav-back" bindtap="onBack">←</view>
+      <text class="nav-title">问答历史</text>
+    </view>
+  </view>
+
+  <scroll-view scroll-y class="history-list">
+    <view class="history-item" wx:for="{{history}}" wx:key="id">
+      <view class="history-q">{{item.question}}</view>
+      <view class="history-a">{{item.answer}}</view>
+      <text class="history-time">{{item.created_at}}</text>
+    </view>
+    <view class="empty-state" wx:if="{{!loading && history.length === 0}}">
+      <text class="empty-icon">📜</text>
+      <text class="empty-text">暂无问答历史</text>
+    </view>
+    <view class="load-more" wx:if="{{loading}}"><text>加载中...</text></view>
+  </scroll-view>
+</view>

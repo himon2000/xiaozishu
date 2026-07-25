@@ -1,0 +1,159 @@
+{
+  "appid": "wx776c4b107e04e36a",
+  "setting": {
+    "urlCheck": false,
+    "es6": true,
+    "enhance": true,
+    "postcss": true,
+    "minified": true,
+    "newFeature": true,
+    "coverView": true,
+    "nodeModules": true,
+    "autoAudits": false,
+    "showShadowRootInWxmlPanel": true,
+    "minifyWXSS": true
+  },
+  "compileType": "miniprogram",
+  "libVersion": "3.4.0",
+  "lazyCodeLoading": "requiredComponents",
+  "permission": {
+    "scope.userLocation": {
+      "desc": "你的位置信息将用于推荐附近的服务"
+    }
+  },
+  "requiredPrivateInfos": ["getLocation", "chooseAddress"],
+
+  "pages": [
+    "pages/splash/splash",
+    "pages/home/home",
+    "pages/search/search",
+    "pages/service-plaza/service-plaza",
+    "pages/service-detail/service-detail",
+    "pages/order-confirm/order-confirm",
+    "pages/order-list/order-list",
+    "pages/order-detail/order-detail",
+    "pages/dispute-apply/dispute-apply",
+    "pages/profile/profile",
+    "pages/dividend-pool/dividend-pool",
+    "pages/team-plaza/team-plaza",
+    "pages/team-detail/team-detail",
+    "pages/my-teams/my-teams",
+    "pages/review/review",
+    "pages/publish-service/publish-service",
+    "pages/publish-demand/publish-demand",
+    "pages/review-list/review-list",
+    "pages/opportunities/opportunities",
+    "pages/opportunity-detail/opportunity-detail",
+    "pages/my-opportunities/my-opportunities",
+    "pages/cultivation/cultivation",
+    "pages/my-research/my-research",
+    "pages/settings/settings",
+    "pages/customer-service/customer-service",
+    "pages/edit-profile/edit-profile"
+  ],
+
+  "tabBar": {
+    "custom": true,
+    "color": "#b8a9c9",
+    "selectedColor": "#9b59b6",
+    "backgroundColor": "#faf7ff",
+    "borderStyle": "white",
+    "list": [
+      {
+        "pagePath": "pages/home/home",
+        "text": "首页"
+      },
+      {
+        "pagePath": "pages/service-plaza/service-plaza",
+        "text": "服务广场"
+      },
+      {
+        "pagePath": "pages/order-list/order-list",
+        "text": "我的订单"
+      },
+      {
+        "pagePath": "pages/profile/profile",
+        "text": "个人中心"
+      }
+    ]
+  },
+
+  "subpackages": [
+    {
+      "root": "subpackages/mentor",
+      "pages": [
+        "find-mentor/find-mentor",
+        "mentor-apply/mentor-apply",
+        "my-disciples/my-disciples",
+        "lineage-tree/lineage-tree"
+      ]
+    },
+    {
+      "root": "subpackages/chuan-gong",
+      "pages": [
+        "index/index",
+        "search/search",
+        "publish/publish"
+      ]
+    },
+    {
+      "root": "subpackages/mijing",
+      "pages": [
+        "index/index"
+      ]
+    },
+    {
+      "root": "subpackages/zongmen",
+      "pages": [
+        "index/index",
+        "publish/publish"
+      ]
+    },
+    {
+      "root": "subpackages/xiashan",
+      "pages": [
+        "index/index",
+        "publish/publish"
+      ]
+    },
+    {
+      "root": "subpackages/jingzang",
+      "pages": [
+        "resource-list/resource-list",
+        "resource-detail/resource-detail",
+        "publish-resource/publish-resource",
+        "school-wiki/school-wiki",
+        "school-wiki-history/school-wiki-history",
+        "recharge/recharge"
+      ]
+    },
+    {
+      "root": "subpackages/profile",
+      "pages": [
+        "add-stage/add-stage",
+        "referral-code/referral-code",
+        "growth-detail/growth-detail"
+      ]
+    },
+    {
+      "root": "subpackages/asset",
+      "pages": [
+        "asset"
+      ]
+    }
+  ],
+
+  "window": {
+    "navigationBarBackgroundColor": "#9b59b6",
+    "navigationBarTitleText": "小紫薯",
+    "navigationBarTextStyle": "white",
+    "backgroundColor": "#faf7ff",
+    "backgroundTextStyle": "dark",
+    "enablePullDownRefresh": false
+  },
+
+  "description": "小紫薯 - 校园服务互助平台",
+  "projectname": "xiaozishu",
+  "cache": [],
+  "cloud": true
+}

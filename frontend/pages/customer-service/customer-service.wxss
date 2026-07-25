@@ -1,0 +1,154 @@
+/* pages/customer-service/customer-service.wxss - 我的客服 */
+
+.page {
+  min-height: 100vh;
+  background: #f5f0fa;
+  padding-bottom: 140rpx;
+}
+
+/* 分组标签 */
+.group-label {
+  font-size: 24rpx;
+  color: #9b59b6;
+  font-weight: 600;
+  padding: 28rpx 32rpx 10rpx;
+  letter-spacing: 1rpx;
+}
+
+/* 菜单分组 */
+.menu-group {
+  background: #fff;
+  margin: 0 24rpx 8rpx;
+  border-radius: 20rpx;
+  overflow: hidden;
+  box-shadow: 0 2rpx 12rpx rgba(155, 89, 182, 0.07);
+}
+
+/* 菜单项 */
+.menu-item {
+  display: flex;
+  align-items: center;
+  padding: 28rpx 28rpx;
+  border-bottom: 1rpx solid #f5f0fa;
+}
+
+.menu-item:last-child {
+  border-bottom: none;
+}
+
+.menu-icon {
+  font-size: 36rpx;
+  width: 56rpx;
+  flex-shrink: 0;
+  text-align: center;
+}
+
+.menu-title {
+  flex: 1;
+  font-size: 30rpx;
+  color: #333;
+  font-weight: 500;
+  margin-left: 8rpx;
+}
+
+.menu-desc {
+  font-size: 24rpx;
+  color: #bbb;
+  margin-right: 10rpx;
+}
+
+.menu-arrow {
+  font-size: 32rpx;
+  color: #ccc;
+}
+
+/* FAQ 手风琴 */
+.faq-item {
+  border-bottom: 1rpx solid #f5f0fa;
+}
+
+.faq-item:last-child {
+  border-bottom: none;
+}
+
+.faq-header {
+  display: flex;
+  align-items: center;
+  padding: 28rpx 28rpx;
+}
+
+.faq-q {
+  flex: 1;
+  font-size: 28rpx;
+  color: #333;
+  font-weight: 500;
+}
+
+.faq-arrow {
+  font-size: 36rpx;
+  color: #ccc;
+  transition: transform 0.2s;
+  transform: rotate(0deg);
+}
+
+.faq-arrow.expanded {
+  transform: rotate(90deg);
+}
+
+.faq-answer {
+  padding: 0 28rpx 24rpx;
+}
+
+.faq-a {
+  font-size: 26rpx;
+  color: #888;
+  line-height: 1.7;
+}
+
+/* 反馈卡片 */
+.feedback-card {
+  background: #fff;
+  margin: 0 24rpx 8rpx;
+  border-radius: 20rpx;
+  padding: 24rpx;
+  box-shadow: 0 2rpx 12rpx rgba(155, 89, 182, 0.07);
+}
+
+.feedback-input {
+  width: 100%;
+  height: 200rpx;
+  font-size: 28rpx;
+  color: #333;
+  line-height: 1.6;
+  box-sizing: border-box;
+}
+
+.feedback-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 16rpx;
+}
+
+.feedback-count {
+  font-size: 22rpx;
+  color: #bbb;
+}
+
+.feedback-btn {
+  background: #9b59b6;
+  color: #fff;
+  font-size: 26rpx;
+  padding: 14rpx 40rpx;
+  border-radius: 30rpx;
+  font-weight: 500;
+}
+
+.feedback-btn:active {
+  opacity: 0.8;
+}
+
+/* 安全区 */
+.safe-area-bottom {
+  height: 120rpx;
+}

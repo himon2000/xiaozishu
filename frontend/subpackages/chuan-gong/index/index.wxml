@@ -1,0 +1,122 @@
+<!-- 传功授法 - 首页 -->
+<view class="page">
+
+  <!-- 顶部搜索栏 -->
+  <view class="search-bar" bindtap="onSearchTap">
+    <view class="search-hint">
+      <text class="search-icon">🔍</text>
+      <text class="search-placeholder">搜索科目、导师...</text>
+    </view>
+  </view>
+
+  <!-- 科目快捷入口 -->
+  <view class="section">
+    <view class="section-header">
+      <text class="section-title">📐 选择科目</text>
+      <text class="section-more" bindtap="onViewAllServices">全部 ></text>
+    </view>
+    <view class="subject-grid">
+      <view
+        class="subject-card"
+        wx:for="{{hotSubjects}}"
+        wx:key="id"
+        bindtap="onSubjectTap"
+        data-subject="{{item.id}}"
+      >
+        <view class="subject-icon">{{item.icon}}</view>
+        <view class="subject-name">{{item.name}}</view>
+        <view class="subject-count">{{item.count}} 位导师</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 服务类型筛选 -->
+  <view class="section">
+    <view class="section-header">
+      <text class="section-title">📚 服务类型</text>
+    </view>
+    <scroll-view scroll-x class="type-scroll">
+      <view class="type-list">
+        <view
+          class="type-tag {{currentType === item.id ? 'active' : ''}}"
+          wx:for="{{serviceTypes}}"
+          wx:key="id"
+          bindtap="onTypeChange"
+          data-type="{{item.id}}"
+        >
+          <text>{{item.icon}} {{item.name}}</text>
+        </view>
+      </view>
+    </scroll-view>
+  </view>
+
+  <!-- 热门导师 -->
+  <view class="section" wx:if="{{topMentors.length > 0}}">
+    <view class="section-header">
+      <text class="section-title">🏆 热门导师</text>
+      <text class="section-more" bindtap="onViewAllMentors">更多 ></text>
+    </view>
+    <scroll-view scroll-x class="mentor-scroll">
+      <view class="mentor-list">
+        <view
+          class="mentor-card"
+          wx:for="{{topMentors}}"
+          wx:key="openid"
+          bindtap="onMentorTap"
+          data-openid="{{item.openid}}"
+        >
+          <image class="mentor-avatar" src="{{item.avatar_url || '/assets/default-avatar.png'}}" mode="aspectFill" />
+          <view class="mentor-info">
+            <view class="mentor-name">{{item.nickname}}</view>
+            <view class="mentor-level">{{item.level_icon}} {{item.level_name}}</view>
+            <view class="mentor-rating">⭐ {{item.rating || '5.0'}} · {{item.total_orders_done || 0}}单</view>
+          </view>
+        </view>
+      </view>
+    </scroll-view>
+  </view>
+
+  <!-- 热门服务 -->
+  <view class="section" wx:if="{{hotServices.length > 0}}">
+    <view class="section-header">
+      <text class="section-title">🔥 热门服务</text>
+      <text class="section-more" bindtap="onViewAllServices">更多 ></text>
+    </view>
+    <view class="service-list">
+      <view
+        class="service-card"
+        wx:for="{{hotServices}}"
+        wx:key="id"
+        bindtap="onServiceTap"
+        data-id="{{item.id}}"
+      >
+        <image class="service-cover" src="{{item.cover_image || '/assets/default-service.png'}}" mode="aspectFill" />
+        <view class="service-body">
+          <view class="service-title">{{item.title}}</view>
+          <view class="service-tags">
+            <text class="mini-tag" wx:for="{{item.subjects}}" wx:for-item="sub" wx:if="{{index < 2}}">{{sub}}</text>
+          </view>
+          <view class="service-footer">
+            <text class="service-price">💎{{item.price}}</text>
+            <text class="service-rating">⭐ {{item.rating || '暂无'}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 空状态 -->
+  <view class="empty-state" wx:if="{{!loading && topMentors.length === 0 && hotServices.length === 0}}">
+    <image src="/assets/empty.png" class="empty-img" mode="aspectFit" />
+    <text class="empty-title">暂无传功服务</text>
+    <text class="empty-sub">成为第一批传功者吧！</text>
+  </view>
+
+  <!-- 发布悬浮按钮 -->
+  <view class="publish-fab" bindtap="onPublishRequest">
+    <text class="fab-icon">📝</text>
+    <text class="fab-label">发布服务</text>
+  </view>
+
+  <view class="safe-area-bottom"></view>
+</view>

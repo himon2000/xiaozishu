@@ -1,0 +1,59 @@
+<!-- pages/customer-service/customer-service.wxml - 我的客服 -->
+<view class="page">
+
+  <!-- 客服入口 -->
+  <view class="group-label">🎧 联系我们</view>
+  <view class="menu-group">
+
+    <view class="menu-item" bindtap="onOnlineService">
+      <text class="menu-icon">💬</text>
+      <text class="menu-title">在线客服</text>
+      <text class="menu-desc">工作日 9:00-21:00</text>
+      <text class="menu-arrow">›</text>
+    </view>
+
+    <view class="menu-item" bindtap="onCopyEmail">
+      <text class="menu-icon">📧</text>
+      <text class="menu-title">联系邮箱</text>
+      <text class="menu-desc">support@xiaozishu.com</text>
+      <text class="menu-arrow">›</text>
+    </view>
+
+  </view>
+
+  <!-- 常见问题 -->
+  <view class="group-label">❓ 常见问题</view>
+  <view class="menu-group">
+
+    <view class="faq-item" wx:for="{{faqList}}" wx:key="id" bindtap="onFaqTap" data-index="{{index}}">
+      <view class="faq-header">
+        <text class="faq-q">{{item.q}}</text>
+        <text class="faq-arrow {{expandedIndex === index ? 'expanded' : ''}}">›</text>
+      </view>
+      <view class="faq-answer" wx:if="{{expandedIndex === index}}">
+        <text class="faq-a">{{item.a}}</text>
+      </view>
+    </view>
+
+  </view>
+
+  <!-- 意见反馈 -->
+  <view class="group-label">✍️ 意见反馈</view>
+  <view class="feedback-card">
+    <textarea
+      class="feedback-input"
+      placeholder="请描述您的问题或建议..."
+      maxlength="500"
+      bindinput="onFeedbackInput"
+      value="{{feedbackText}}"
+    />
+    <view class="feedback-footer">
+      <text class="feedback-count">{{feedbackText.length}}/500</text>
+      <view class="feedback-btn" bindtap="onSubmitFeedback">提交反馈</view>
+    </view>
+  </view>
+
+  <view class="safe-area-bottom"></view>
+</view>
+
+<custom-tab-bar />

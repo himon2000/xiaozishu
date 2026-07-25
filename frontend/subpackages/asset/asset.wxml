@@ -1,0 +1,122 @@
+<!-- subpackages/asset/asset.wxml - 资产页面 -->
+<view class="page">
+
+  <!-- 顶部资产卡片 -->
+  <view class="header-bg">
+    <view class="asset-card">
+      <view class="asset-main">
+        <text class="asset-icon">💎</text>
+        <view class="asset-info">
+          <text class="asset-label">我的灵石</text>
+          <text class="asset-num">{{assets.lingshi}}</text>
+        </view>
+      </view>
+
+      <view class="asset-details">
+        <view class="asset-detail-item">
+          <text class="detail-label">可用</text>
+          <text class="detail-num">{{assets.lingshi}}</text>
+        </view>
+        <view class="asset-detail-divider"></view>
+        <view class="asset-detail-item">
+          <text class="detail-label">冻结</text>
+          <text class="detail-num">{{assets.frozen}}</text>
+        </view>
+        <view class="asset-detail-divider"></view>
+        <view class="asset-detail-item">
+          <text class="detail-label">总计</text>
+          <text class="detail-num">{{assets.total}}</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 操作按钮 -->
+    <view class="action-btns">
+      <view class="action-btn" bindtap="onRecharge">
+        <text>充值</text>
+      </view>
+      <view class="action-btn outline" bindtap="onWithdraw">
+        <text>提现</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 标签页切换 -->
+  <view class="tab-bar">
+    <view class="tab-item {{currentTab === 'detail' ? 'active' : ''}}" bindtap="onTabChange" data-tab="detail">
+      <text>资产明细</text>
+    </view>
+    <view class="tab-item {{currentTab === 'recharge' ? 'active' : ''}}" bindtap="onTabChange" data-tab="recharge">
+      <text>充值</text>
+    </view>
+    <view class="tab-item {{currentTab === 'vip' ? 'active' : ''}}" bindtap="onTabChange" data-tab="vip">
+      <text>会员</text>
+    </view>
+  </view>
+
+  <!-- 资产明细 -->
+  <view class="content" wx:if="{{currentTab === 'detail'}}">
+    <view class="transaction-list">
+      <view class="transaction-item" wx:for="{{transactions}}" wx:key="id">
+        <view class="transaction-left">
+          <text class="transaction-type {{item.type}}">{{item.type}}</text>
+          <text class="transaction-desc">{{item.desc}}</text>
+          <text class="transaction-time">{{item.time}}</text>
+        </view>
+        <view class="transaction-right">
+          <text class="transaction-amount {{item.amount > 0 ? 'positive' : 'negative'}}">{{item.amount}}</text>
+          <text class="transaction-balance">余额 {{item.balance}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 充值 -->
+  <view class="content" wx:if="{{currentTab === 'recharge'}}">
+    <view class="section">
+      <view class="section-title">💎 灵石充值</view>
+      <view class="package-grid">
+        <view class="package-item" wx:for="{{packages}}" wx:key="id"
+              bindtap="onBuyPackage" data-pkg="{{item}}">
+          <text class="package-amount">{{item.amount}}</text>
+          <text class="package-bonus" wx:if="{{item.bonus > 0}}">+{{item.bonus}}</text>
+          <text class="package-price">¥{{item.price}}</text>
+        </view>
+      </view>
+    </view>
+
+    <view class="section">
+      <view class="section-title">📜 充值说明</view>
+      <view class="tips-list">
+        <text class="tip-item">• 灵石充值成功后不支持提现</text>
+        <text class="tip-item">• 充值赠送的灵石将在到账后立即生效</text>
+        <text class="tip-item">• 如有充值问题，请联系客服</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 会员 -->
+  <view class="content" wx:if="{{currentTab === 'vip'}}">
+    <view class="section">
+      <view class="section-title">👑 开通会员</view>
+      <view class="vip-list">
+        <view class="vip-item" wx:for="{{vipPackages}}" wx:key="id"
+              bindtap="onBuyVip" data-pkg="{{item}}">
+          <view class="vip-header">
+            <text class="vip-name">{{item.name}}</text>
+            <text class="vip-price">¥{{item.price}}</text>
+          </view>
+          <text class="vip-duration">{{item.duration}}</text>
+          <view class="vip-benefits">
+            <text class="benefit-item" wx:for="{{item.benefits}}" wx:for-item="benefit" wx:key="index">✓ {{benefit}}</text>
+          </view>
+          <view class="vip-buy-btn">
+            <text>立即开通</text>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view class="safe-area-bottom"></view>
+</view>
