@@ -1,0 +1,24 @@
+<view class="resource-card {{compact ? 'compact' : ''}}" bindtap="onTap">
+  <image wx:if="{{resource.cover_image}}" class="cover" src="{{resource.cover_image}}" mode="aspectFill" />
+  <view wx:else class="cover placeholder"><text class="ph-icon">📚</text></view>
+
+  <view class="body">
+    <view class="meta">
+      <text class="type">{{resource.resource_type}}</text>
+      <view class="access {{resource.access_mode}}">
+        <text wx:if="{{resource.access_mode === 'free'}}">免费</text>
+        <text wx:elif="{{resource.access_mode === 'points'}}">{{resource.points_cost}}灵石</text>
+        <text wx:else>付费</text>
+      </view>
+    </view>
+    <text class="title">{{resource.title}}</text>
+    <view class="tags" wx:if="{{!compact && resource.tags.length > 0}}">
+      <text wx:for="{{resource.tags}}" wx:key="*this" wx:for-item="t" class="tag">{{t}}</text>
+    </view>
+    <view class="footer">
+      <text class="views">👁 {{resource.views}}</text>
+      <text class="likes">❤️ {{resource.likes}}</text>
+      <view wx:if="{{resource.is_featured}}" class="featured">精选</view>
+    </view>
+  </view>
+</view>

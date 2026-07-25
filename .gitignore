@@ -1,0 +1,40 @@
+# Secrets and machine-local configuration
+**/.env
+**/.env.*
+!**/.env.example
+**/container.config.json
+**/project.private.config.json
+
+# Python
+**/__pycache__/
+**/*.py[cod]
+**/.pytest_cache/
+**/.mypy_cache/
+**/.venv/
+**/venv/
+
+# Node / mini-program build state
+**/node_modules/
+**/miniprogram_npm/
+**/.DS_Store
+**/Thumbs.db
+
+# Local databases and logs
+**/*.db
+**/*.sqlite
+**/*.sqlite3
+**/*.log
+**/logs/
+doc/deploy配置.txt
+
+# Generated mobile artifacts and signing credentials
+dist-app/
+**/*.apk
+**/*.p12
+**/*.jks
+**/*.keystore
+
+# Archives
+**/*.zip
+**/*.tar
+**/*.tar.gz

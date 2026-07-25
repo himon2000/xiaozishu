@@ -1,0 +1,175 @@
+<!-- pages/team-plaza/team-plaza.wxml -->
+<view class="page">
+  <!-- 顶部标题 -->
+  <view class="page-header">
+    <text class="page-title">🔬 联袂问道</text>
+    <text class="page-subtitle">课题·竞赛·项目·学习组队</text>
+  </view>
+
+  <!-- 搜索栏 -->
+  <view class="search-bar">
+    <input
+      class="search-input"
+      placeholder="搜索问道之旅..."
+      value="{{search}}"
+      bindconfirm="onSearch"
+      bindinput="onSearchInput"
+    />
+    <button class="search-btn" size="mini" bindtap="onSearch">🔍</button>
+  </view>
+
+  <!-- 分类切换（2×2 网格） -->
+  <view class="category-grid">
+    <view
+      wx:for="{{categories}}"
+      wx:key="id"
+      class="category-item {{activeCategory === item.id ? 'active' : ''}} {{item.group === '历练' ? 'is-liilian' : ''}}"
+      bindtap="onCategoryChange"
+      data-category="{{item.id}}"
+    >
+      <text class="cat-icon">{{item.icon}}</text>
+      <text class="cat-name">{{item.name}}</text>
+      <text class="cat-sub" wx:if="{{item.sub}}">{{item.sub}}</text>
+    </view>
+  </view>
+
+  <!-- 历练分类提示 -->
+  <view class="liilian-tip" wx:if="{{activeCategory === 'internship' || activeCategory === 'referral' || activeCategory === 'job' || activeCategory === 'job_resource'}}">
+    <text>💡 这是下山历练模块，建议前往</text>
+    <text class="link" bindtap="goToOpportunities">就业资源广场</text>
+  </view>
+
+  <!-- 创建按钮 -->
+  <view class="action-bar">
+    <text class="result-count">共 {{total}} 个问道之旅</text>
+    <button class="create-btn" bindtap="onOpenCreate">+ 发起问道</button>
+  </view>
+
+  <!-- 组队列表 -->
+  <view class="team-list">
+    <view
+      wx:for="{{teams}}"
+      wx:key="id"
+      class="team-card card card-glow"
+      bindtap="onTeamTap"
+      data-id="{{item.id}}"
+    >
+      <!-- 头部 -->
+      <view class="team-header">
+        <view class="team-title">{{item.title}}</view>
+        <view class="team-status tag-{{item.status}}">
+          {{item.status === 'recruiting' ? '🔥 招募中' : item.status === 'full' ? '✅ 已满员' : item.status === 'in_progress' ? '🚀 进行中' : '🏁 已结束'}}
+        </view>
+      </view>
+      <!-- 描述 -->
+      <view class="team-desc">{{item.description}}</view>
+      <!-- 标签 -->
+      <view class="team-tags" wx:if="{{item.tags.length > 0}}">
+        <text wx:for="{{item.tags}}" wx:for-item="tag" wx:key="tag" class="mini-tag">{{tag}}</text>
+      </view>
+      <!-- 底部信息 -->
+      <view class="team-footer">
+        <view class="member-info">
+          <text class="member-count">👥 {{item.current_members}}/{{item.max_members}}</text>
+          <text class="deadline" wx:if="{{item.deadline}}">📅 {{item.deadline}}</text>
+        </view>
+        <view class="creator-info">
+          <image class="creator-avatar" src="{{item.creator.avatar_url || '/assets/default-avatar.png'}}" />
+          <text class="creator-name">{{item.creator.nickname}}</text>
+          <text class="creator-level">{{item.creator.level_icon}} {{item.creator.level_name}}</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 空状态 -->
+    <view class="empty-state" wx:if="{{!loading && teams.length === 0}}">
+      <text class="icon">🔬</text>
+      <text>暂无相关问道之旅</text>
+      <text class="text-secondary">成为发起人，发起第一个问道之旅吧！</text>
+      <text class="text-hint">（还没有相关组队，快来发起第一个吧）</text>
+      <button class="create-btn-lg" bindtap="onOpenCreate">+ 发起问道</button>
+    </view>
+
+    <!-- 加载状态 -->
+    <view class="loading-container" wx:if="{{loading}}">
+      <text>加载中...</text>
+    </view>
+    <view class="loading-container" wx:if="{{noMore && teams.length > 0}}">
+      <text class="text-secondary">— 没有更多了 —</text>
+    </view>
+  </view>
+
+  <!-- 创建组队弹窗 -->
+  <view class="modal" wx:if="{{showCreateModal}}">
+    <view class="modal-mask" bindtap="onCloseCreate"></view>
+    <view class="modal-content">
+      <view class="modal-header">
+        <text class="modal-title">🔬 发起问道之旅</text>
+        <text class="modal-close" bindtap="onCloseCreate">✕</text>
+      </view>
+      <view class="modal-body">
+        <!-- 组队名称 -->
+        <view class="form-item">
+          <text class="form-label">问道之旅名称 *</text>
+          <input
+            class="form-input"
+            placeholder="如：2026考研数学问道小组"
+            value="{{createForm.title}}"
+            bindinput="onFormInput"
+            data-field="title"
+          />
+        </view>
+        <!-- 组队描述 -->
+        <view class="form-item">
+          <text class="form-label">问道详情 *</text>
+          <textarea
+            class="form-textarea"
+            placeholder="详细描述你的问道计划、目标、招募要求..."
+            value="{{createForm.description}}"
+            bindinput="onFormInput"
+            data-field="description"
+          ></textarea>
+        </view>
+        <!-- 招募人数 -->
+        <view class="form-item">
+          <text class="form-label">招募道伴</text>
+          <picker mode="selector" range="{{[2,3,4,5,6,7,8,9,10]}}" bindchange="onMaxMembersChange">
+            <view class="form-picker">{{createForm.max_members}} 人</view>
+          </picker>
+        </view>
+        <!-- 标签 -->
+        <view class="form-item">
+          <text class="form-label">标签（可选）</text>
+          <view class="tag-input-wrap">
+            <input
+              class="form-input tag-input"
+              placeholder="输入标签后点击添加"
+              value="{{tagInput}}"
+              bindinput="onTagInput"
+              bindconfirm="onAddTag"
+            />
+            <button class="add-tag-btn" size="mini" bindtap="onAddTag">添加</button>
+          </view>
+          <view class="tag-list" wx:if="{{createForm.tags.length > 0}}">
+            <view wx:for="{{createForm.tags}}" wx:key="index" class="tag-item">
+              {{item}} <text class="tag-remove" bindtap="onRemoveTag" data-index="{{index}}">×</text>
+            </view>
+          </view>
+        </view>
+        <!-- 截止日期 -->
+        <view class="form-item">
+          <text class="form-label">招募截止（可选）</text>
+          <picker mode="date" value="{{createForm.deadline}}" bindchange="onDeadlineChange">
+            <view class="form-picker {{createForm.deadline ? '' : 'placeholder'}}">
+              {{createForm.deadline || '请选择截止日期'}}
+            </view>
+          </picker>
+        </view>
+      </view>
+      <view class="modal-footer">
+        <button class="cancel-btn" bindtap="onCloseCreate">取消</button>
+        <button class="confirm-btn" bindtap="onCreateTeam">发起问道</button>
+      </view>
+    </view>
+  </view>
+</view>

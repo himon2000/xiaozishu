@@ -1,0 +1,266 @@
+/* pages/cultivation/cultivation.wxss - 修为页面样式 */
+
+.page {
+  min-height: 100vh;
+  background: #f5f5f5;
+}
+
+/* 顶部渐变背景 */
+.header-bg {
+  background: linear-gradient(135deg, #9b59b6, #8e44ad);
+  padding: 30rpx 30rpx 60rpx;
+}
+
+.realm-card {
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 24rpx;
+  padding: 30rpx;
+  box-shadow: 0 8rpx 30rpx rgba(155, 89, 182, 0.3);
+}
+
+.realm-main {
+  display: flex;
+  align-items: center;
+  gap: 20rpx;
+  margin-bottom: 30rpx;
+}
+
+.realm-icon {
+  font-size: 72rpx;
+}
+
+.realm-info {
+  flex: 1;
+}
+
+.realm-name {
+  font-size: 40rpx;
+  font-weight: 700;
+  color: #333;
+  display: block;
+}
+
+.realm-level {
+  font-size: 26rpx;
+  color: #9b59b6;
+  margin-top: 4rpx;
+  display: block;
+}
+
+.exp-section {
+  background: #faf7ff;
+  border-radius: 16rpx;
+  padding: 20rpx;
+}
+
+.exp-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12rpx;
+}
+
+.exp-label {
+  font-size: 26rpx;
+  color: #666;
+}
+
+.exp-value {
+  font-size: 26rpx;
+  color: #9b59b6;
+  font-weight: 600;
+}
+
+.progress-bar {
+  height: 16rpx;
+  background: #e9d5ff;
+  border-radius: 8rpx;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #a855f7, #8b5cf6);
+  border-radius: 8rpx;
+  transition: width 0.3s ease;
+}
+
+.exp-hint {
+  font-size: 22rpx;
+  color: #999;
+  margin-top: 10rpx;
+  display: block;
+  text-align: center;
+}
+
+/* 通用区块 */
+.section {
+  padding: 30rpx;
+}
+
+.section-title {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 20rpx;
+}
+
+/* 境界图谱 */
+.realm-list {
+  background: #fff;
+  border-radius: 16rpx;
+  padding: 20rpx;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16rpx;
+}
+
+.realm-item {
+  width: calc(25% - 12rpx);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 16rpx 8rpx;
+  border-radius: 12rpx;
+  background: #faf7ff;
+  opacity: 0.5;
+}
+
+.realm-item.current {
+  opacity: 0.8;
+}
+
+.realm-item.active {
+  opacity: 1;
+  background: linear-gradient(135deg, #a855f7, #8b5cf6);
+  box-shadow: 0 4rpx 12rpx rgba(155, 89, 182, 0.3);
+}
+
+.realm-item-icon {
+  font-size: 40rpx;
+}
+
+.realm-item-name {
+  font-size: 22rpx;
+  color: #333;
+  margin-top: 6rpx;
+  font-weight: 600;
+}
+
+.realm-item-level {
+  font-size: 18rpx;
+  color: #999;
+  margin-top: 2rpx;
+}
+
+.realm-item.active .realm-item-name,
+.realm-item.active .realm-item-level {
+  color: #fff;
+}
+
+/* 修为获取方式 */
+.method-list {
+  background: #fff;
+  border-radius: 16rpx;
+  overflow: hidden;
+}
+
+.method-item {
+  display: flex;
+  align-items: center;
+  padding: 24rpx;
+  border-bottom: 1rpx solid #f0f0f0;
+}
+
+.method-item:last-child {
+  border-bottom: none;
+}
+
+.method-icon {
+  font-size: 40rpx;
+  width: 60rpx;
+}
+
+.method-info {
+  flex: 1;
+}
+
+.method-title {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: #333;
+  display: block;
+}
+
+.method-desc {
+  font-size: 22rpx;
+  color: #999;
+  margin-top: 4rpx;
+  display: block;
+}
+
+.method-amount {
+  font-size: 28rpx;
+  font-weight: 700;
+  color: #9b59b6;
+}
+
+/* 修为记录 */
+.record-list {
+  background: #fff;
+  border-radius: 16rpx;
+  overflow: hidden;
+}
+
+.record-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 24rpx;
+  border-bottom: 1rpx solid #f0f0f0;
+}
+
+.record-item:last-child {
+  border-bottom: none;
+}
+
+.record-left {
+  flex: 1;
+}
+
+.record-type {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: #333;
+  display: block;
+}
+
+.record-desc {
+  font-size: 22rpx;
+  color: #999;
+  margin-top: 4rpx;
+  display: block;
+}
+
+.record-right {
+  text-align: right;
+}
+
+.record-amount {
+  font-size: 30rpx;
+  font-weight: 700;
+  color: #2ed573;
+  display: block;
+}
+
+.record-time {
+  font-size: 20rpx;
+  color: #999;
+  margin-top: 4rpx;
+  display: block;
+}
+
+.safe-area-bottom {
+  height: constant(safe-area-inset-bottom);
+  height: env(safe-area-inset-bottom);
+}

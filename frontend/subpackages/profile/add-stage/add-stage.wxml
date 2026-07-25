@@ -1,0 +1,192 @@
+<!-- 添加人生阶段页面 -->
+<view class="page">
+  <view class="page-header">
+    <text class="page-title">开启新的人生阶段</text>
+    <text class="page-desc">每个阶段可以扮演不同的修仙身份</text>
+  </view>
+
+  <!-- 阶段类型选择 -->
+  <view class="section">
+    <view class="section-title">选择阶段类型</view>
+    <view class="type-grid">
+      <view
+        class="type-card {{form.stage_type === 'high_school' ? 'type-card-active' : ''}}"
+        bindtap="onSelectType"
+        data-type="high_school"
+      >
+        <text class="type-icon">🏫</text>
+        <text class="type-name">高中阶段</text>
+        <text class="type-desc">我是高中生</text>
+      </view>
+      <view
+        class="type-card {{form.stage_type === 'college' ? 'type-card-active' : ''}}"
+        bindtap="onSelectType"
+        data-type="college"
+      >
+        <text class="type-icon">🎓</text>
+        <text class="type-name">大学阶段</text>
+        <text class="type-desc">我是大学生</text>
+      </view>
+      <view
+        class="type-card {{form.stage_type === 'working' ? 'type-card-active' : ''}}"
+        bindtap="onSelectType"
+        data-type="working"
+      >
+        <text class="type-icon">💼</text>
+        <text class="type-name">职场阶段</text>
+        <text class="type-desc">我已经工作了</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 阶段名称 -->
+  <view class="section">
+    <view class="section-title">阶段名称（选填）</view>
+    <input
+      class="input"
+      placeholder="例如：高中三年、大一新生、职场新人"
+      value="{{form.stage_name}}"
+      bindinput="onInput"
+      data-field="stage_name"
+    />
+  </view>
+
+  <!-- 角色选择 -->
+  <view class="section">
+    <view class="section-title">选择修仙身份</view>
+    <view class="role-grid">
+      <view
+        class="role-card {{form.role === 'seeker' ? 'role-card-active' : ''}}"
+        bindtap="onSelectRole"
+        data-role="seeker"
+      >
+        <text class="role-icon">🎓</text>
+        <text class="role-name">散修</text>
+        <text class="role-desc">寻找帮助</text>
+      </view>
+      <view
+        class="role-card {{form.role === 'provider' ? 'role-card-active' : ''}}"
+        bindtap="onSelectRole"
+        data-role="provider"
+      >
+        <text class="role-icon">🍠</text>
+        <text class="role-name">大虾</text>
+        <text class="role-desc">提供服务</text>
+      </view>
+      <view
+        class="role-card {{form.role === 'elder' ? 'role-card-active' : ''}}"
+        bindtap="onSelectRole"
+        data-role="elder"
+      >
+        <text class="role-icon">🏛️</text>
+        <text class="role-name">长老</text>
+        <text class="role-desc">行业专家</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 高中信息 -->
+  <view class="section" wx:if="{{form.stage_type === 'high_school'}}">
+    <view class="section-title">学校信息</view>
+    <input
+      class="input"
+      placeholder="学校名称"
+      value="{{form.high_school_name}}"
+      bindinput="onInput"
+      data-field="high_school_name"
+    />
+    <input
+      class="input"
+      placeholder="所在城市"
+      value="{{form.high_school_city}}"
+      bindinput="onInput"
+      data-field="high_school_city"
+      style="margin-top: 16rpx;"
+    />
+    <view class="grade-picker">
+      <text class="grade-label">当前年级</text>
+      <picker mode="selector" range="{{gradeOptions}}" bindchange="onGradeChange">
+        <view class="picker-value">
+          {{form.grade || '请选择年级'}}
+          <text class="picker-arrow">›</text>
+        </view>
+      </picker>
+    </view>
+  </view>
+
+  <!-- 大学信息 -->
+  <view class="section" wx:if="{{form.stage_type === 'college'}}">
+    <view class="section-title">学校信息</view>
+    <input
+      class="input"
+      placeholder="学校名称"
+      value="{{form.school}}"
+      bindinput="onInput"
+      data-field="school"
+    />
+    <view class="grade-picker">
+      <text class="grade-label">学历层次</text>
+      <picker mode="selector" range="{{schoolLevelOptions}}" bindchange="onSchoolLevelChange">
+        <view class="picker-value">
+          {{form.school_level || '请选择'}}
+          <text class="picker-arrow">›</text>
+        </view>
+      </picker>
+    </view>
+    <input
+      class="input"
+      placeholder="专业"
+      value="{{form.major}}"
+      bindinput="onInput"
+      data-field="major"
+      style="margin-top: 16rpx;"
+    />
+  </view>
+
+  <!-- 职场信息 -->
+  <view class="section" wx:if="{{form.stage_type === 'working'}}">
+    <view class="section-title">工作信息</view>
+    <input
+      class="input"
+      placeholder="公司名称"
+      value="{{form.company}}"
+      bindinput="onInput"
+      data-field="company"
+    />
+    <input
+      class="input"
+      placeholder="职位"
+      value="{{form.position}}"
+      bindinput="onInput"
+      data-field="position"
+      style="margin-top: 16rpx;"
+    />
+    <input
+      class="input"
+      placeholder="行业（选填）"
+      value="{{form.industry}}"
+      bindinput="onInput"
+      data-field="industry"
+      style="margin-top: 16rpx;"
+    />
+  </view>
+
+  <!-- 通用信息 -->
+  <view class="section">
+    <view class="section-title">其他信息（选填）</view>
+    <input
+      class="input"
+      placeholder="所在城市"
+      value="{{form.city}}"
+      bindinput="onInput"
+      data-field="city"
+    />
+  </view>
+
+  <!-- 提交按钮 -->
+  <view class="submit-section">
+    <button class="btn btn-primary btn-block" bindtap="onSubmit" loading="{{submitting}}">
+      创建新阶段
+    </button>
+  </view>
+</view>

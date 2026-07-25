@@ -1,0 +1,110 @@
+<!-- 万宗宝鉴 - 发布咨询需求 -->
+<view class="page">
+
+  <!-- 页面标题 -->
+  <view class="page-header">
+    <text class="page-title">发起咨询需求</text>
+    <text class="page-sub">描述您的志愿/备考需求，找到合适的学长</text>
+  </view>
+
+  <!-- 咨询类型 -->
+  <view class="form-section">
+    <view class="form-label">咨询类型 <text class="required">*</text></view>
+    <view class="type-grid">
+      <view
+        class="type-item {{consultType === item.id ? 'active' : ''}}"
+        wx:for="{{consultTypes}}"
+        wx:key="id"
+        bindtap="onConsultTypeSelect"
+        data-type="{{item.id}}"
+      >
+        <text class="type-icon">{{item.icon}}</text>
+        <text class="type-name">{{item.name}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 目标层次 -->
+  <view class="form-section" wx:if="{{consultType === 'volunteer' || consultType === 'school'}}">
+    <view class="form-label">目标层次</view>
+    <view class="tier-row">
+      <view
+        class="tier-item {{targetTier === item.id ? 'active' : ''}}"
+        wx:for="{{targetTiers}}"
+        wx:key="id"
+        bindtap="onTierSelect"
+        data-tier="{{item.id}}"
+      >
+        {{item.name}}
+      </view>
+    </view>
+  </view>
+
+  <!-- 需求标题 -->
+  <view class="form-section">
+    <view class="form-label">需求标题 <text class="required">*</text></view>
+    <input
+      class="form-input"
+      placeholder="例如：求上岸浙大学长指点志愿填报"
+      value="{{title}}"
+      bindinput="onTitleInput"
+      maxlength="50"
+    />
+  </view>
+
+  <!-- 详细描述 -->
+  <view class="form-section">
+    <view class="form-label">详细描述 <text class="required">*</text></view>
+    <textarea
+      class="form-textarea"
+      placeholder="描述您的具体情况、目标、困惑等，帮助学长更好地了解您的需求..."
+      value="{{description}}"
+      bindinput="onDescInput"
+      maxlength="500"
+    />
+    <view class="char-count">{{description.length}}/500</view>
+  </view>
+
+  <!-- 预算 -->
+  <view class="form-section">
+    <view class="form-label">预算（选填）</view>
+    <view class="budget-row">
+      <text class="budget-prefix">💎</text>
+      <input
+        class="form-input budget-input"
+        type="number"
+        placeholder="请输入预算金额"
+        value="{{budget}}"
+        bindinput="onBudgetInput"
+      />
+      <text class="budget-unit">元</text>
+    </view>
+  </view>
+
+  <!-- 联系方式 -->
+  <view class="form-section">
+    <view class="form-label">联系方式（选填）</view>
+    <input
+      class="form-input"
+      placeholder="微信号/手机号/邮箱"
+      value="{{contact}}"
+      bindinput="onContactInput"
+    />
+  </view>
+
+  <!-- 提交按钮 -->
+  <button
+    class="submit-btn {{submiting ? 'disabled' : ''}}"
+    bindtap="onSubmit"
+    disabled="{{submiting}}"
+  >
+    {{submiting ? '发布中...' : '发布需求'}}
+  </button>
+
+  <!-- 安全提示 -->
+  <view class="safe-tip">
+    <text class="tip-icon">🔒</text>
+    <text class="tip-text">平台会保护您的隐私，联系方式仅用于匹配</text>
+  </view>
+
+</view>

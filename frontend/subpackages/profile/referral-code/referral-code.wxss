@@ -1,0 +1,314 @@
+/* 飞花令牌页面样式 */
+
+.container {
+  min-height: 100vh;
+  background: #f5f5f5;
+  padding: 24rpx;
+}
+
+/* 我的飞花令牌卡片 */
+.my-code-card {
+  background: linear-gradient(135deg, #9b59b6 0%, #8e44ad 100%);
+  border-radius: 24rpx;
+  padding: 40rpx 32rpx;
+  margin-bottom: 24rpx;
+  box-shadow: 0 8rpx 32rpx rgba(155, 89, 182, 0.3);
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 32rpx;
+}
+
+.card-title {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #fff;
+}
+
+.invite-count {
+  font-size: 24rpx;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.code-display {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 16rpx;
+  padding: 24rpx;
+  margin-bottom: 24rpx;
+}
+
+.code-text {
+  font-size: 40rpx;
+  font-weight: bold;
+  color: #fff;
+  letter-spacing: 4rpx;
+  font-family: monospace;
+}
+
+.copy-btn {
+  background: #fff;
+  color: #9b59b6;
+  padding: 12rpx 24rpx;
+  border-radius: 24rpx;
+  font-size: 24rpx;
+  font-weight: bold;
+}
+
+.share-hint {
+  font-size: 24rpx;
+  color: rgba(255, 255, 255, 0.9);
+  text-align: center;
+  margin-bottom: 32rpx;
+  line-height: 1.6;
+}
+
+.share-btn {
+  background: #fff;
+  color: #9b59b6;
+  border-radius: 40rpx;
+  font-size: 28rpx;
+  font-weight: bold;
+  padding: 20rpx;
+  line-height: 1.5;
+}
+
+.btn-active {
+  opacity: 0.8;
+}
+
+/* 邀请统计 */
+.stats-card {
+  display: flex;
+  background: #fff;
+  border-radius: 16rpx;
+  padding: 32rpx;
+  margin-bottom: 24rpx;
+  box-shadow: 0 4rpx 16rpx rgba(0, 0, 0, 0.05);
+}
+
+.stat-item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.stat-value {
+  font-size: 48rpx;
+  font-weight: bold;
+  color: #9b59b6;
+  margin-bottom: 8rpx;
+}
+
+.stat-label {
+  font-size: 24rpx;
+  color: #666;
+}
+
+.stat-divider {
+  width: 1rpx;
+  background: #eee;
+  margin: 0 32rpx;
+}
+
+/* 兑换飞花令牌 */
+.redeem-section {
+  background: #fff;
+  border-radius: 16rpx;
+  padding: 32rpx;
+  margin-bottom: 24rpx;
+  box-shadow: 0 4rpx 16rpx rgba(0, 0, 0, 0.05);
+}
+
+.section-title {
+  font-size: 30rpx;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 24rpx;
+}
+
+.redeem-card {
+  text-align: center;
+}
+
+.redeem-hint {
+  font-size: 26rpx;
+  color: #666;
+  margin-bottom: 24rpx;
+}
+
+.redeem-btn {
+  background: linear-gradient(135deg, #9b59b6 0%, #8e44ad 100%);
+  color: #fff;
+  border-radius: 40rpx;
+  font-size: 28rpx;
+  padding: 20rpx 60rpx;
+  display: inline-block;
+}
+
+.redeemed-card {
+  text-align: center;
+  padding: 24rpx;
+  background: #f5f5f5;
+  border-radius: 16rpx;
+}
+
+.redeemed-text {
+  font-size: 28rpx;
+  color: #27ae60;
+  font-weight: bold;
+  display: block;
+  margin-bottom: 8rpx;
+}
+
+.redeemed-hint {
+  font-size: 24rpx;
+  color: #999;
+}
+
+/* 奖励规则 */
+.rules-section {
+  text-align: center;
+  padding: 24rpx;
+  margin-bottom: 24rpx;
+}
+
+.rules-text {
+  font-size: 26rpx;
+  color: #9b59b6;
+}
+
+/* 信任体系说明 */
+.trust-section {
+  background: #fff;
+  border-radius: 16rpx;
+  padding: 32rpx;
+  box-shadow: 0 4rpx 16rpx rgba(0, 0, 0, 0.05);
+}
+
+.trust-content {
+  font-size: 26rpx;
+  color: #666;
+  line-height: 1.8;
+}
+
+.trust-item {
+  display: flex;
+  align-items: flex-start;
+  margin-top: 16rpx;
+}
+
+.trust-icon {
+  color: #27ae60;
+  margin-right: 12rpx;
+  font-size: 28rpx;
+}
+
+/* 弹窗样式 */
+.modal-mask {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 100;
+}
+
+.redeem-modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 600rpx;
+  background: #fff;
+  border-radius: 24rpx;
+  z-index: 101;
+  overflow: hidden;
+}
+
+.modal-content {
+  padding: 40rpx 32rpx;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 32rpx;
+}
+
+.modal-title {
+  font-size: 34rpx;
+  font-weight: bold;
+  color: #333;
+}
+
+.modal-close {
+  font-size: 40rpx;
+  color: #999;
+  padding: 8rpx;
+}
+
+.modal-body {
+  text-align: center;
+}
+
+.code-input {
+  width: 100%;
+  height: 88rpx;
+  border: 2rpx solid #ddd;
+  border-radius: 16rpx;
+  font-size: 32rpx;
+  text-align: center;
+  letter-spacing: 4rpx;
+  margin-bottom: 32rpx;
+  background: #fafafa;
+}
+
+.code-input:focus {
+  border-color: #9b59b6;
+  background: #fff;
+}
+
+.redeem-result {
+  padding: 32rpx;
+  background: #f9f9f9;
+  border-radius: 16rpx;
+  margin-bottom: 24rpx;
+}
+
+.result-icon {
+  font-size: 64rpx;
+  margin-bottom: 16rpx;
+}
+
+.result-message {
+  font-size: 28rpx;
+  color: #333;
+  display: block;
+}
+
+.submit-btn {
+  background: linear-gradient(135deg, #9b59b6 0%, #8e44ad 100%);
+  color: #fff;
+  border-radius: 40rpx;
+  font-size: 30rpx;
+  padding: 24rpx;
+  width: 100%;
+}
+
+.close-result-btn {
+  background: #9b59b6;
+  color: #fff;
+  border-radius: 40rpx;
+  font-size: 30rpx;
+  padding: 24rpx;
+  width: 100%;
+}

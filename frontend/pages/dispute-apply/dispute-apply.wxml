@@ -1,0 +1,116 @@
+<!-- pages/dispute-apply/dispute-apply.wxml -->
+<view class="page">
+  <!-- 提示信息 -->
+  <view class="notice-card">
+    <text class="notice-icon">ℹ️</text>
+    <view class="notice-text">
+      <text class="notice-title">仲裁说明</text>
+      <text class="notice-desc">平台将根据双方提交的证据进行公正裁决。仲裁结果具有约束力，请如实填写。</text>
+    </view>
+  </view>
+
+  <!-- 问题类型 -->
+  <view class="form-card">
+    <view class="form-title">问题类型 <text class="required">*</text></view>
+    <view class="radio-group">
+      <view
+        wx:for="{{disputeTypes}}"
+        wx:key="id"
+        class="radio-item {{formData.dispute_type === item.id ? 'selected' : ''}}"
+        bindtap="onSelectType"
+        data-type="{{item.id}}"
+      >
+        <view class="radio-circle">
+          <view class="radio-dot" wx:if="{{formData.dispute_type === item.id}}"></view>
+        </view>
+        <text class="radio-label">{{item.label}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 详细描述 -->
+  <view class="form-card">
+    <view class="form-title">详细描述 <text class="required">*</text></view>
+    <textarea
+      class="textarea"
+      placeholder="请详细描述您遇到的问题，包括时间、经过等..."
+      maxlength="500"
+      bindinput="onDescriptionInput"
+      value="{{formData.description}}"
+    ></textarea>
+    <text class="char-count">{{formData.description.length || 0}}/500</text>
+  </view>
+
+  <!-- 上传凭证 -->
+  <view class="form-card">
+    <view class="form-title">上传凭证 <text class="optional">(选填，最多3张)</text></view>
+    <view class="upload-area">
+      <view class="upload-list">
+        <view
+          wx:for="{{formData.evidence_images}}"
+          wx:key="index"
+          class="upload-item"
+        >
+          <image src="{{item}}" mode="aspectFill" class="upload-img"></image>
+          <view class="upload-remove" bindtap="onRemoveImage" data-index="{{index}}">
+            <text>×</text>
+          </view>
+        </view>
+        <view
+          class="upload-btn"
+          bindtap="onChooseImage"
+          wx:if="{{formData.evidence_images.length < 3}}"
+        >
+          <text class="upload-icon">+</text>
+          <text class="upload-text">添加图片</text>
+        </view>
+      </view>
+    </view>
+    <view class="upload-hint">可上传聊天截图、相关凭证等</view>
+  </view>
+
+  <!-- 期望处理 -->
+  <view class="form-card">
+    <view class="form-title">期望处理方式 <text class="required">*</text></view>
+    <view class="radio-group">
+      <view
+        class="radio-item {{formData.expected_action === 'full_refund' ? 'selected' : ''}}"
+        bindtap="onSelectAction"
+        data-action="full_refund"
+      >
+        <view class="radio-circle">
+          <view class="radio-dot" wx:if="{{formData.expected_action === 'full_refund'}}"></view>
+        </view>
+        <text class="radio-label">全额退款</text>
+      </view>
+      <view
+        class="radio-item {{formData.expected_action === 'partial_refund' ? 'selected' : ''}}"
+        bindtap="onSelectAction"
+        data-action="partial_refund"
+      >
+        <view class="radio-circle">
+          <view class="radio-dot" wx:if="{{formData.expected_action === 'partial_refund'}}"></view>
+        </view>
+        <text class="radio-label">部分退款</text>
+      </view>
+      <view
+        class="radio-item {{formData.expected_action === 'other' ? 'selected' : ''}}"
+        bindtap="onSelectAction"
+        data-action="other"
+      >
+        <view class="radio-circle">
+          <view class="radio-dot" wx:if="{{formData.expected_action === 'other'}}"></view>
+        </view>
+        <text class="radio-label">其他要求</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 提交按钮 -->
+  <view class="submit-area safe-area-bottom">
+    <button class="btn btn-primary" bindtap="onSubmit" loading="{{submitting}}">
+      提交仲裁申请
+    </button>
+    <text class="submit-hint">提交后将通知对方，平台将在48小时内处理</text>
+  </view>
+</view>

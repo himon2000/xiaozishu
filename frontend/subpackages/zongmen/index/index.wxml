@@ -1,0 +1,71 @@
+<!-- 万宗宝鉴 - 首页 -->
+<view class="page">
+
+  <!-- 顶部 Banner -->
+  <view class="banner">
+    <view class="banner-title">🏫 万宗宝鉴</view>
+    <view class="banner-sub">院校咨询 · 志愿填报 · 名校攻略</view>
+  </view>
+
+  <!-- 院校层次 -->
+  <view class="section">
+    <view class="section-header">
+      <text class="section-title">选择目标层次</text>
+      <text class="section-more" bindtap="onPublishConsult">发起咨询 ></text>
+    </view>
+    <view class="tier-grid">
+      <view
+        class="tier-card"
+        wx:for="{{schoolTiers}}"
+        wx:key="id"
+        bindtap="onTierTap"
+        data-tier="{{item.id}}"
+      >
+        <view class="tier-icon">{{item.icon}}</view>
+        <view class="tier-name">{{item.name}}</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 热门咨询师 -->
+  <view class="section">
+    <view class="section-header">
+      <text class="section-title">🔥 热门咨询</text>
+      <text class="section-more" bindtap="onViewAll">更多 ></text>
+    </view>
+
+    <view class="service-list">
+      <view
+        class="service-card"
+        wx:for="{{services}}"
+        wx:key="id"
+        bindtap="onServiceTap"
+        data-id="{{item.id}}"
+      >
+        <image class="card-cover" src="{{item.cover_image || '/assets/default-service.png'}}" mode="aspectFill" />
+        <view class="card-body">
+          <view class="service-title">{{item.title}}</view>
+          <view class="service-provider">
+            <image class="provider-avatar" src="{{item.provider.avatar_url}}" mode="aspectFill" />
+            <text class="provider-name">{{item.provider.nickname}}</text>
+          </view>
+          <view class="card-footer">
+            <text class="service-price">💎{{item.price}}</text>
+            <text class="service-rating">⭐ {{item.rating || '暂无'}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <view class="empty-state" wx:if="{{!loading && services.length === 0}}">
+      <text class="empty-title">暂无相关服务</text>
+    </view>
+  </view>
+
+  <!-- 发布悬浮按钮 -->
+  <view class="publish-fab" bindtap="onPublishConsult">
+    <text class="fab-icon">📝</text>
+    <text class="fab-label">发起咨询</text>
+  </view>
+
+</view>

@@ -1,0 +1,131 @@
+<view class="container">
+  <!-- 年份选择器 -->
+  <view class="year-selector">
+    <view class="year-nav" bindtap="onPrevYear">
+      <text class="nav-arrow">◀</text>
+    </view>
+    <view class="year-display">
+      <text class="year-text">{{year}}年</text>
+      <text class="year-sub">宗门宝库公示</text>
+    </view>
+    <view class="year-nav" bindtap="onNextYear">
+      <text class="nav-arrow {{year >= currentYear ? 'disabled' : ''}}">▶</text>
+    </view>
+  </view>
+
+  <block wx:if="{{!loading}}">
+    <!-- 分红池总览 -->
+    <view class="pool-header">
+      <view class="pool-amount">
+        <text class="pool-label">年度分红池总额</text>
+        <text class="pool-value">¥{{poolInfo.pool_total_yuan}}</text>
+      </view>
+      <view class="pool-stats">
+        <view class="stat-item">
+          <text class="stat-value">{{poolInfo.eligible_count}}</text>
+          <text class="stat-label">合格大虾</text>
+        </view>
+        <view class="stat-divider"></view>
+        <view class="stat-item">
+          <text class="stat-value">20%</text>
+          <text class="stat-label">分红比例</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 我的分红信息 -->
+    <view class="my-section">
+      <view class="section-title">我的分红</view>
+      <view class="my-card {{myInfo.eligible ? 'eligible' : 'not-eligible'}}">
+        <view class="my-header">
+          <text class="level-badge {{myInfo.level >= 5 ? 'gold' : ''}}">{{myInfo.level_icon}} {{myInfo.level_name}}</text>
+          <text class="exp-ratio">修为占比 {{myInfo.exp_ratio * 100 || 0}}%</text>
+        </view>
+
+        <view class="my-amount" wx:if="{{myInfo.eligible}}">
+          <text class="amount-label">预估分红</text>
+          <text class="amount-value">¥{{myInfo.estimated_share_yuan || 0}}</text>
+        </view>
+
+        <view class="my-status" wx:if="{{!myInfo.eligible}}">
+          <text class="status-icon">⏳</text>
+          <text class="status-text">
+            {{myInfo.level < 5 ? '需达到化神期(Lv5)方可参与分红' : '需完成至少1个订单'}}
+          </text>
+        </view>
+
+        <button
+          class="claim-btn {{myInfo.eligible && myInfo.estimated_share > 0 ? '' : 'disabled'}}"
+          bindtap="onClaimDividend"
+          disabled="{{!myInfo.eligible || myInfo.estimated_share <= 0 || claiming}}"
+        >
+          {{claiming ? '领取中...' : (myInfo.eligible ? '领取分红' : '暂不可领取')}}
+        </button>
+      </view>
+    </view>
+
+    <!-- 合格大虾列表 -->
+    <view class="eligible-section">
+      <view class="section-title">合格大虾（按修为排序）</view>
+      <view class="eligible-list">
+        <view
+          wx:for="{{eligibleList}}"
+          wx:key="openid"
+          class="eligible-item"
+          bindtap="onEligibleTap"
+          data-openid="{{item.openid}}"
+        >
+          <view class="rank-badge rank-{{index < 3 ? index + 1 : ''}}">
+            {{index < 3 ? '' : index + 1}}
+          </view>
+          <image class="avatar" src="{{item.avatar_url || '/assets/default-avatar.png'}}" mode="aspectFill" />
+          <view class="info">
+            <view class="name-row">
+              <text class="name">{{item.nickname}}</text>
+              <text class="level-tag">{{item.level_icon}} {{item.level_name}}</text>
+            </view>
+            <view class="stats-row">
+              <text class="exp">修为 {{item.exp_points}}</text>
+              <text class="orders">订单 {{item.total_orders_done}}</text>
+            </view>
+          </view>
+          <view class="share">
+            <text class="share-amount">¥{{item.estimated_share / 100}}</text>
+            <text class="share-ratio">{{item.exp_ratio * 100}}%</text>
+          </view>
+        </view>
+
+        <view wx:if="{{eligibleList.length === 0}}" class="empty-eligible">
+          <text>暂无合格达人</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 分红规则说明 -->
+    <view class="rules-section">
+      <view class="section-title">分红规则</view>
+      <view class="rules-card">
+        <view class="rule-item">
+          <text class="rule-icon">1️⃣</text>
+          <text class="rule-text">仅化神期(Lv5)及以上大虾可参与年度分红</text>
+        </view>
+        <view class="rule-item">
+          <text class="rule-icon">2️⃣</text>
+          <text class="rule-text">分红金额按修为点占总合格修为的比例分配</text>
+        </view>
+        <view class="rule-item">
+          <text class="rule-icon">3️⃣</text>
+          <text class="rule-text">年度佣金池的 20% 用于分红发放</text>
+        </view>
+        <view class="rule-item">
+          <text class="rule-icon">4️⃣</text>
+          <text class="rule-text">需完成至少 1 个服务订单方可参与</text>
+        </view>
+      </view>
+    </view>
+  </block>
+
+  <view wx:if="{{loading}}" class="loading-state">
+    <text>加载中...</text>
+  </view>
+</view>

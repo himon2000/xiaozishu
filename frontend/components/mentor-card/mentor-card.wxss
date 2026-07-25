@@ -1,0 +1,48 @@
+/* components/mentor-card/mentor-card.wxss */
+.mentor-card {
+  display: flex;
+  align-items: center;
+  gap: 20rpx;
+  background: #13132e;
+  border: 1rpx solid #1e1e4a;
+  border-radius: 20rpx;
+  padding: 24rpx;
+}
+
+.avatar-wrap { position: relative; flex-shrink: 0; }
+
+.avatar {
+  width: 90rpx;
+  height: 90rpx;
+  border-radius: 50%;
+  background: #2a2a5e;
+}
+
+.level-halo {
+  position: absolute;
+  inset: -6rpx;
+  border-radius: 50%;
+  border: 2rpx solid;
+  opacity: 0.5;
+}
+
+.info { flex: 1; min-width: 0; }
+
+.name-row { display: flex; align-items: center; gap: 10rpx; margin-bottom: 4rpx; }
+
+.name { font-size: 28rpx; color: #e0e0ff; font-weight: 600; }
+
+.level-badge { font-size: 20rpx; padding: 2rpx 10rpx; border: 1rpx solid; border-radius: 16rpx; }
+
+.school { display: block; font-size: 22rpx; color: #6a6a9e; }
+
+.tagline { display: block; font-size: 24rpx; color: #9999cc; margin-top: 4rpx; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+.tags { display: flex; flex-wrap: wrap; gap: 6rpx; margin-top: 8rpx; }
+
+.tag { font-size: 20rpx; padding: 2rpx 10rpx; background: rgba(68,153,255,0.08); color: #4499ff; border-radius: 10rpx; }
+
+.stats { text-align: center; flex-shrink: 0; }
+
+.rating { display: block; font-size: 26rpx; color: #ffd700; font-weight: 700; }
+.disciples { display: block; font-size: 20rpx; color: #5555aa; margin-top: 4rpx; }

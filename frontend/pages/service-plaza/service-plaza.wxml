@@ -1,0 +1,227 @@
+<!-- 万务仙坊 - 服务广场 -->
+<view class="page">
+
+  <!-- 搜索栏 -->
+  <view class="search-bar">
+    <view class="search-input-wrap">
+      <text class="search-icon">🔍</text>
+      <input
+        class="search-input"
+        placeholder="搜索服务..."
+        value="{{search}}"
+        bindconfirm="onSearch"
+        bindinput="onSearchInput"
+        confirm-type="search"
+      />
+      <text class="clear-btn" wx:if="{{search}}" bindtap="onClearSearch">✕</text>
+    </view>
+    <view class="filter-btn {{showFilter ? 'filter-btn-active' : ''}}" bindtap="onToggleFilter">
+      <text>⚙️ 筛选</text>
+    </view>
+  </view>
+
+  <!-- 道法分类标签 -->
+  <scroll-view scroll-x class="category-scroll" wx:if="{{!showFilter}}">
+    <view class="category-list">
+      <view
+        class="category-tag {{daoFaType === '' ? 'active' : ''}}"
+        bindtap="onResetFilter"
+      >全部</view>
+      <view
+        wx:for="{{daoFaList}}"
+        wx:key="id"
+        class="category-tag {{daoFaType === item.id ? 'active' : ''}}"
+        bindtap="onDaoFaFilter"
+        data-type="{{item.id}}"
+      >{{item.icon}} {{item.name}}</view>
+    </view>
+  </scroll-view>
+
+  <!-- 传功授法 - 服务类型筛选 -->
+  <view class="subject-filter-bar" wx:if="{{daoFaType === 'chuan_gong' && !showFilter}}">
+    <view class="filter-row">
+      <text class="filter-label">类型：</text>
+      <scroll-view scroll-x class="filter-scroll">
+        <view class="filter-tags">
+          <view
+            wx:for="{{serviceTypes}}"
+            wx:key="id"
+            class="filter-tag {{serviceType === item.id ? 'active' : ''}}"
+            bindtap="onServiceTypeChange"
+            data-type="{{item.id}}"
+          >{{item.icon}} {{item.name}}</view>
+        </view>
+      </scroll-view>
+    </view>
+    <view class="filter-row" wx:if="{{serviceType === 'tutoring' || serviceType === ''}}">
+      <text class="filter-label">科目：</text>
+      <scroll-view scroll-x class="filter-scroll">
+        <view class="filter-tags">
+          <view
+            wx:for="{{chuanGongSubjects}}"
+            wx:key="id"
+            class="filter-tag {{selectedSubject === item.id ? 'active' : ''}}"
+            bindtap="onSubjectChange"
+            data-subject="{{item.id}}"
+          >{{item.icon}} {{item.name}}</view>
+        </view>
+      </scroll-view>
+    </view>
+  </view>
+
+  <!-- 排序和筛选面板 -->
+  <view class="filter-panel" wx:if="{{showFilter}}">
+    <view class="filter-section">
+      <view class="filter-title">排序方式</view>
+      <view class="filter-chips">
+        <view
+          wx:for="{{sortOptions}}"
+          wx:key="value"
+          class="filter-chip {{sort === item.value ? 'active' : ''}}"
+          bindtap="onSortChange"
+          data-value="{{item.value}}"
+        >{{item.label}}</view>
+      </view>
+    </view>
+    <view class="filter-section">
+      <view class="filter-title">价格区间</view>
+      <view class="filter-chips">
+        <view
+          wx:for="{{priceOptions}}"
+          wx:key="value"
+          class="filter-chip {{priceRange === item.value ? 'active' : ''}}"
+          bindtap="onPriceChange"
+          data-value="{{item.value}}"
+        >{{item.label}}</view>
+      </view>
+    </view>
+    <view class="filter-actions">
+      <view class="reset-btn" bindtap="onResetFilter">重置</view>
+      <view class="confirm-btn" bindtap="onToggleFilter">完成</view>
+    </view>
+  </view>
+
+  <!-- 结果统计条 -->
+  <view class="stats-bar" wx:if="{{!loading || services.length > 0}}">
+    <view class="active-filters">
+      <text wx:if="{{daoFaType}}" class="active-tag">
+        {{daoFaNameMap[daoFaType]}} <text bindtap="onResetFilter" class="tag-close">×</text>
+      </text>
+      <text wx:if="{{serviceType}}" class="active-tag">
+        {{serviceTypes[serviceType] || serviceType}} <text bindtap="onServiceTypeChange" data-type="">×</text>
+      </text>
+      <text wx:if="{{selectedSubject}}" class="active-tag">
+        {{selectedSubject}} <text bindtap="onSubjectChange" data-subject="">×</text>
+      </text>
+      <text wx:if="{{priceRange !== 'all'}}" class="active-tag">
+        {{priceRange === '0-50' ? '50灵石以下' : priceRange === '500+' ? '500灵石以上' : priceRange + '灵石'}}
+        <text bindtap="onResetFilter" class="tag-close">×</text>
+      </text>
+    </view>
+    <text class="stats-text">共 {{total}} 个服务</text>
+  </view>
+
+  <!-- 服务列表 - 单列横向布局 -->
+  <view class="service-list">
+    <view
+      wx:for="{{services}}"
+      wx:key="id"
+      class="service-card"
+      bindtap="onServiceTap"
+      data-id="{{item.id}}"
+    >
+      <!-- 左侧色条（道法分类标识） -->
+      <view class="card-color-bar bar-{{item.dao_fa_type || 'default'}}"></view>
+
+      <!-- 左侧缩略图 -->
+      <view class="card-thumb">
+        <image
+          src="{{item.cover_image || '/assets/default-service.png'}}"
+          mode="aspectFill"
+          class="thumb-img"
+          lazy-load
+        />
+      </view>
+
+      <!-- 右侧信息区 -->
+      <view class="card-body">
+        <view class="service-title">{{item.title}}</view>
+
+        <!-- 标签（最多2个） -->
+        <view class="tag-row" wx:if="{{item.tags && item.tags.length > 0}}">
+          <text
+            wx:for="{{item.tags}}"
+            wx:for-item="tag"
+            wx:key="tag"
+            wx:if="{{index < 2}}"
+            class="mini-tag"
+          >{{tag}}</text>
+        </view>
+
+        <!-- 服务者信息 -->
+        <view class="provider-row">
+          <image
+            class="provider-avatar"
+            src="{{item.provider && item.provider.avatar_url ? item.provider.avatar_url : '/assets/default-avatar.png'}}"
+            mode="aspectFill"
+          />
+          <text class="provider-name">
+            {{item.provider && item.provider.nickname ? item.provider.nickname : '匿名修士'}}
+          </text>
+          <text class="provider-badge" wx:if="{{item.provider && item.provider.level_name}}">
+            {{item.provider.level_icon}} {{item.provider.level_name}}
+          </text>
+        </view>
+
+        <!-- 底部：价格 + 评分 -->
+        <view class="card-footer">
+          <view class="price-group">
+            <text class="service-price">💎{{item.price}}</text>
+            <text class="price-yuan">（¥{{item._yuanPrice || '0.00'}}）</text>
+            <text class="price-unit">/{{item.pricing && item.pricing.unit ? item.pricing.unit : '次'}}</text>
+          </view>
+          <view class="rating-row">
+            <text class="rating-star">⭐</text>
+            <text class="rating-score">{{item.rating || '暂无'}}</text>
+            <text class="rating-count" wx:if="{{item.review_count > 0}}">({{item.review_count}})</text>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 加载中骨架 -->
+    <view wx:if="{{loading}}" class="loading-row">
+      <view class="skeleton-card" wx:for="{{[1,2,3]}}" wx:key="*this">
+        <view class="skeleton-thumb skeleton-pulse"></view>
+        <view class="skeleton-body">
+          <view class="skeleton-line skeleton-pulse" style="width:80%"></view>
+          <view class="skeleton-line skeleton-pulse" style="width:50%;margin-top:14rpx"></view>
+          <view class="skeleton-line skeleton-pulse" style="width:30%;margin-top:14rpx"></view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 空状态 -->
+    <view class="empty-state" wx:if="{{!loading && services.length === 0}}">
+      <image src="/assets/empty.png" class="empty-img" mode="aspectFit" />
+      <text class="empty-title">暂无相关服务</text>
+      <text class="empty-sub">{{daoFaType ? '试试其他分类，或清除筛选' : '成为第一个发布者吧！'}}</text>
+      <view class="empty-btn" bindtap="onResetFilter" wx:if="{{daoFaType || priceRange !== 'all'}}">清除筛选</view>
+    </view>
+
+    <!-- 加载更多 / 全部加载完 -->
+    <view class="bottom-tip" wx:if="{{noMore && services.length > 0}}">
+      <text>— 没有更多了 —</text>
+    </view>
+  </view>
+
+  <!-- 发布悬浮按钮（纯色，无渐变） -->
+  <view class="publish-fab {{canPublish ? 'fab-show' : ''}}" bindtap="onPublishTap">
+    <text class="fab-icon">＋</text>
+    <text class="fab-label">发布</text>
+  </view>
+
+  <!-- 自定义TabBar -->
+  <custom-tab-bar />
+
+</view>

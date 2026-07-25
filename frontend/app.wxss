@@ -1,0 +1,241 @@
+/**
+ * 《小紫薯》全局样式
+ * 主题：清新可爱紫色系 + 校园青春风格
+ * 采用浅色背景 + 紫色渐变 + 柔和光效
+ */
+
+/* ── CSS 变量 ─────────────────────────────────────────── */
+page {
+  --primary: #9b59b6;
+  --primary-light: #bb8fce;
+  --primary-dark: #7d3c98;
+  --secondary: #e8a0bf;
+  --bg: #faf7ff;
+  --surface: #ffffff;
+  --surface-2: #f8f4fb;
+  --surface-3: #f3e5f5;
+  --accent: #f39c12;
+  --text: #2c2c2c;
+  --text-secondary: #7f7f7f;
+  --border: #e8dfe8;
+  --danger: #e74c3c;
+  --success: #27ae60;
+  --warning: #f39c12;
+
+  /* 境界色 */
+  --level-1: #999999;
+  --level-2: #27ae60;
+  --level-3: #3498db;
+  --level-4: #9b59b6;
+  --level-5: #f39c12;
+
+  background-color: var(--bg);
+  color: var(--text);
+  font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  font-size: 28rpx;
+  line-height: 1.6;
+}
+
+/* ── 通用布局 ─────────────────────────────────────────── */
+.container {
+  min-height: 100vh;
+  background: var(--bg);
+  padding: 24rpx;
+}
+
+.flex { display: flex; }
+.flex-col { display: flex; flex-direction: column; }
+.flex-center { display: flex; align-items: center; justify-content: center; }
+.flex-between { display: flex; align-items: center; justify-content: space-between; }
+.flex-wrap { flex-wrap: wrap; }
+.flex-1 { flex: 1; }
+.gap-sm { gap: 16rpx; }
+.gap-md { gap: 24rpx; }
+.gap-lg { gap: 32rpx; }
+
+/* ── 卡片 ─────────────────────────────────────────────── */
+.card {
+  background: var(--surface);
+  border-radius: 24rpx;
+  padding: 28rpx;
+  margin-bottom: 24rpx;
+  border: 1rpx solid var(--border);
+  box-shadow: 0 4rpx 20rpx rgba(155, 89, 182, 0.08);
+}
+
+.card-glow {
+  box-shadow: 0 4rpx 24rpx rgba(155, 89, 182, 0.15);
+}
+
+/* ── 按钮 ─────────────────────────────────────────────── */
+.btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 88rpx;
+  border-radius: 44rpx;
+  font-size: 30rpx;
+  font-weight: 600;
+  transition: all 0.2s;
+  border: none;
+  outline: none;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+  color: #fff;
+  box-shadow: 0 6rpx 24rpx rgba(155, 89, 182, 0.35);
+}
+
+.btn-primary:active {
+  transform: scale(0.97);
+  box-shadow: 0 3rpx 12rpx rgba(155, 89, 182, 0.25);
+}
+
+.btn-secondary {
+  background: linear-gradient(135deg, var(--primary-light) 0%, var(--primary) 100%);
+  color: #fff;
+  box-shadow: 0 4rpx 16rpx rgba(155, 89, 182, 0.25);
+}
+
+.btn-ghost {
+  background: transparent;
+  color: var(--text-secondary);
+}
+
+.btn-danger {
+  background: var(--danger);
+  color: #fff;
+}
+
+.btn-block {
+  width: 100%;
+  display: block;
+}
+
+/* ── 文字 ─────────────────────────────────────────────── */
+.title-lg { font-size: 40rpx; font-weight: 700; color: var(--text); }
+.title-md { font-size: 34rpx; font-weight: 600; color: var(--text); }
+.title-sm { font-size: 28rpx; font-weight: 600; color: var(--text); }
+.text-secondary { color: var(--text-secondary); }
+.text-primary { color: var(--primary); }
+.text-accent { color: var(--accent); }
+.text-center { text-align: center; }
+
+/* ── 标签 ─────────────────────────────────────────────── */
+.tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 4rpx 16rpx;
+  border-radius: 20rpx;
+  font-size: 22rpx;
+  background: var(--surface-2);
+  color: var(--primary);
+  border: 1rpx solid var(--border);
+}
+
+.tag-level-1 { color: var(--level-1); border-color: var(--level-1); background: rgba(153,153,153,0.1); }
+.tag-level-2 { color: var(--level-2); border-color: var(--level-2); background: rgba(0,204,68,0.1); }
+.tag-level-3 { color: var(--level-3); border-color: var(--level-3); background: rgba(68,153,255,0.1); }
+.tag-level-4 { color: var(--level-4); border-color: var(--level-4); background: rgba(204,68,255,0.1); }
+.tag-level-5 { color: var(--level-5); border-color: var(--level-5); background: rgba(255,215,0,0.1); }
+
+.tag-dao-chuan_gong { background: rgba(0,212,255,0.1); color: var(--primary); }
+.tag-dao-mi_jing { background: rgba(138,43,226,0.1); color: #8a2be2; }
+.tag-dao-zong_men { background: rgba(255,165,0,0.1); color: #ffa500; }
+.tag-dao-xia_shan { background: rgba(46,213,115,0.1); color: var(--success); }
+.tag-dao-zhi_fa { background: rgba(255,71,87,0.1); color: var(--danger); }
+.tag-dao-cang_jing { background: rgba(255,215,0,0.1); color: var(--accent); }
+
+/* ── 分割线 ───────────────────────────────────────────── */
+.divider {
+  height: 1rpx;
+  background: var(--border);
+  margin: 24rpx 0;
+}
+
+/* ── 空状态 ────────────────────────────────────────────── */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 80rpx 40rpx;
+  color: var(--text-secondary);
+}
+
+.empty-state .icon {
+  font-size: 120rpx;
+  margin-bottom: 24rpx;
+  opacity: 0.5;
+}
+
+/* ── 柔和光效 ─────────────────────────────────────────── */
+.soft-glow {
+  box-shadow: 0 4rpx 20rpx rgba(155, 89, 182, 0.2);
+}
+
+.glow-border {
+  border: 2rpx solid var(--primary-light);
+  box-shadow: 0 0 20rpx rgba(155, 89, 182, 0.15);
+}
+
+/* ── 加载动画 ─────────────────────────────────────────── */
+.loading-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 200rpx;
+  color: var(--text-secondary);
+}
+
+/* ── 修为进度条 ─────────────────────────────────────────── */
+.exp-bar {
+  height: 8rpx;
+  background: var(--surface-2);
+  border-radius: 4rpx;
+  overflow: hidden;
+}
+
+.exp-bar-fill {
+  height: 100%;
+  border-radius: 4rpx;
+  background: linear-gradient(90deg, var(--primary-light), var(--primary));
+  transition: width 0.5s ease;
+}
+
+/* ── 头像 ─────────────────────────────────────────────── */
+.avatar {
+  border-radius: 50%;
+  overflow: hidden;
+  background: var(--surface-2);
+}
+
+.avatar-sm { width: 64rpx; height: 64rpx; }
+.avatar-md { width: 96rpx; height: 96rpx; }
+.avatar-lg { width: 140rpx; height: 140rpx; }
+
+/* ── 输入框 ─────────────────────────────────────────────── */
+.input {
+  background: var(--surface);
+  border: 1rpx solid var(--border);
+  border-radius: 16rpx;
+  padding: 0 24rpx;
+  color: var(--text);
+  font-size: 28rpx;
+  width: 100%;
+  height: 88rpx;
+  line-height: 88rpx;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.input:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 12rpx rgba(155, 89, 182, 0.2);
+}
+
+.input::placeholder { color: var(--text-secondary); }
+
+/* ── 安全区适配 ────────────────────────────────────────── */
+.safe-area-bottom { padding-bottom: env(safe-area-inset-bottom); }
+.safe-area-top { padding-top: env(safe-area-inset-top); }

@@ -1,0 +1,238 @@
+<!-- pages/home/home.wxml - 小红书风格首页 -->
+<scroll-view scroll-y class="page" bindscrolltolower="onReachBottom">
+
+  <!-- 自定义导航 -->
+  <view class="nav-bar safe-area-top">
+    <view class="nav-inner">
+      <text class="nav-title">🍠 小紫薯</text>
+    </view>
+  </view>
+
+  <!-- 全局搜索栏 -->
+  <view class="search-section">
+    <view class="search-bar" bindtap="onGlobalSearch">
+      <text class="search-icon">🔍</text>
+      <text class="search-hint">搜索服务、用户、需求...</text>
+    </view>
+  </view>
+
+  <!-- Banner区 -->
+  <view class="hero-banner">
+    <view class="banner-content">
+      <view class="banner-main">明明相代，代代相传</view>
+      <view class="banner-sub">学长学姐带你飞升 🎓</view>
+    </view>
+    <view class="banner-badge">🍠 校园互助</view>
+  </view>
+
+  <!-- 6大功能模块（3行2列） -->
+  <view class="module-grid">
+    <!-- 第1行 -->
+    <view class="module-card" bindtap="onChuanGongTap">
+      <view class="module-icon">📚</view>
+      <view class="module-name">传功授法</view>
+      <view class="module-desc">学科辅导/竞赛陪练</view>
+    </view>
+    <view class="module-card" bindtap="onLianMeiTap">
+      <view class="module-icon">🔬</view>
+      <view class="module-name">联袂问道</view>
+      <view class="module-desc">课题带教/科研合作</view>
+    </view>
+
+    <!-- 第2行 -->
+    <view class="module-card" bindtap="onZongMenTap">
+      <view class="module-icon">🏫</view>
+      <view class="module-name">宗门指引</view>
+      <view class="module-desc">志愿咨询/名校攻略</view>
+    </view>
+    <view class="module-card" bindtap="onCangJingTap">
+      <view class="module-icon">📖</view>
+      <view class="module-name">道藏天阁</view>
+      <view class="module-desc">题库/经验/攻略</view>
+    </view>
+
+    <!-- 第3行 -->
+    <view class="module-card" bindtap="onXiaShanTap">
+      <view class="module-icon">💼</view>
+      <view class="module-name">下山历练</view>
+      <view class="module-desc">实习内推/名企兼职</view>
+    </view>
+    <view class="module-card" bindtap="onZhiFaTap">
+      <view class="module-icon">⚖️</view>
+      <view class="module-name">天衡裁决</view>
+      <view class="module-desc">纠纷仲裁/客服支持</view>
+    </view>
+  </view>
+
+  <!-- 信息流内容（小红书风格） -->
+  <view class="feed-section">
+    <view class="feed-header">
+      <text class="feed-title">📖 发现精彩</text>
+    </view>
+
+    <!-- 双列瀑布流 -->
+    <view class="feed-grid">
+      <!-- 左列 -->
+      <view class="feed-column">
+        <view
+          class="feed-card {{index >= feedData.length ? 'hidden' : ''}}"
+          wx:for="{{leftColumn}}"
+          wx:key="id"
+          bindtap="onFeedTap"
+          data-id="{{item.id}}"
+          data-type="{{item.type}}"
+        >
+          <image
+            class="card-image"
+            src="{{item.cover || '/assets/default-note.png'}}"
+            mode="aspectFill"
+            lazy-load
+          />
+          <view class="card-content">
+            <view class="card-title">{{item.title}}</view>
+            <view class="card-tags" wx:if="{{item.tags.length > 0}}">
+              <text class="tag" wx:for="{{item.tags}}" wx:for-item="tag" wx:if="{{index < 2}}">#{{tag}}</text>
+            </view>
+            <view class="card-footer">
+              <view class="author-info">
+                <image class="author-avatar" src="{{item.author_avatar || '/assets/default-avatar.png'}}" mode="aspectFill" />
+                <text class="author-name">{{item.author_name}}</text>
+              </view>
+              <view class="card-stats">
+                <text class="stat-item">❤️ {{item.likes || 0}}</text>
+                <text class="stat-item">💬 {{item.comments || 0}}</text>
+              </view>
+            </view>
+          </view>
+        </view>
+      </view>
+
+      <!-- 右列 -->
+      <view class="feed-column">
+        <view
+          class="feed-card {{index >= feedData.length ? 'hidden' : ''}}"
+          wx:for="{{rightColumn}}"
+          wx:key="id"
+          bindtap="onFeedTap"
+          data-id="{{item.id}}"
+          data-type="{{item.type}}"
+        >
+          <image
+            class="card-image"
+            src="{{item.cover || '/assets/default-note.png'}}"
+            mode="aspectFill"
+            lazy-load
+          />
+          <view class="card-content">
+            <view class="card-title">{{item.title}}</view>
+            <view class="card-tags" wx:if="{{item.tags.length > 0}}">
+              <text class="tag" wx:for="{{item.tags}}" wx:for-item="tag" wx:if="{{index < 2}}">#{{tag}}</text>
+            </view>
+            <view class="card-footer">
+              <view class="author-info">
+                <image class="author-avatar" src="{{item.author_avatar || '/assets/default-avatar.png'}}" mode="aspectFill" />
+                <text class="author-name">{{item.author_name}}</text>
+              </view>
+              <view class="card-stats">
+                <text class="stat-item">❤️ {{item.likes || 0}}</text>
+                <text class="stat-item">💬 {{item.comments || 0}}</text>
+              </view>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 加载更多 -->
+    <view class="loading-more" wx:if="{{loading}}">
+      <text>加载中...</text>
+    </view>
+
+    <!-- 无更多数据 -->
+    <view class="no-more" wx:if="{{!hasMore && feedData.length > 0}}">
+      <text>— 没有更多了 —</text>
+    </view>
+  </view>
+
+  <!-- 热门服务横向滑动 -->
+  <view class="hot-services-section">
+    <view class="section-header">
+      <text class="section-title">🔥 热门服务</text>
+      <text class="section-more" bindtap="onGoToServicePlaza">更多 ></text>
+    </view>
+    <scroll-view class="horizontal-scroll" scroll-x enable-flex>
+      <view
+        class="service-card"
+        wx:for="{{hotServices}}"
+        wx:key="id"
+        bindtap="onServiceTap"
+        data-id="{{item.id}}"
+      >
+        <image class="service-cover" src="{{item.cover || '/assets/default-service.png'}}" mode="aspectFill" />
+        <view class="service-info">
+          <view class="service-title">{{item.title}}</view>
+          <view class="service-meta">
+            <text class="service-price">💎{{item.price}}</text>
+            <text class="service-rating">⭐ {{item.rating || '5.0'}}</text>
+          </view>
+        </view>
+      </view>
+    </scroll-view>
+  </view>
+
+  <!-- 优秀大虾推荐 -->
+  <view class="section" wx:if="{{topProviders.length > 0}}">
+    <view class="section-header">
+      <text class="section-title">🏆 优秀大虾</text>
+      <text class="section-more" bindtap="onGoToFindMentor">更多 ></text>
+    </view>
+    <scroll-view class="horizontal-scroll" scroll-x enable-flex>
+      <view
+        class="provider-card"
+        wx:for="{{topProviders}}"
+        wx:key="openid"
+        bindtap="onProviderTap"
+        data-openid="{{item.openid}}"
+      >
+        <image class="provider-avatar" src="{{item.avatar || '/assets/default-avatar.png'}}" mode="aspectFill" />
+        <view class="provider-info">
+          <view class="provider-name">{{item.nickname}}</view>
+          <view class="provider-level">Lv.{{item.level}}</view>
+          <view class="provider-rating">⭐ {{item.rating || '5.0'}} · {{item.totalOrders || 0}}单</view>
+        </view>
+      </view>
+    </scroll-view>
+  </view>
+
+  <!-- 最新需求 -->
+  <view class="section" wx:if="{{latestDemands.length > 0}}">
+    <view class="section-header">
+      <text class="section-title">📝 热门需求</text>
+      <text class="section-more" bindtap="onGoToDemandList">更多 ></text>
+    </view>
+    <view class="demand-list">
+      <view
+        class="demand-item"
+        wx:for="{{latestDemands}}"
+        wx:key="id"
+        bindtap="onDemandTap"
+        data-id="{{item.id}}"
+      >
+        <view class="demand-header">
+          <view class="demand-type {{item.type}}">{{item.type_name}}</view>
+          <view class="demand-budget">{{item.budget ? '💎'+item.budget : '面议'}}</view>
+        </view>
+        <view class="demand-title">{{item.title}}</view>
+        <view class="demand-footer">
+          <text class="demand-time">{{item.created_at}}</text>
+          <text class="demand-responses">{{item.response_count || 0}} 人响应</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view class="safe-area-bottom"></view>
+</scroll-view>
+
+<!-- 自定义TabBar -->
+<custom-tab-bar />

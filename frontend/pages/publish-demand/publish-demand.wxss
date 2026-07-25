@@ -1,0 +1,181 @@
+/* 发布需求页面样式 */
+
+.page {
+  min-height: 100vh;
+  background: var(--bg);
+  padding: 24rpx 32rpx 140rpx;
+}
+
+.page-header {
+  margin-bottom: 32rpx;
+}
+
+.page-title {
+  display: block;
+  font-size: 40rpx;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 8rpx;
+}
+
+.page-sub {
+  font-size: 26rpx;
+  color: var(--text-secondary);
+}
+
+/* 表单区块 */
+.form-section {
+  background: var(--surface);
+  border-radius: 20rpx;
+  padding: 28rpx;
+  margin-bottom: 24rpx;
+}
+
+.form-label {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 20rpx;
+}
+
+.required {
+  color: #e74c3c;
+}
+
+/* 需求类型 */
+.type-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16rpx;
+}
+
+.type-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 24rpx 16rpx;
+  background: var(--bg);
+  border-radius: 16rpx;
+  border: 2rpx solid transparent;
+}
+
+.type-item.active {
+  background: rgba(155, 89, 182, 0.1);
+  border-color: #9b59b6;
+}
+
+.type-icon {
+  font-size: 40rpx;
+  margin-bottom: 8rpx;
+}
+
+.type-name {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 4rpx;
+}
+
+.type-desc {
+  font-size: 20rpx;
+  color: var(--text-secondary);
+}
+
+/* 输入框 */
+.form-input {
+  width: 100%;
+  height: 88rpx;
+  background: var(--bg);
+  border-radius: 16rpx;
+  padding: 0 24rpx;
+  font-size: 28rpx;
+  color: var(--text);
+  box-sizing: border-box;
+}
+
+/* 文本域 */
+.form-textarea {
+  width: 100%;
+  height: 200rpx;
+  background: var(--bg);
+  border-radius: 16rpx;
+  padding: 24rpx;
+  font-size: 28rpx;
+  color: var(--text);
+  box-sizing: border-box;
+}
+
+.char-count {
+  text-align: right;
+  font-size: 22rpx;
+  color: var(--text-secondary);
+  margin-top: 8rpx;
+}
+
+/* 预算输入 */
+.budget-row {
+  display: flex;
+  align-items: center;
+  background: var(--bg);
+  border-radius: 16rpx;
+  padding: 0 24rpx;
+  height: 88rpx;
+}
+
+.budget-prefix {
+  font-size: 32rpx;
+  margin-right: 8rpx;
+}
+
+.budget-input {
+  flex: 1;
+  height: 88rpx;
+  background: transparent;
+  padding: 0;
+}
+
+.budget-unit {
+  font-size: 26rpx;
+  color: var(--text-secondary);
+}
+
+/* 提交按钮 */
+.submit-btn {
+  position: fixed;
+  bottom: 120rpx;
+  left: 32rpx;
+  right: 32rpx;
+  height: 96rpx;
+  background: linear-gradient(135deg, #9b59b6, #8e44ad);
+  border-radius: 48rpx;
+  color: #fff;
+  font-size: 32rpx;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+}
+
+.submit-btn.disabled {
+  opacity: 0.6;
+}
+
+/* 安全提示 */
+.safe-tip {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8rpx;
+  margin-top: 24rpx;
+  padding-top: 24rpx;
+}
+
+.tip-icon {
+  font-size: 24rpx;
+}
+
+.tip-text {
+  font-size: 24rpx;
+  color: var(--text-secondary);
+}

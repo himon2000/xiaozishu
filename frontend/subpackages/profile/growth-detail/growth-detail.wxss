@@ -1,0 +1,287 @@
+/* subpackages/profile/growth-detail/growth-detail.wxss - 我的角色 & 我的修为 */
+
+.page {
+  min-height: 100vh;
+  background: #f5f5f5;
+}
+
+/* ========== 标签栏 ========== */
+.tab-bar {
+  display: flex;
+  background: #fff;
+  padding: 0 30rpx;
+  border-bottom: 1rpx solid #f0f0f0;
+}
+
+.tab-item {
+  flex: 1;
+  text-align: center;
+  padding: 28rpx 0;
+  font-size: 30rpx;
+  color: #666;
+  position: relative;
+}
+
+.tab-item.active {
+  color: #9b59b6;
+  font-weight: 600;
+}
+
+.tab-item.active::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 48rpx;
+  height: 4rpx;
+  background: #9b59b6;
+  border-radius: 2rpx;
+}
+
+/* ========== 内容区域 ========== */
+.content {
+  padding: 30rpx;
+}
+
+.section {
+  margin-bottom: 36rpx;
+}
+
+.section-title {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 20rpx;
+}
+
+/* ========== 角色管理 ========== */
+.role-list {
+  background: #fff;
+  border-radius: 16rpx;
+  overflow: hidden;
+}
+
+.role-item {
+  display: flex;
+  align-items: center;
+  padding: 24rpx;
+  border-bottom: 1rpx solid #f0f0f0;
+}
+
+.role-item:last-child {
+  border-bottom: none;
+}
+
+.role-item.active {
+  background: rgba(155, 89, 182, 0.05);
+}
+
+.role-item.locked {
+  opacity: 0.6;
+}
+
+.role-icon {
+  font-size: 48rpx;
+  width: 70rpx;
+}
+
+.role-info {
+  flex: 1;
+  margin-left: 16rpx;
+}
+
+.role-name {
+  font-size: 30rpx;
+  font-weight: 600;
+  color: #333;
+  display: block;
+}
+
+.role-desc {
+  font-size: 24rpx;
+  color: #999;
+  margin-top: 4rpx;
+  display: block;
+}
+
+.role-status {
+  margin-left: 16rpx;
+}
+
+.current-tag {
+  background: #9b59b6;
+  color: #fff;
+  padding: 8rpx 16rpx;
+  border-radius: 16rpx;
+  font-size: 22rpx;
+}
+
+.enabled-tag {
+  background: #e8f5e9;
+  color: #2ed573;
+  padding: 8rpx 16rpx;
+  border-radius: 16rpx;
+  font-size: 22rpx;
+}
+
+.locked-tag {
+  font-size: 32rpx;
+}
+
+/* 添加人生阶段 */
+.add-stage-btn {
+  margin-top: 20rpx;
+  text-align: center;
+  padding: 24rpx;
+  background: #faf7ff;
+  border-radius: 12rpx;
+  color: #9b59b6;
+  font-size: 28rpx;
+  font-weight: 500;
+}
+
+/* ========== 修仙等级 ========== */
+.level-card {
+  background: #fff;
+  border-radius: 16rpx;
+  padding: 30rpx;
+}
+
+.level-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 24rpx;
+}
+
+.level-current-icon {
+  font-size: 64rpx;
+  margin-right: 20rpx;
+}
+
+.level-current-info {
+  flex: 1;
+}
+
+.level-current-name {
+  font-size: 36rpx;
+  font-weight: 700;
+  color: #9b59b6;
+  display: block;
+}
+
+.level-current-desc {
+  font-size: 24rpx;
+  color: #999;
+  margin-top: 4rpx;
+  display: block;
+}
+
+.level-progress {
+  margin-bottom: 24rpx;
+}
+
+.progress-track {
+  height: 12rpx;
+  background: #f0ebf7;
+  border-radius: 6rpx;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: #9b59b6;
+  border-radius: 6rpx;
+  transition: width 0.3s;
+}
+
+.progress-label {
+  font-size: 22rpx;
+  color: #999;
+  margin-top: 8rpx;
+  display: block;
+  text-align: right;
+}
+
+.level-list {
+  border-top: 1rpx solid #f5f0fa;
+  padding-top: 16rpx;
+}
+
+.level-item {
+  display: flex;
+  align-items: center;
+  padding: 14rpx 0;
+}
+
+.level-item.passed {
+  opacity: 0.6;
+}
+
+.level-item.current .level-item-name {
+  color: #9b59b6;
+  font-weight: 700;
+}
+
+.level-item-icon {
+  font-size: 36rpx;
+  width: 60rpx;
+}
+
+.level-item-name {
+  flex: 1;
+  font-size: 28rpx;
+  color: #333;
+}
+
+.level-item-status {
+  font-size: 22rpx;
+  color: #999;
+}
+
+/* ========== 成就/勋章网格 ========== */
+.grid-list {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16rpx;
+}
+
+.grid-item {
+  background: #fff;
+  border-radius: 16rpx;
+  padding: 24rpx 12rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.grid-item.locked {
+  opacity: 0.4;
+  filter: grayscale(1);
+}
+
+.grid-icon {
+  font-size: 52rpx;
+}
+
+.grid-name {
+  font-size: 24rpx;
+  font-weight: 600;
+  color: #333;
+  margin-top: 10rpx;
+  display: block;
+}
+
+.grid-desc {
+  font-size: 20rpx;
+  color: #999;
+  margin-top: 4rpx;
+  display: block;
+}
+
+/* ========== 安全区 ========== */
+.safe-area-bottom {
+  height: constant(safe-area-inset-bottom);
+  height: env(safe-area-inset-bottom);
+}

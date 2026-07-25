@@ -1,0 +1,134 @@
+/* pages/order-confirm/order-confirm.wxss */
+.container {
+  padding: 20rpx;
+  background: #faf7ff;
+  min-height: 100vh;
+}
+
+.service-card {
+  background: #fff;
+  border-radius: 16rpx;
+  padding: 30rpx;
+  margin-bottom: 20rpx;
+  box-shadow: 0 2rpx 8rpx rgba(155, 89, 182, 0.1);
+}
+
+.service-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20rpx;
+}
+
+.service-avatar {
+  width: 80rpx;
+  height: 80rpx;
+  border-radius: 50%;
+  margin-right: 20rpx;
+}
+
+.service-info {
+  flex: 1;
+}
+
+.service-title {
+  display: block;
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 8rpx;
+}
+
+.service-provider {
+  font-size: 26rpx;
+  color: #888;
+}
+
+.service-price {
+  font-size: 40rpx;
+  color: #9b59b6;
+  font-weight: bold;
+  text-align: right;
+}
+
+.order-form {
+  background: #fff;
+  border-radius: 16rpx;
+  padding: 30rpx;
+  margin-bottom: 20rpx;
+}
+
+.form-item {
+  margin-bottom: 30rpx;
+}
+
+.form-item:last-child {
+  margin-bottom: 0;
+}
+
+.form-label {
+  display: block;
+  font-size: 28rpx;
+  color: #666;
+  margin-bottom: 15rpx;
+}
+
+.form-input {
+  border: 1rpx solid #e0e0e0;
+  border-radius: 8rpx;
+  padding: 0 20rpx;
+  font-size: 28rpx;
+  height: 88rpx;
+  line-height: 88rpx;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.form-textarea {
+  border: 1rpx solid #e0e0e0;
+  border-radius: 8rpx;
+  padding: 20rpx;
+  font-size: 28rpx;
+  min-height: 150rpx;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.price-summary {
+  background: #fff;
+  border-radius: 16rpx;
+  padding: 30rpx;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30rpx;
+}
+
+.summary-label {
+  font-size: 30rpx;
+  color: #333;
+}
+
+.summary-price {
+  font-size: 40rpx;
+  color: #9b59b6;
+  font-weight: bold;
+}
+
+.confirm-btn {
+  background: linear-gradient(135deg, #9b59b6, #7d3c98);
+  color: #fff;
+  border-radius: 50rpx;
+  font-size: 32rpx;
+  padding: 25rpx;
+  border: none;
+}
+
+.confirm-btn:active {
+  opacity: 0.8;
+}
+
+.loading {
+  text-align: center;
+  padding: 100rpx;
+  color: #888;
+}

@@ -1,0 +1,90 @@
+/* subpackages/mentor/mentor-apply/mentor-apply.wxss */
+.page {
+  min-height: 100vh;
+  background: #faf7ff;
+}
+.nav-bar {
+  background: linear-gradient(135deg, #9b59b6, #7d3c98);
+  padding: 20rpx 30rpx;
+}
+.nav-inner { display: flex; align-items: center; gap: 20rpx; }
+.nav-back { font-size: 36rpx; color: #fff; }
+.nav-title { font-size: 32rpx; font-weight: 600; color: #fff; }
+.content { padding: 24rpx; }
+.mentor-card {
+  display: flex;
+  align-items: center;
+  gap: 20rpx;
+  background: #fff;
+  border-radius: 16rpx;
+  padding: 24rpx;
+  margin-bottom: 20rpx;
+  border: 1rpx solid #ede8f3;
+}
+.mentor-avatar { width: 100rpx; height: 100rpx; border-radius: 50%; background: #eee; }
+.mentor-info { display: flex; flex-direction: column; gap: 8rpx; }
+.mentor-name { font-size: 30rpx; font-weight: 600; color: #333; }
+.level-badge { font-size: 20rpx; padding: 4rpx 12rpx; border-radius: 20rpx; font-weight: 600; }
+.mentor-school { font-size: 24rpx; color: #999; }
+.mentor-type-tag { display: flex; align-items: center; gap: 10rpx; margin-top: 4rpx; }
+.type-tag { font-size: 20rpx; padding: 4rpx 12rpx; border-radius: 10rpx; font-weight: 600; }
+.enterprise-tag { background: rgba(52, 152, 219, 0.12); color: #2980b9; }
+.academic-tag { background: rgba(155, 89, 182, 0.12); color: #7d3c98; }
+.direction-tag { font-size: 20rpx; color: #999; }
+.notice-card {
+  display: flex;
+  gap: 16rpx;
+  padding: 20rpx;
+  background: rgba(52, 152, 219, 0.08);
+  border-radius: 12rpx;
+  border: 1rpx solid rgba(52, 152, 219, 0.2);
+  margin-bottom: 20rpx;
+}
+.notice-icon { font-size: 32rpx; flex-shrink: 0; }
+.notice-body { display: flex; flex-direction: column; gap: 6rpx; }
+.notice-title { font-size: 28rpx; font-weight: 600; color: #3498db; }
+.notice-text { font-size: 24rpx; color: #666; line-height: 1.5; }
+.form-card {
+  background: #fff;
+  border-radius: 16rpx;
+  padding: 24rpx;
+  margin-bottom: 20rpx;
+  border: 1rpx solid #ede8f3;
+}
+.form-title { font-size: 28rpx; font-weight: 600; color: #333; margin-bottom: 16rpx; }
+.textarea {
+  width: 100%;
+  min-height: 160rpx;
+  padding: 16rpx;
+  background: #faf7ff;
+  border-radius: 12rpx;
+  border: 1rpx solid #ede8f3;
+  font-size: 28rpx;
+  color: #333;
+  box-sizing: border-box;
+  line-height: 1.6;
+}
+.char-count { display: block; text-align: right; font-size: 22rpx; color: #aaa; margin-top: 12rpx; }
+.submit-area {
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  background: #fff;
+  border-top: 1rpx solid #ede8f3;
+  padding: 24rpx 32rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12rpx;
+  z-index: 100;
+}
+.btn-primary {
+  width: 100%;
+  padding: 24rpx;
+  font-size: 32rpx;
+  font-weight: 600;
+  color: #fff;
+  background: linear-gradient(135deg, #9b59b6, #7d3c98);
+  border-radius: 40rpx;
+  border: none;
+}
+.submit-hint { font-size: 22rpx; color: #aaa; }

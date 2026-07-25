@@ -1,0 +1,332 @@
+<!-- pages/publish-service/publish-service.wxml -->
+<view class="page">
+  <!-- 顶部说明 -->
+  <view class="notice-card">
+    <text class="notice-icon">📚</text>
+    <view class="notice-text">
+      <text class="notice-title">发布传功服务</text>
+      <text class="notice-desc">学科辅导、竞赛陪练、考前冲刺、论文指导...成为传功者，分享你的知识与经验！</text>
+    </view>
+  </view>
+
+  <!-- 服务类型 -->
+  <view class="form-card">
+    <view class="form-title">服务类型 <text class="required">*</text></view>
+    <view class="service-type-grid">
+      <view
+        wx:for="{{serviceTypes}}"
+        wx:key="id"
+        class="service-type-item {{formData.service_type === item.id ? 'selected' : ''}}"
+        bindtap="onServiceTypeSelect"
+        data-id="{{item.id}}"
+      >
+        <text class="type-icon">{{item.icon}}</text>
+        <text class="type-name">{{item.name}}</text>
+        <text class="type-desc">{{item.desc}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 服务标题 -->
+  <view class="form-card">
+    <view class="form-title">服务标题 <text class="required">*</text></view>
+    <input
+      class="input-field"
+      placeholder="例如：「考研数学全程辅导」或「数学建模竞赛全程指导」"
+      maxlength="50"
+      bindinput="onTitleInput"
+      value="{{formData.title}}"
+    />
+    <text class="char-count">{{formData.title.length || 0}}/50</text>
+  </view>
+
+  <!-- 选择科目 -->
+  <view class="form-card">
+    <view class="form-title">擅长科目 <text class="required">*</text></view>
+    <view class="selected-subjects" wx:if="{{formData.subjects.length > 0}}">
+      <view wx:for="{{formData.subjects}}" wx:key="item" class="subject-tag selected">
+        {{item}}
+        <text class="tag-remove" bindtap="onSubjectToggle" data-id="{{item}}">×</text>
+      </view>
+    </view>
+    <view class="choose-btn" bindtap="onToggleSubjectPicker">
+      {{formData.subjects.length > 0 ? '修改科目' : '选择科目'}}
+    </view>
+  </view>
+
+  <!-- 封面图片 -->
+  <view class="form-card">
+    <view class="form-title">封面图片 <text class="optional">(选填)</text></view>
+    <view class="upload-area">
+      <view wx:if="{{formData.cover_image}}" class="upload-preview">
+        <image src="{{formData.cover_image}}" mode="aspectFill" class="cover-preview" />
+        <view class="remove-btn" bindtap="onRemoveCover">×</view>
+      </view>
+      <view wx:else class="upload-btn-cover" bindtap="onChooseCover">
+        <text class="upload-icon">🖼️</text>
+        <text class="upload-text">添加封面</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 详细说明 -->
+  <view class="form-card">
+    <view class="form-title">详细说明 <text class="required">*</text></view>
+    <textarea
+      class="textarea"
+      placeholder="详细描述你的服务内容，包括：辅导内容、适合人群、预期效果、教学计划等..."
+      maxlength="2000"
+      bindinput="onDescriptionInput"
+      value="{{formData.description}}"
+    ></textarea>
+    <text class="char-count">{{formData.description.length || 0}}/2000</text>
+  </view>
+
+  <!-- 战绩展示（竞赛服务） -->
+  <view class="form-card" wx:if="{{formData.service_type === 'competition'}}">
+    <view class="form-title">我的战绩 <text class="optional">(选填，提升信任)</text></view>
+    <view class="achievement-list">
+      <view wx:for="{{formData.achievements}}" wx:key="index" class="achievement-item">
+        <view class="achievement-level" style="background: {{competitionLevels[item.level] || '#95a5a6'}}">
+          {{item.level === 'school' ? '校级' : item.level === 'city' ? '市级' : item.level === 'provincial' ? '省级' : item.level === 'national' ? '国家级' : item.level === 'world' ? '国际级' : '其他'}}
+        </view>
+        <text class="achievement-name">{{item.name}}</text>
+        <text class="achievement-year" wx:if="{{item.year}}">{{item.year}}</text>
+        <text class="delete-btn" bindtap="onDeleteAchievement" data-index="{{index}}">×</text>
+      </view>
+    </view>
+    <view class="add-btn" bindtap="onAddAchievement">+ 添加战绩</view>
+  </view>
+
+  <!-- 辅导案例 -->
+  <view class="form-card">
+    <view class="form-title">辅导案例 <text class="optional">(选填)</text></view>
+    <view class="case-list">
+      <view wx:for="{{formData.cases}}" wx:key="index" class="case-item">
+        <view class="case-header">
+          <text class="case-title">{{item.title}}</text>
+          <text class="delete-btn" bindtap="onDeleteCase" data-index="{{index}}">×</text>
+        </view>
+        <text class="case-desc" wx:if="{{item.description}}">{{item.description}}</text>
+        <text class="case-result" wx:if="{{item.result}}">✅ {{item.result}}</text>
+      </view>
+    </view>
+    <view class="add-btn" bindtap="onAddCase">+ 添加案例</view>
+  </view>
+
+  <!-- 教学风格 -->
+  <view class="form-card">
+    <view class="form-title">教学风格 <text class="optional">(选填)</text></view>
+    <view class="style-chips">
+      <view
+        wx:for="{{teachingStyles}}"
+        wx:key="item"
+        class="style-chip {{formData.teaching_style === item ? 'selected' : ''}}"
+        bindtap="onTeachingStyleSelect"
+        data-style="{{item}}"
+      >{{item}}</view>
+    </view>
+  </view>
+
+  <!-- 交付方式 -->
+  <view class="form-card">
+    <view class="form-title">交付方式 <text class="required">*</text></view>
+    <view class="method-grid">
+      <view
+        wx:for="{{deliveryMethods}}"
+        wx:key="id"
+        class="method-item {{formData.delivery_methods.indexOf(item.id) >= 0 ? 'selected' : ''}}"
+        bindtap="onDeliveryMethodToggle"
+        data-id="{{item.id}}"
+      >
+        <text class="method-icon">{{item.icon}}</text>
+        <text class="method-name">{{item.name}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 定价 -->
+  <view class="form-card">
+    <view class="form-title">定价方式 <text class="required">*</text></view>
+    <view class="pricing-modes">
+      <view
+        wx:for="{{pricingModes}}"
+        wx:key="id"
+        class="pricing-mode {{formData.pricing_mode === item.id ? 'selected' : ''}}"
+        bindtap="onPricingModeSelect"
+        data-id="{{item.id}}"
+        data-unit="{{item.unit}}"
+      >{{item.name}}</view>
+    </view>
+    <view class="price-input-row" wx:if="{{formData.pricing_mode !== 'free'}}">
+      <input
+        class="price-input"
+        type="number"
+        placeholder="输入价格"
+        bindinput="onPriceInput"
+        value="{{formData.price}}"
+      />
+      <text class="price-unit">{{formData.unit}}（约 {{formData.price * 10}} 灵石）</text>
+    </view>
+  </view>
+
+  <!-- 标签 -->
+  <view class="form-card">
+    <view class="form-title">标签 <text class="optional">(选填)</text></view>
+    <input
+      class="input-field"
+      placeholder="用逗号分隔，如：高数，考研，耐心"
+      maxlength="100"
+      bindinput="onTagsInput"
+      value="{{formData.tags}}"
+    />
+  </view>
+
+  <!-- 提交按钮 -->
+  <view class="submit-area safe-area-bottom">
+    <button class="btn btn-primary" bindtap="onSubmit" loading="{{submitting}}">
+      🚀 发布传功服务
+    </button>
+  </view>
+</view>
+
+<!-- 科目选择弹窗 -->
+<view class="modal" wx:if="{{showSubjectPicker}}">
+  <view class="modal-mask" bindtap="onToggleSubjectPicker"></view>
+  <view class="modal-content modal-bottom">
+    <view class="modal-header">
+      <text class="modal-title">选择科目</text>
+      <text class="modal-close" bindtap="onToggleSubjectPicker">✕</text>
+    </view>
+    <view class="modal-body">
+      <view class="subject-category-tabs">
+        <text
+          wx:for="{{['理工', '文科', '竞赛', '考试']}}"
+          wx:key="item"
+          class="category-tab {{currentSubjectCategory === item ? 'active' : ''}}"
+          bindtap="onSubjectCategoryChange"
+        >{{item}}</text>
+      </view>
+      <view class="subject-grid">
+        <view
+          wx:for="{{subjectsByCategory[currentSubjectCategory]}}"
+          wx:key="id"
+          class="subject-chip {{formData.subjects.indexOf(item.id) >= 0 ? 'selected' : ''}}"
+          bindtap="onSubjectToggle"
+          data-id="{{item.id}}"
+        >
+          <text class="chip-icon">{{item.icon}}</text>
+          <text class="chip-name">{{item.name}}</text>
+          <text class="chip-check" wx:if="{{formData.subjects.indexOf(item.id) >= 0}}">✓</text>
+        </view>
+      </view>
+    </view>
+    <view class="modal-footer">
+      <view class="selected-count">已选 {{formData.subjects.length}} 个科目</view>
+      <button class="btn btn-primary" bindtap="onConfirmSubjects">确定</button>
+    </view>
+  </view>
+</view>
+
+<!-- 战绩添加弹窗 -->
+<view class="modal" wx:if="{{showAchievementModal}}">
+  <view class="modal-mask" bindtap="onToggleAchievementModal"></view>
+  <view class="modal-content">
+    <view class="modal-header">
+      <text class="modal-title">🏆 添加战绩</text>
+      <text class="modal-close" bindtap="onToggleAchievementModal">✕</text>
+    </view>
+    <view class="modal-body">
+      <view class="form-item">
+        <text class="form-label">竞赛类型</text>
+        <view class="level-chips">
+          <view
+            wx:for="{{subjectsByCategory['竞赛']}}"
+            wx:key="id"
+            class="level-chip {{newAchievement.type === item.id ? 'selected' : ''}}"
+            bindtap="onAchievementTypeSelect"
+            data-id="{{item.id}}"
+          >{{item.icon}} {{item.name}}</view>
+        </view>
+      </view>
+      <view class="form-item">
+        <text class="form-label">获奖等级</text>
+        <view class="level-chips">
+          <view
+            wx:for="{{competitionLevels}}"
+            wx:key="id"
+            class="level-chip {{newAchievement.level === item.id ? 'selected' : ''}}"
+            bindtap="onAchievementLevelSelect"
+            data-id="{{item.id}}"
+            style="{{newAchievement.level === item.id ? 'border-color:' + item.color + ';color:' + item.color : ''}}"
+          >{{item.name}}</view>
+        </view>
+      </view>
+      <view class="form-item">
+        <text class="form-label">奖项名称</text>
+        <input
+          class="input-field"
+          placeholder="如：MathorCup一等奖"
+          bindinput="onAchievementNameInput"
+          value="{{newAchievement.name}}"
+        />
+      </view>
+      <view class="form-item">
+        <text class="form-label">获奖年份</text>
+        <input
+          class="input-field"
+          type="number"
+          placeholder="如：2024"
+          bindinput="onAchievementYearInput"
+          value="{{newAchievement.year}}"
+        />
+      </view>
+    </view>
+    <view class="modal-footer">
+      <button class="btn btn-primary" bindtap="onConfirmAchievement">添加</button>
+    </view>
+  </view>
+</view>
+
+<!-- 案例添加弹窗 -->
+<view class="modal" wx:if="{{showCaseModal}}">
+  <view class="modal-mask" bindtap="onToggleCaseModal"></view>
+  <view class="modal-content">
+    <view class="modal-header">
+      <text class="modal-title">📝 添加辅导案例</text>
+      <text class="modal-close" bindtap="onToggleCaseModal">✕</text>
+    </view>
+    <view class="modal-body">
+      <view class="form-item">
+        <text class="form-label">案例标题</text>
+        <input
+          class="input-field"
+          placeholder="如：帮助学弟考研数学从80分提升到130分"
+          bindinput="onCaseTitleInput"
+          value="{{newCase.title}}"
+        />
+      </view>
+      <view class="form-item">
+        <text class="form-label">案例描述</text>
+        <textarea
+          class="textarea"
+          placeholder="简述辅导过程和方法"
+          bindinput="onCaseDescInput"
+          value="{{newCase.description}}"
+        ></textarea>
+      </view>
+      <view class="form-item">
+        <text class="form-label">辅导成果</text>
+        <input
+          class="input-field"
+          placeholder="如：成功上岸985高校"
+          bindinput="onCaseResultInput"
+          value="{{newCase.result}}"
+        />
+      </view>
+    </view>
+    <view class="modal-footer">
+      <button class="btn btn-primary" bindtap="onConfirmCase">添加</button>
+    </view>
+  </view>
+</view>

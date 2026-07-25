@@ -1,0 +1,72 @@
+<!-- subpackages/mentor/lineage-tree/lineage-tree.wxml -->
+<view class="page">
+  <view class="nav-bar safe-area-top">
+    <view class="nav-inner">
+      <view class="nav-back" bindtap="onBack">←</view>
+      <text class="nav-title">传承树</text>
+    </view>
+  </view>
+
+  <!-- 说明 -->
+  <view class="intro-bar">
+    <text class="intro-text">展示道友传承脉络，导师与被传承者关系一目了然</text>
+  </view>
+
+  <!-- 加载中 -->
+  <view class="loading" wx:if="{{loading}}">
+    <text>加载传承树中...</text>
+  </view>
+
+  <!-- 传承树 -->
+  <scroll-view scroll-y class="tree-container" wx:elif="{{tree}}">
+    <!-- 导师 -->
+    <view class="tree-level mentor-level">
+      <view class="node-card mentor-node">
+        <image class="node-avatar" src="{{tree.mentor && tree.mentor.avatar_url ? tree.mentor.avatar_url : '/assets/default-avatar.png'}}" mode="aspectFill" />
+        <text class="node-name">{{tree.mentor && tree.mentor.nickname ? tree.mentor.nickname : '导师'}}</text>
+        <!-- 道友传承新增：导师类型 -->
+        <view class="mentor-type-tag" wx:if="{{tree.mentor && tree.mentor.mentor_type}}">
+          <text class="{{tree.mentor.mentor_type === 'enterprise' ? 'enterprise-tag' : 'academic-tag'}}">
+            {{tree.mentor.mentor_type === 'enterprise' ? '🏢 企业导师' : '📚 学术导师'}}
+          </text>
+        </view>
+        <view class="node-level" style="background: rgba(155,89,182,0.15); color: #9b59b6">
+          {{tree.mentor && tree.mentor.level_name ? tree.mentor.level_name : '导师'}}
+        </view>
+      </view>
+    </view>
+
+    <!-- 连接线 -->
+    <view class="connector"><view class="connector-line"></view></view>
+
+    <!-- 被传承者 -->
+    <view class="tree-level disciple-level">
+      <view
+        class="node-card disciple-node"
+        wx:for="{{tree.disciples || []}}"
+        wx:key="openid"
+      >
+        <image class="node-avatar" src="{{item.avatar_url || '/assets/default-avatar.png'}}" mode="aspectFill" />
+        <text class="node-name">{{item.nickname}}</text>
+        <view class="node-type-tag" wx:if="{{item.mentor_type}}">
+          <text class="{{item.mentor_type === 'enterprise' ? 'enterprise-tag' : 'academic-tag'}}">
+            {{item.mentor_type === 'enterprise' ? '🏢' : '📚'}}
+          </text>
+        </view>
+        <view class="node-level" style="background: rgba(52,152,219,0.15); color: #3498db">
+          {{item.level_name || '弟子'}}
+        </view>
+      </view>
+      <view class="empty-disciples" wx:if="{{!tree.disciples || tree.disciples.length === 0}}">
+        <text>暂无弟子</text>
+      </view>
+    </view>
+  </scroll-view>
+
+  <!-- 空状态 -->
+  <view class="empty-state" wx:elif="{{!loading && !tree}}">
+    <text class="empty-icon">🌳</text>
+    <text class="empty-text">暂无传承树数据</text>
+    <view class="empty-btn" bindtap="onFindMentor">去寻访导师</view>
+  </view>
+</view>

@@ -1,0 +1,47 @@
+# 排除虚拟环境
+venv/
+.venv/
+env/
+
+# 排除 Python 缓存
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+
+# 排除本地数据库（云端会重新创建）
+*.db
+*.sqlite
+*.sqlite3
+
+# 排除本地/生产环境文件；云端通过服务环境变量注入
+.env*
+
+# 部署工具读取此文件，但不要把其中的环境变量烘焙进镜像
+container.config.json
+
+# 排除压缩包
+*.zip
+*.tar.gz
+*.tar
+
+# 排除 Git
+.git/
+.gitignore
+
+# 排除 IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# 排除日志
+*.log
+logs/
+
+# 排除 Certs
+certs/
+*.pem
+*.key
+*.crt

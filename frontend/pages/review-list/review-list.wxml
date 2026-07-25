@@ -1,0 +1,57 @@
+<!-- pages/review-list/review-list.wxml -->
+<view class="page">
+  <!-- 评分概览 -->
+  <view class="stats-card card" wx:if="{{stats}}">
+    <view class="stats-main">
+      <text class="stats-score">{{stats.rating_avg}}</text>
+      <view class="stats-info">
+        <text class="stats-count">{{stats.total}} 条评价</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 评价列表 -->
+  <view class="review-list">
+    <view wx:for="{{reviews}}" wx:key="id" class="review-card card">
+      <!-- 评价者信息 -->
+      <view class="reviewer-row">
+        <image
+          class="reviewer-avatar"
+          src="{{item.reviewer.avatar_url || '/assets/default-avatar.png'}}"
+        />
+        <view class="reviewer-info">
+          <text class="reviewer-name">{{item.reviewer.nickname}}</text>
+        </view>
+        <view class="review-rating">
+          <text wx:for="{{item.rating}}" wx:key="index" class="star-small">★</text>
+        </view>
+      </view>
+
+      <!-- 评价内容 -->
+      <view class="review-content">{{item.content}}</view>
+
+      <!-- 评价标签 -->
+      <view class="review-tags" wx:if="{{item.tags && item.tags.length > 0}}">
+        <text wx:for="{{item.tags}}" wx:key="tag" class="mini-tag">{{item}}</text>
+      </view>
+
+      <!-- 时间 -->
+      <view class="review-time">{{item.created_at}}</view>
+    </view>
+
+    <!-- 空状态 -->
+    <view class="empty-state" wx:if="{{!loading && reviews.length === 0}}">
+      <text class="icon">📝</text>
+      <text>暂无评价</text>
+      <text class="text-secondary">成为第一个评价的人吧！</text>
+    </view>
+
+    <!-- 加载更多 -->
+    <view class="loading-container" wx:if="{{loading}}">
+      <text>加载中...</text>
+    </view>
+    <view class="loading-container" wx:if="{{noMore && reviews.length > 0}}">
+      <text class="text-secondary">— 没有更多了 —</text>
+    </view>
+  </view>
+</view>

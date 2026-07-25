@@ -1,0 +1,69 @@
+<!-- 联袂问道 - 首页 -->
+<view class="page">
+
+  <!-- 顶部 Banner -->
+  <view class="banner">
+    <view class="banner-title">🔬 联袂问道</view>
+    <view class="banner-sub">科研组队 · 课题合作 · 竞赛搭档</view>
+  </view>
+
+  <!-- 课题分类 -->
+  <view class="section">
+    <view class="category-grid">
+      <view
+        class="category-card"
+        wx:for="{{categories}}"
+        wx:key="id"
+        bindtap="onCategoryTap"
+        data-category="{{item.id}}"
+      >
+        <view class="category-icon">{{item.icon}}</view>
+        <view class="category-name">{{item.name}}</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 招募中的课题 -->
+  <view class="section">
+    <view class="section-header">
+      <text class="section-title">📋 招募中的课题</text>
+      <text class="section-more" bindtap="onViewAll">更多 ></text>
+    </view>
+
+    <view class="team-list">
+      <view
+        class="team-card"
+        wx:for="{{teams}}"
+        wx:key="id"
+        bindtap="onTeamTap"
+        data-id="{{item.id}}"
+      >
+        <view class="team-header">
+          <view class="team-category">{{item.category}}</view>
+          <view class="team-status {{item.status}}">{{item.status === 'recruiting' ? '招募中' : '已满'}}</view>
+        </view>
+        <view class="team-title">{{item.title}}</view>
+        <view class="team-desc">{{item.description}}</view>
+        <view class="team-footer">
+          <view class="team-members">
+            <text class="member-icon">👥</text>
+            <text>{{item.currentMembers || 0}}/{{item.maxMembers}}人</text>
+          </view>
+          <view class="team-time">{{item.created_at}}</view>
+        </view>
+      </view>
+    </view>
+
+    <view class="empty-state" wx:if="{{!loading && teams.length === 0}}">
+      <text class="empty-title">暂无招募中的课题</text>
+      <text class="empty-sub">发起第一个课题招募吧！</text>
+    </view>
+  </view>
+
+  <!-- 发布按钮 -->
+  <view class="publish-btn" bindtap="onPublish">
+    <text class="publish-icon">+</text>
+    <text class="publish-text">发起课题</text>
+  </view>
+
+</view>

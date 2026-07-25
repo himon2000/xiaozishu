@@ -1,0 +1,62 @@
+<!-- subpackages/mentor/mentor-apply/mentor-apply.wxml -->
+<view class="page">
+  <view class="nav-bar safe-area-top">
+    <view class="nav-inner">
+      <view class="nav-back" bindtap="onBack">←</view>
+      <text class="nav-title">申请传承</text>
+    </view>
+  </view>
+
+  <view class="content">
+    <!-- 导师信息卡 -->
+    <view class="mentor-card" wx:if="{{mentor}}">
+      <image class="mentor-avatar" src="{{mentor.avatar_url || '/assets/default-avatar.png'}}" mode="aspectFill" />
+      <view class="mentor-info">
+        <text class="mentor-name">{{mentor.nickname}}</text>
+        <view class="level-badge" style="background: {{mentor.level_color || '#9b59b6'}}20; color: {{mentor.level_color || '#9b59b6'}}">
+          {{mentor.level_icon || '🌟'}} {{mentor.level_name || '修士'}}
+        </view>
+        <text class="mentor-school">{{mentor.school}}</text>
+        <!-- 道友传承新增：导师类型 -->
+        <view class="mentor-type-tag" wx:if="{{mentor.mentor_type}}">
+          <text class="type-tag {{mentor.mentor_type === 'enterprise' ? 'enterprise-tag' : 'academic-tag'}}">
+            {{mentor.mentor_type === 'enterprise' ? '🏢 企业导师' : '📚 学术导师'}}
+          </text>
+          <text class="direction-tag">{{mentor.mentor_direction || '综合方向'}}</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 说明卡片 -->
+    <view class="notice-card">
+      <text class="notice-icon">⚠️</text>
+      <view class="notice-body">
+        <text class="notice-title">道友传承说明</text>
+        <text class="notice-text">申请需消耗 5 修为点。成功后，你将获得导师的经验指导。</text>
+        <text class="notice-text" wx:if="{{mentorType === 'enterprise'}}">企业导师擅长就业方向传承，可帮助你获取实习/求职资源。</text>
+        <text class="notice-text" wx:if="{{mentorType === 'academic'}}">学术导师擅长升学方向传承，可帮助你规划考研/保研路径。</text>
+      </view>
+    </view>
+
+    <!-- 申请表单 -->
+    <view class="form-card">
+      <view class="form-title">申请理由（选填）</view>
+      <textarea
+        class="textarea"
+        placeholder="简单介绍一下自己，表达你的诚意，以及希望获得哪方面的指导..."
+        maxlength="200"
+        bindinput="onMessageInput"
+        value="{{message}}"
+      />
+      <text class="char-count">{{message.length || 0}}/200</text>
+    </view>
+
+    <!-- 提交区域 -->
+    <view class="submit-area safe-area-bottom">
+      <button class="btn-primary" bindtap="onSubmit" loading="{{submitting}}">
+        🚀 确认申请传承
+      </button>
+      <text class="submit-hint">将消耗 5 修为点</text>
+    </view>
+  </view>
+</view>

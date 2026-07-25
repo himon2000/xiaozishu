@@ -1,0 +1,43 @@
+<!-- pages/order-detail/order-detail.wxml -->
+<view class="page" wx:if="{{!loading && order}}">
+  <!-- 状态卡片 -->
+  <view class="status-card">
+    <view class="status-name" style="color: #9b59b6">{{order.status_display}}</view>
+  </view>
+
+  <!-- 订单信息 -->
+  <view class="card">
+    <view class="card-title">📋 订单信息</view>
+    <view class="info-row"><text class="label">订单号</text><text class="value">{{order.id}}</text></view>
+    <view class="info-row"><text class="label">服务名称</text><text class="value">{{order.service_snapshot.title}}</text></view>
+    <view class="info-row"><text class="label">状态</text><text class="value">{{order.status_display}}</text></view>
+    <view class="info-row"><text class="label">创建时间</text><text class="value">{{order.created_at}}</text></view>
+  </view>
+
+  <!-- 双方信息 -->
+  <view class="card">
+    <view class="card-title">👥 订单双方</view>
+    <view class="party-row" wx:if="{{order.seeker}}">
+      <text class="party-role tag">散修</text>
+      <text>{{order.seeker.nickname}}</text>
+    </view>
+    <view class="party-row" wx:if="{{order.provider}}">
+      <text class="party-role tag">{{order.provider.level_icon}}</text>
+      <text>{{order.provider.nickname}}</text>
+    </view>
+  </view>
+
+  <!-- 操作按钮 -->
+  <view class="action-bar safe-area-bottom">
+    <button class="btn btn-primary" bindtap="onGoReview" wx:if="{{order.status === 'completed' && !hasReviewed}}">
+      ⭐ 立即评价
+    </button>
+    <button class="btn btn-dispute" bindtap="onApplyDispute" wx:if="{{order.status !== 'completed' && order.status !== 'cancelled'}}">
+      ⚖️ 申请仲裁
+    </button>
+  </view>
+</view>
+
+<view class="loading-container" wx:if="{{loading}}">
+  <text>加载中...</text>
+</view>

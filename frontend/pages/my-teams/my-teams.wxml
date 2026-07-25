@@ -1,0 +1,95 @@
+<!-- pages/my-teams/my-teams.wxml -->
+<view class="page">
+  <!-- 顶部标签 -->
+  <view class="tabs">
+    <view
+      class="tab {{activeTab === 'created' ? 'active' : ''}}"
+      bindtap="onTabChange"
+      data-tab="created"
+    >
+      <text>我创建的</text>
+      <text class="tab-count" wx:if="{{created.length > 0}}">{{created.length}}</text>
+    </view>
+    <view
+      class="tab {{activeTab === 'joined' ? 'active' : ''}}"
+      bindtap="onTabChange"
+      data-tab="joined"
+    >
+      <text>我加入的</text>
+      <text class="tab-count" wx:if="{{joined.length > 0}}">{{joined.length}}</text>
+    </view>
+  </view>
+
+  <!-- 我创建的组队 -->
+  <view class="team-list" wx:if="{{activeTab === 'created'}}">
+    <block wx:for="{{created}}" wx:key="id">
+      <view class="team-card card card-glow" bindtap="onTeamTap" data-id="{{item.id}}">
+        <view class="team-header">
+          <view class="team-title">{{item.title}}</view>
+          <view class="team-status tag-{{item.status}}">
+            {{item.status === 'recruiting' ? '🔥 招募中' : item.status === 'full' ? '已满员' : item.status === 'in_progress' ? '进行中' : '已结束'}}
+          </view>
+        </view>
+        <view class="team-desc">{{item.description}}</view>
+        <view class="team-tags" wx:if="{{item.tags.length > 0}}">
+          <text wx:for="{{item.tags}}" wx:for-item="tag" wx:key="tag" class="mini-tag">{{tag}}</text>
+        </view>
+        <view class="team-footer">
+          <view class="member-info">
+            <text class="member-count">👥 {{item.current_members}}/{{item.max_members}}</text>
+            <text class="deadline" wx:if="{{item.deadline}}">📅 {{item.deadline}}</text>
+          </view>
+          <text class="role-badge leader">👑 组长</text>
+        </view>
+      </view>
+    </block>
+
+    <!-- 空状态 -->
+    <view class="empty-state" wx:if="{{!loading && created.length === 0}}">
+      <text class="icon">🎯</text>
+      <text>你还没有创建组队</text>
+      <text class="text-secondary">发起组队，找到志同道合的伙伴！</text>
+      <button class="create-btn-lg" bindtap="goToPlaza">去组队广场看看</button>
+    </view>
+  </view>
+
+  <!-- 我加入的组队 -->
+  <view class="team-list" wx:if="{{activeTab === 'joined'}}">
+    <block wx:for="{{joined}}" wx:key="id">
+      <view class="team-card card card-glow" bindtap="onTeamTap" data-id="{{item.id}}">
+        <view class="team-header">
+          <view class="team-title">{{item.title}}</view>
+          <view class="team-status tag-{{item.status}}">
+            {{item.status === 'recruiting' ? '🔥 招募中' : item.status === 'full' ? '已满员' : item.status === 'in_progress' ? '进行中' : '已结束'}}
+          </view>
+        </view>
+        <view class="team-desc">{{item.description}}</view>
+        <view class="team-tags" wx:if="{{item.tags.length > 0}}">
+          <text wx:for="{{item.tags}}" wx:for-item="tag" wx:key="tag" class="mini-tag">{{tag}}</text>
+        </view>
+        <view class="team-footer">
+          <view class="member-info">
+            <text class="member-count">👥 {{item.current_members}}/{{item.max_members}}</text>
+            <text class="deadline" wx:if="{{item.deadline}}">📅 {{item.deadline}}</text>
+          </view>
+          <view class="creator-info-mini">
+            <text class="creator-name">组长: {{item.creator.nickname}}</text>
+          </view>
+        </view>
+      </view>
+    </block>
+
+    <!-- 空状态 -->
+    <view class="empty-state" wx:if="{{!loading && joined.length === 0}}">
+      <text class="icon">🤝</text>
+      <text>你还没有加入任何组队</text>
+      <text class="text-secondary">去组队广场发现有趣的队伍吧！</text>
+      <button class="create-btn-lg" bindtap="goToPlaza">去组队广场看看</button>
+    </view>
+  </view>
+
+  <!-- 加载状态 -->
+  <view class="loading-container" wx:if="{{loading}}">
+    <text>加载中...</text>
+  </view>
+</view>

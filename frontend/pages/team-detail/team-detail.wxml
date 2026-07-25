@@ -1,0 +1,119 @@
+<!-- pages/team-detail/team-detail.wxml -->
+<view class="page">
+  <!-- 加载状态 -->
+  <view class="loading-state" wx:if="{{loading}}">
+    <text>加载中...</text>
+  </view>
+
+  <!-- 组队信息 -->
+  <view class="team-info card card-glow" wx:if="{{team && !loading}}">
+    <!-- 头部 -->
+    <view class="team-header">
+      <view class="team-title">{{team.title}}</view>
+      <view class="team-status tag-{{team.status}}">
+        {{team.status === 'recruiting' ? '🔥 招募中(招募中)' : team.status === 'full' ? '✅ 已满员(已满)' : team.status === 'in_progress' ? '🚀 进行中(进行中)' : '🏁 已结束(已结束)'}}
+      </view>
+    </view>
+
+    <!-- 分类标签 -->
+    <view class="category-badge">
+      <text wx:if="{{team.category === 'mi_jing'}}">🔬 联袂问道（课题/科研）</text>
+      <text wx:elif="{{team.category === 'competition'}}">🏆 问道竞技（竞赛组队）</text>
+      <text wx:elif="{{team.category === 'project'}}">💡 共谋大事（项目合作）</text>
+      <text wx:elif="{{team.category === 'study'}}">📚 同修共进（学习小组）</text>
+    </view>
+
+    <!-- 描述 -->
+    <view class="team-desc">
+      <text class="desc-label">📋 组队详情</text>
+      <text class="desc-content">{{team.description}}</text>
+    </view>
+
+    <!-- 标签 -->
+    <view class="team-tags" wx:if="{{team.tags.length > 0}}">
+      <text wx:for="{{team.tags}}" wx:for-item="tag" wx:key="tag" class="mini-tag">{{tag}}</text>
+    </view>
+
+    <!-- 组队信息 -->
+    <view class="team-meta">
+      <view class="meta-item">
+        <text class="meta-icon">👥</text>
+        <text class="meta-text">{{team.current_members}} / {{team.max_members}} 人</text>
+      </view>
+      <view class="meta-item" wx:if="{{team.deadline}}">
+        <text class="meta-icon">📅</text>
+        <text class="meta-text">截止 {{team.deadline}}</text>
+      </view>
+      <view class="meta-item" wx:if="{{team.target_date}}">
+        <text class="meta-icon">🎯</text>
+        <text class="meta-text">目标 {{team.target_date}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 组长信息 -->
+  <view class="section-title" wx:if="{{team && !loading}}">
+    <text>👑 组长（发起人）</text>
+  </view>
+  <view class="leader-card card" wx:if="{{team && !loading}}" bindtap="onViewProfile" data-openid="{{team.creator.openid}}">
+    <image class="leader-avatar" src="{{team.creator.avatar_url || '/assets/default-avatar.png'}}" />
+    <view class="leader-info">
+      <view class="leader-name">
+        {{team.creator.nickname}}
+        <text class="level-badge">
+          {{team.creator.level_name}}
+        </text>
+      </view>
+      <text class="leader-school">{{team.creator.school}}</text>
+    </view>
+    <text class="view-profile">查看主页 ›</text>
+  </view>
+
+  <!-- 成员列表 -->
+  <view class="section-title" wx:if="{{members.length > 0}}">
+    <text>🧙 道伴成员 ({{members.length}})</text>
+  </view>
+  <view class="member-list" wx:if="{{members.length > 0}}">
+    <view
+      wx:for="{{members}}"
+      wx:key="openid"
+      class="member-card card"
+      bindtap="onViewProfile"
+      data-openid="{{item.openid}}"
+    >
+      <view class="member-left">
+        <image class="member-avatar" src="{{item.avatar_url || '/assets/default-avatar.png'}}" />
+        <view class="member-info">
+          <view class="member-name">
+            {{item.nickname}}
+            <text class="role-badge" wx:if="{{item.role === 'leader'}}">👑</text>
+          </view>
+          <text class="member-school">{{item.school || '未认证'}}</text>
+        </view>
+      </view>
+      <text class="member-level">{{item.level_icon}} {{item.level_name}}</text>
+    </view>
+  </view>
+
+  <!-- 操作按钮 -->
+  <view class="action-bar" wx:if="{{team && !loading}}">
+    <!-- 非成员，显示加入按钮 -->
+    <block wx:if="{{!isMember && team.status === 'recruiting'}}">
+      <button class="action-btn primary" bindtap="onJoinTeam">
+        🤝 加入组队
+      </button>
+    </block>
+    <!-- 成员但非创建者，显示离开按钮 -->
+    <block wx:elif="{{isMember && !isCreator}}">
+      <button class="action-btn danger" bindtap="onLeaveTeam">
+        🚪 离开组队
+      </button>
+    </block>
+    <!-- 创建者，显示解散按钮 -->
+    <block wx:elif="{{isCreator}}">
+      <button class="action-btn danger" bindtap="onDeleteTeam">
+        🗑️ 解散组队
+      </button>
+    </block>
+  </view>
+</view>

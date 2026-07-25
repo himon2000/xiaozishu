@@ -1,0 +1,89 @@
+<!-- pages/edit-profile/edit-profile.wxml - 编辑个人资料 -->
+<view class="page">
+
+  <!-- 加载状态 -->
+  <view class="loading-wrap" wx:if="{{loading}}">
+    <view class="loading-spinner"></view>
+    <text class="loading-text">加载中...</text>
+  </view>
+
+  <block wx:if="{{!loading}}">
+
+    <!-- 头像区域（仅查看） -->
+    <view class="group-label">头像</view>
+    <view class="menu-group">
+      <view class="menu-item avatar-row">
+        <text class="menu-title">头像</text>
+        <image class="avatar-preview" src="{{avatarUrl || '/assets/default-avatar.png'}}" mode="aspectFill" />
+        <text class="menu-arrow">›</text>
+      </view>
+    </view>
+
+    <!-- 基本信息 -->
+    <view class="group-label">基本信息</view>
+    <view class="menu-group">
+
+      <!-- 昵称 -->
+      <view class="menu-item">
+        <text class="menu-title">昵称</text>
+        <view class="input-right">
+          <input
+            class="menu-input"
+            type="text"
+            placeholder="请输入昵称"
+            maxlength="20"
+            value="{{nickname}}"
+            bindinput="onNicknameInput"
+          />
+        </view>
+      </view>
+
+      <!-- 个人简介 -->
+      <view class="menu-item bio-item">
+        <text class="menu-title">个人简介</text>
+        <textarea
+          class="bio-textarea"
+          placeholder="介绍一下自己吧~"
+          maxlength="200"
+          value="{{bio}}"
+          bindinput="onBioInput"
+          auto-height
+        />
+        <text class="bio-counter">{{bio.length}}/200</text>
+      </view>
+
+      <!-- 性别 -->
+      <view class="menu-item" bindtap="onGenderTap">
+        <text class="menu-title">性别</text>
+        <text class="menu-value {{gender ? '' : 'placeholder'}}">
+          {{genderLabels[gender] || '请选择'}}
+        </text>
+        <text class="menu-arrow">›</text>
+      </view>
+
+      <!-- 生日 -->
+      <picker mode="date" value="{{birthday}}" start="1940-01-01" end="2015-12-31" bindchange="onBirthdayChange">
+        <view class="menu-item">
+          <text class="menu-title">生日</text>
+          <text class="menu-value {{birthday ? '' : 'placeholder'}}">
+            {{birthday || '请选择'}}
+          </text>
+          <text class="menu-arrow">›</text>
+        </view>
+      </picker>
+
+    </view>
+
+    <!-- 保存按钮 -->
+    <view class="save-btn-area">
+      <button
+        class="save-btn {{saving ? 'disabled' : ''}}"
+        bindtap="onSave"
+        disabled="{{saving}}"
+      >保存修改</button>
+    </view>
+
+  </block>
+
+  <view class="safe-area-bottom"></view>
+</view>

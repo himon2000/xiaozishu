@@ -1,0 +1,105 @@
+<!-- subpackages/mentor/find-mentor/find-mentor.wxml -->
+<view class="page">
+  <!-- 导航栏 -->
+  <view class="nav-bar safe-area-top">
+    <view class="nav-inner">
+      <view class="nav-back" bindtap="onBack">←</view>
+      <text class="nav-title">寻访导师</text>
+    </view>
+  </view>
+
+  <!-- 导师类型切换 Tab -->
+  <view class="type-tabs">
+    <view
+      class="type-tab {{currentType === 'all' ? 'active' : ''}}"
+      bindtap="onTypeChange"
+      data-type="all"
+    >全部</view>
+    <view
+      class="type-tab {{currentType === 'enterprise' ? 'active' : ''}}"
+      bindtap="onTypeChange"
+      data-type="enterprise"
+    >企业导师</view>
+    <view
+      class="type-tab {{currentType === 'academic' ? 'active' : ''}}"
+      bindtap="onTypeChange"
+      data-type="academic"
+    >学术导师</view>
+  </view>
+
+  <!-- 说明卡片 -->
+  <view class="benefit-card">
+    <text class="benefit-icon">🎁</text>
+    <view class="benefit-text">
+      <text class="benefit-title">道友传承收益</text>
+      <text class="benefit-desc">申请成功后获得导师经验指导，达成里程碑时双方均可获得修为点奖励</text>
+    </view>
+  </view>
+
+  <!-- 导师列表 -->
+  <scroll-view scroll-y class="mentor-list" bindscrolltolower="onReachBottom">
+    <!-- 骨架屏 -->
+    <view class="skeleton-list" wx:if="{{loading && mentors.length === 0}}">
+      <view class="skeleton-card" wx:for="{{[1,2,3]}}" wx:key="index"></view>
+    </view>
+
+    <!-- 导师卡片 -->
+    <view
+      class="mentor-card"
+      wx:for="{{mentors}}"
+      wx:key="openid"
+      bindtap="onMentorTap"
+      data-openid="{{item.openid}}"
+    >
+      <image
+        class="mentor-avatar"
+        src="{{item.avatar_url || '/assets/default-avatar.png'}}"
+        mode="aspectFill"
+      />
+      <view class="mentor-info">
+        <view class="mentor-header">
+          <text class="mentor-name">{{item.nickname}}</text>
+          <view class="level-badge" style="background: {{item.level_color || '#9b59b6'}}20; color: {{item.level_color || '#9b59b6'}}">
+            {{item.level_icon || '🌟'}} {{item.level_name || '修士'}}
+          </view>
+        </view>
+        <!-- 道友传承新增：导师类型标签 -->
+        <view class="mentor-type-badge" wx:if="{{item.mentor_type}}">
+          <text class="type-tag {{item.mentor_type === 'enterprise' ? 'enterprise-tag' : 'academic-tag'}}">
+            {{item.mentor_type === 'enterprise' ? '🏢 企业导师' : '📚 学术导师'}}
+          </text>
+          <text class="direction-tag">{{item.mentor_direction || '综合方向'}}</text>
+        </view>
+        <text class="mentor-school">{{item.school || '未认证高校'}}</text>
+        <text class="mentor-tagline" wx:if="{{item.provider_tagline}}">{{item.provider_tagline}}</text>
+        <view class="mentor-stats">
+          <text class="stat-item">⭐ {{item.rating || 0}} ({{item.rating_count || 0}}条评价)</text>
+          <text class="stat-item">👥 {{item.active_disciples || 0}} 在读弟子</text>
+        </view>
+        <view class="specialties" wx:if="{{item.specialties && item.specialties.length > 0}}">
+          <text class="specialty-tag" wx:for="{{item.specialties}}" wx:key="index" wx:for-item="s">{{s}}</text>
+        </view>
+      </view>
+      <view
+        class="apply-btn"
+        catchtap="onApplyMentor"
+        data-openid="{{item.openid}}"
+        data-mentortype="{{item.mentor_type || 'academic'}}"
+      >申请传承</view>
+    </view>
+
+    <!-- 空状态 -->
+    <view class="empty-state" wx:if="{{!loading && mentors.length === 0}}">
+      <text class="empty-icon">🔍</text>
+      <text class="empty-text">暂无可申请的导师</text>
+    </view>
+
+    <!-- 加载更多 -->
+    <view class="load-more" wx:if="{{loading && mentors.length > 0}}">
+      <text>加载中...</text>
+    </view>
+    <view class="load-more no-more" wx:if="{{!loading && noMore && mentors.length > 0}}">
+      <text>— 没有更多导师了 —</text>
+    </view>
+  </scroll-view>
+</view>

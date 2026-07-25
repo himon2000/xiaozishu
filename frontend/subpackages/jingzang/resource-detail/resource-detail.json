@@ -1,0 +1,8 @@
+{
+  "navigationBarTitleText": "道藏详情",
+  "navigationBarBackgroundColor": "#9b59b6",
+  "navigationBarTextStyle": "white",
+  "backgroundColor": "#faf7ff",
+  "enablePullDownRefresh": false,
+  "usingComponents": {}
+}

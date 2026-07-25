@@ -1,0 +1,347 @@
+/* pages/order-detail/order-detail.wxss */
+.page {
+  min-height: 100vh;
+  background: var(--bg);
+  padding: 24rpx;
+  padding-bottom: 160rpx;
+}
+
+.status-card {
+  background: var(--surface);
+  border-radius: 20rpx;
+  padding: 32rpx;
+  margin-bottom: 24rpx;
+  text-align: center;
+  border: 1rpx solid var(--border);
+}
+
+.status-name {
+  font-size: 40rpx;
+  font-weight: 800;
+  margin-bottom: 16rpx;
+}
+
+.status-progress {
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+}
+
+/* 超时提醒 */
+.timeout-warning {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8rpx;
+  margin-top: 16rpx;
+  padding: 12rpx 20rpx;
+  background: rgba(255, 71, 87, 0.1);
+  border-radius: 20rpx;
+  border: 1rpx solid rgba(255, 71, 87, 0.2);
+}
+
+.timeout-icon {
+  font-size: 28rpx;
+}
+
+.timeout-text {
+  font-size: 24rpx;
+  color: #ff4757;
+  font-weight: 500;
+}
+
+.progress-bar-bg {
+  flex: 1;
+  height: 8rpx;
+  background: var(--surface-2);
+  border-radius: 4rpx;
+  overflow: hidden;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--primary), var(--accent));
+  border-radius: 4rpx;
+  transition: width 0.5s;
+}
+
+.progress-text {
+  font-size: 24rpx;
+  color: var(--text-secondary);
+  min-width: 80rpx;
+}
+
+.card-title {
+  font-size: 30rpx;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 20rpx;
+}
+
+.info-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12rpx 0;
+  font-size: 28rpx;
+}
+
+.label { color: var(--text-secondary); }
+.value { color: var(--text); font-weight: 500; }
+
+.party-row {
+  display: flex;
+  align-items: center;
+  gap: 12rpx;
+  padding: 12rpx 0;
+  font-size: 28rpx;
+}
+
+.party-role { font-size: 24rpx; }
+
+/* 课次日志 */
+.session-item {
+  padding: 16rpx 0;
+  border-bottom: 1rpx solid var(--border);
+}
+
+.session-item:last-child { border-bottom: none; }
+
+.session-no {
+  font-size: 26rpx;
+  font-weight: 600;
+  color: var(--primary);
+  margin-bottom: 6rpx;
+}
+
+.session-summary {
+  font-size: 28rpx;
+  color: var(--text);
+  margin-bottom: 6rpx;
+}
+
+.session-date {
+  font-size: 22rpx;
+}
+
+/* 时间线 */
+.timeline-item {
+  display: flex;
+  gap: 16rpx;
+  padding: 12rpx 0;
+}
+
+.timeline-dot {
+  width: 16rpx; height: 16rpx;
+  border-radius: 50%;
+  background: var(--primary);
+  margin-top: 8rpx;
+  flex-shrink: 0;
+}
+
+.timeline-content { flex: 1; }
+
+.timeline-status {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 4rpx;
+}
+
+.timeline-remark {
+  font-size: 24rpx;
+  margin-bottom: 4rpx;
+}
+
+.timeline-time {
+  font-size: 22rpx;
+}
+
+/* 操作栏 */
+.action-bar {
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  background: var(--surface);
+  border-top: 1rpx solid var(--border);
+  padding: 20rpx 32rpx;
+  display: flex;
+  justify-content: center;
+  z-index: 100;
+}
+
+/* 服务保障卡片 */
+.guarantee-card {
+  background: linear-gradient(135deg, rgba(155, 89, 182, 0.08), rgba(186, 85, 211, 0.05));
+  border: 1rpx solid rgba(155, 89, 182, 0.2);
+}
+
+.guarantee-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16rpx;
+}
+
+.guarantee-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12rpx;
+  padding: 12rpx 0;
+}
+
+.guarantee-icon {
+  font-size: 32rpx;
+  width: 40rpx;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+.guarantee-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2rpx;
+}
+
+.guarantee-title {
+  font-size: 26rpx;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.guarantee-desc {
+  font-size: 22rpx;
+  color: var(--text-secondary);
+  line-height: 1.4;
+}
+
+/* 仲裁申请卡片 */
+.dispute-card {
+  background: rgba(255, 71, 87, 0.05);
+  border: 1rpx solid rgba(255, 71, 87, 0.15);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16rpx;
+}
+
+.dispute-header {
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+  text-align: center;
+}
+
+.dispute-icon {
+  font-size: 48rpx;
+}
+
+.dispute-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4rpx;
+  text-align: left;
+}
+
+.dispute-title {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.dispute-desc {
+  font-size: 24rpx;
+  color: var(--text-secondary);
+  line-height: 1.4;
+}
+
+.btn-dispute {
+  width: 100%;
+  padding: 20rpx;
+  font-size: 28rpx;
+  color: #ff4757;
+  background: rgba(255, 71, 87, 0.1);
+  border: 1rpx solid rgba(255, 71, 87, 0.3);
+  border-radius: 30rpx;
+  margin-top: 8rpx;
+}
+
+.btn-dispute:active {
+  background: rgba(255, 71, 87, 0.2);
+}
+
+.dispute-hint {
+  font-size: 22rpx;
+  color: var(--text-secondary);
+  text-align: center;
+}
+
+/* 评价入口 */
+.review-entry-card {
+  background: linear-gradient(135deg, #fff3e0, #fff8e1);
+  border: 1rpx solid rgba(255, 152, 0, 0.2);
+  margin-bottom: 24rpx;
+}
+
+.review-entry-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.review-entry-info {
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+}
+
+.review-entry-icon {
+  font-size: 48rpx;
+}
+
+.review-entry-text {
+  display: flex;
+  flex-direction: column;
+  gap: 4rpx;
+}
+
+.review-entry-title {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: #ff9800;
+}
+
+.review-entry-desc {
+  font-size: 24rpx;
+  color: #999;
+}
+
+.btn-review {
+  padding: 16rpx 32rpx;
+  background: linear-gradient(135deg, #ff9800, #ffb74d);
+  color: #fff;
+  font-size: 28rpx;
+  font-weight: 600;
+  border-radius: 30rpx;
+  border: none;
+}
+
+.btn-review:active {
+  opacity: 0.8;
+}
+
+.review-entry-done {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8rpx;
+  padding: 16rpx;
+}
+
+.review-done-icon {
+  font-size: 32rpx;
+}
+
+.review-done-text {
+  font-size: 28rpx;
+  color: #4caf50;
+  font-weight: 600;
+}

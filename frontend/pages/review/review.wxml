@@ -1,0 +1,85 @@
+<!-- pages/review/review.wxml -->
+<view class="page">
+  <!-- 服务信息 -->
+  <view class="service-info card">
+    <text class="service-title">{{serviceTitle || '服务评价'}}</text>
+    <text class="provider-name" wx:if="{{providerNickname}}">服务者：{{providerNickname}}</text>
+  </view>
+
+  <!-- 评分 -->
+  <view class="section card">
+    <view class="section-title">⭐ 整体评分</view>
+    <view class="rating-row">
+      <view
+        wx:for="{{5}}"
+        wx:key="index"
+        class="star {{item <= rating ? 'star-active' : ''}}"
+        bindtap="onRatingTap"
+        data-rating="{{item}}"
+      >
+        ★
+      </view>
+      <text class="rating-text">{{rating}}分</text>
+    </view>
+  </view>
+
+  <!-- 评价标签 -->
+  <view class="section card">
+    <view class="section-title">🏷️ 选择标签（可选，最多5个）</view>
+    <view class="tags-row">
+      <view
+        wx:for="{{availableTags}}"
+        wx:key="item"
+        class="tag-item {{tagSet[item] ? 'tag-selected' : ''}}"
+        bindtap="onTagTap"
+        data-tag="{{item}}"
+      >
+        {{item}}
+      </view>
+    </view>
+  </view>
+
+  <!-- 评价内容 -->
+  <view class="section card">
+    <view class="section-title">📝 评价内容</view>
+    <textarea
+      class="content-input"
+      placeholder="分享你的服务体验，帮助其他同学更好地选择~"
+      value="{{content}}"
+      bindinput="onContentInput"
+      maxlength="500"
+    />
+    <view class="char-count">{{content.length}}/500</view>
+  </view>
+
+  <!-- 图片上传 -->
+  <view class="section card">
+    <view class="section-title">📷 添加图片（可选，最多9张）</view>
+    <view class="images-row">
+      <view wx:for="{{images}}" wx:key="index" class="image-item">
+        <image src="{{item}}" mode="aspectFill" />
+        <view class="remove-btn" bindtap="onRemoveImage" data-index="{{index}}">×</view>
+      </view>
+      <view class="add-image-btn" bindtap="onAddImage" wx:if="{{images.length < 9}}">
+        <text class="add-icon">+</text>
+        <text class="add-text">添加图片</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 匿名评价 -->
+  <view class="section card">
+    <view class="anonymous-row">
+      <text class="anonymous-text">匿名评价</text>
+      <switch checked="{{anonymous}}" bindchange="onAnonymousChange" color="#9b59b6" />
+    </view>
+    <text class="anonymous-hint">开启后，其他用户看不到你的头像和昵称</text>
+  </view>
+
+  <!-- 提交按钮 -->
+  <view class="submit-bar safe-area-bottom">
+    <button class="submit-btn {{submitting ? 'btn-disabled' : ''}}" bindtap="onSubmit">
+      {{submitting ? '提交中...' : '提交评价'}}
+    </button>
+  </view>
+</view>

@@ -1,0 +1,7 @@
+{
+  "navigationBarTitleText": "道藏天阁",
+  "navigationBarBackgroundColor": "#9b59b6",
+  "navigationBarTextStyle": "white",
+  "backgroundColor": "#faf7ff",
+  "enablePullDownRefresh": true
+}

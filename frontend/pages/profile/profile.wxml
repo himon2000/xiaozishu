@@ -1,0 +1,188 @@
+<!-- pages/profile/profile.wxml - 我的页面 列表菜单式 -->
+<view class="page" wx:if="{{user}}">
+
+  <!-- ========== 1. 用户信息卡片 ========== -->
+  <view class="profile-header-card">
+    <view class="profile-row">
+      <image class="avatar" src="{{user.avatar_url || '/assets/default-avatar.png'}}" mode="aspectFill" bindtap="onAvatarTap" />
+      <view class="profile-info">
+        <view class="profile-name-row">
+          <text class="profile-name">{{user.nickname}}</text>
+          <view class="level-badge" bindtap="onMyRole">
+            <text class="level-icon">{{currentRole && currentRole.icon || '🌱'}}</text>
+            <text class="level-name">{{currentRole && currentRole.name || '散修'}}</text>
+          </view>
+        </view>
+        <view class="profile-school" wx:if="{{user.school}}">📍 {{user.school}}</view>
+        <view class="profile-stats-row">
+          <view class="mini-stat" bindtap="onMyOrders">
+            <text class="mini-num">{{orderStats.total || 0}}</text>
+            <text class="mini-label">订单</text>
+          </view>
+          <view class="mini-sep"></view>
+          <view class="mini-stat" bindtap="onMyServices">
+            <text class="mini-num">{{serviceStats.total || 0}}</text>
+            <text class="mini-label">服务</text>
+          </view>
+          <view class="mini-sep"></view>
+          <view class="mini-stat">
+            <text class="mini-num">{{user.lingshi || 0}}</text>
+            <text class="mini-label">灵石</text>
+          </view>
+          <view class="mini-sep"></view>
+          <view class="mini-stat">
+            <text class="mini-num">{{user.credit_score || 100}}</text>
+            <text class="mini-label">信用</text>
+          </view>
+        </view>
+      </view>
+      <view class="edit-btn" bindtap="onEditProfile">编辑</view>
+    </view>
+  </view>
+
+  <!-- ========== 2. 事务中心 ========== -->
+  <view class="group-label">📋 事务中心</view>
+  <view class="menu-group">
+
+    <!-- 我的灵契（订单） -->
+    <view class="menu-item" bindtap="onMyOrders">
+      <text class="menu-icon">📜</text>
+      <text class="menu-title">我的灵契</text>
+      <text class="menu-note">（订单）</text>
+      <view class="badge-dot" wx:if="{{orderStats.pending > 0}}">
+        <text class="badge-text">{{orderStats.pending}}</text>
+      </view>
+      <text class="menu-arrow">›</text>
+    </view>
+
+    <!-- 我的任务（课题/项目等待办） -->
+    <view class="menu-item" bindtap="onMyTasks">
+      <text class="menu-icon">🎯</text>
+      <text class="menu-title">我的任务</text>
+      <text class="menu-note">（课题·待办）</text>
+      <view class="badge-dot" wx:if="{{taskStats.pending > 0}}">
+        <text class="badge-text">{{taskStats.pending}}</text>
+      </view>
+      <text class="menu-arrow">›</text>
+    </view>
+
+    <!-- 我的历练（实习/实践） -->
+    <view class="menu-item" bindtap="onMyOpportunities">
+      <text class="menu-icon">🏕</text>
+      <text class="menu-title">我的历练</text>
+      <text class="menu-note">（实习实践）</text>
+      <text class="menu-arrow">›</text>
+    </view>
+
+  </view>
+
+  <!-- ========== 3. 修炼体系 ========== -->
+  <view class="group-label">✨ 修炼体系</view>
+  <view class="menu-group">
+
+    <!-- 我的角色 -->
+    <view class="menu-item" bindtap="onMyRole">
+      <text class="menu-icon">🎭</text>
+      <text class="menu-title">我的角色</text>
+      <text class="menu-note">（认证）</text>
+      <text class="menu-arrow">›</text>
+    </view>
+
+    <!-- 我的修为 -->
+    <view class="menu-item" bindtap="onGrowthDetail">
+      <text class="menu-icon">🔮</text>
+      <text class="menu-title">我的修为</text>
+      <text class="menu-note">（成就·勋章·境界）</text>
+      <text class="menu-arrow">›</text>
+    </view>
+
+  </view>
+
+  <!-- ========== 4. 财富体系 ========== -->
+  <view class="group-label">💎 财富体系</view>
+  <view class="menu-group">
+
+    <!-- 我的灵石（支付体系） -->
+    <view class="menu-item" bindtap="onMyAsset">
+      <text class="menu-icon">💎</text>
+      <text class="menu-title">我的灵石</text>
+      <text class="menu-note">（充值支付）</text>
+      <text class="menu-arrow">›</text>
+    </view>
+
+    <!-- 我的道池（分红） -->
+    <view class="menu-item" bindtap="onDividendPool">
+      <text class="menu-icon">💰</text>
+      <text class="menu-title">我的道池</text>
+      <text class="menu-note">（分红收益）</text>
+      <text class="menu-arrow">›</text>
+    </view>
+
+  </view>
+
+  <!-- ========== 5. 知识与传承 ========== -->
+  <view class="group-label">📖 知识与传承</view>
+  <view class="menu-group">
+
+    <!-- 我的藏经阁（发布的+收藏的） -->
+    <view class="menu-item" bindtap="onJingzang">
+      <text class="menu-icon">📖</text>
+      <text class="menu-title">我的藏经阁</text>
+      <text class="menu-note">（发布·收藏）</text>
+      <text class="menu-arrow">›</text>
+    </view>
+
+    <!-- 我的传承树（师徒模块） -->
+    <view class="menu-item" bindtap="onMyLineage">
+      <text class="menu-icon">🌳</text>
+      <text class="menu-title">我的传承树</text>
+      <text class="menu-note">（师徒关系）</text>
+      <text class="menu-arrow">›</text>
+    </view>
+
+    <!-- 我的飞花令（推荐码） -->
+    <view class="menu-item" bindtap="onFeihuaDetail">
+      <text class="menu-icon">🎫</text>
+      <text class="menu-title">我的飞花令</text>
+      <text class="menu-note">（推荐码）</text>
+      <text class="menu-arrow">›</text>
+    </view>
+
+  </view>
+
+  <!-- ========== 6. 账户与设置 ========== -->
+  <view class="group-label">⚙️ 账户与设置</view>
+  <view class="menu-group settings-group">
+
+    <view class="menu-item" bindtap="onCustomerService">
+      <text class="menu-icon">🎧</text>
+      <text class="menu-title">我的客服</text>
+      <text class="menu-note">（帮助反馈）</text>
+      <text class="menu-arrow">›</text>
+    </view>
+
+    <view class="menu-item" bindtap="onMenuTap" data-url="/pages/settings/settings">
+      <text class="menu-icon">⚙️</text>
+      <text class="menu-title">我的设置</text>
+      <text class="menu-arrow">›</text>
+    </view>
+
+    <view class="menu-item danger" bindtap="onLogout">
+      <text class="menu-icon">🚪</text>
+      <text class="menu-title danger-text">退出登录</text>
+      <text class="menu-arrow danger-arrow">›</text>
+    </view>
+
+  </view>
+
+  <view class="safe-area-bottom"></view>
+</view>
+
+<!-- 加载状态 -->
+<view class="loading-page" wx:if="{{!user}}">
+  <view class="loading-spinner"></view>
+  <text class="loading-text">加载中...</text>
+</view>
+
+<!-- 自定义TabBar -->
+<custom-tab-bar />

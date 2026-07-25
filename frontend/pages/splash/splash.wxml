@@ -1,0 +1,58 @@
+<!-- pages/splash/splash.wxml -->
+<view class="splash">
+  <!-- 背景动画 -->
+  <view class="bg-grid"></view>
+  <view class="bg-glow"></view>
+
+  <!-- Logo 区域 -->
+  <view class="logo-section">
+    <image class="logo-icon" src="/assets/logo.png" mode="aspectFit" />
+    <text class="logo-text">小紫薯</text>
+    <view class="slogan">{{slogan}}</view>
+    <view class="sub-slogan">{{subSlogan}}</view>
+  </view>
+
+  <!-- 登录按钮 -->
+  <view class="login-section" wx:if="{{!showRoleSelect}}">
+    <!-- 云端状态提示 -->
+    <view class="cloud-status" wx:if="{{cloudStatus === 'error'}}">
+      <text class="cloud-error">{{cloudError}}</text>
+    </view>
+
+    <button
+      class="btn btn-primary btn-login"
+      bindtap="onLoginTap"
+      disabled="{{loading || cloudStatus === 'checking'}}"
+      hover-class="none"
+    >
+      <view class="wechat-icon">🍜</view>
+      {{loading ? '正在登录...' : (cloudStatus === 'checking' ? '检查连接...' : '微信一键登录')}}
+    </button>
+    <view class="login-tip">登录即表示同意《小紫薯用户协议》</view>
+  </view>
+
+  <!-- 角色选择（新用户） -->
+  <view class="role-select" wx:if="{{showRoleSelect}}">
+    <view class="role-title">选择你的身份，开启互助之旅</view>
+    <view class="role-list">
+      <view class="role-card" bindtap="onSelectRole" data-role="seeker">
+        <text class="role-icon">🎓</text>
+        <text class="role-name">散修</text>
+        <text class="role-desc">初中/高中生，寻找学长学姐帮助</text>
+        <view class="role-btn">进入</view>
+      </view>
+      <view class="role-card provider" bindtap="onSelectRole" data-role="provider">
+        <text class="role-icon">🍠</text>
+        <text class="role-name">大虾</text>
+        <text class="role-desc">大学生/研究生，分享技能赚收益</text>
+        <view class="role-btn">认证入驻</view>
+      </view>
+      <view class="role-card elder" bindtap="onSelectRole" data-role="elder">
+        <text class="role-icon">🏛️</text>
+        <text class="role-name">长老</text>
+        <text class="role-desc">家长/导师，发布实习与资源</text>
+        <view class="role-btn">入驻</view>
+      </view>
+    </view>
+  </view>
+</view>

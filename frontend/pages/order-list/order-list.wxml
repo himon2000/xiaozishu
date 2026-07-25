@@ -1,0 +1,56 @@
+<!-- pages/order-list/order-list.wxml -->
+<view class="page">
+  <!-- 角色切换 -->
+  <view class="tabs">
+    <view
+      wx:for="{{tabs}}"
+      wx:key="key"
+      class="tab {{role === item.key ? 'active' : ''}}"
+      bindtap="onTabChange"
+      data-key="{{item.key}}"
+    >{{item.label}}</view>
+  </view>
+
+  <!-- 订单列表 -->
+  <view class="order-list">
+    <view
+      wx:for="{{orders}}"
+      wx:key="id"
+      class="order-card card"
+      bindtap="onOrderTap"
+      data-id="{{item.id}}"
+    >
+      <view class="order-header">
+        <text class="order-id">订单号：{{item.id}}</text>
+        <view class="order-status tag">
+          {{item.status}}
+        </view>
+      </view>
+      <view class="order-title">{{item.service_snapshot.title}}</view>
+      <view class="order-meta">
+        <text class="meta-tag tag-dao-{{item.dao_fa_type}}">{{item.dao_fa_type}}</text>
+        <text class="meta-sessions">{{item.sessions_done || 0}}/{{item.sessions_total}} 课次</text>
+        <text class="meta-date">{{item.created_at}}</text>
+      </view>
+      <view class="order-footer">
+        <text class="order-price">💎{{item.total_paid}} 灵石</text>
+        <text class="order-arrow">›</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 空状态 -->
+  <view class="empty-state" wx:if="{{!loading && orders.length === 0}}">
+    <text class="icon">📭</text>
+    <text>暂无订单</text>
+    <text class="text-secondary">去服务广场看看吧</text>
+    <button class="btn btn-secondary" style="margin-top: 24rpx;" bindtap="onGoHome">浏览服务</button>
+  </view>
+
+  <view class="loading-container" wx:if="{{loading}}">
+    <text>加载中...</text>
+  </view>
+
+  <!-- 自定义TabBar -->
+  <custom-tab-bar />
+</view>

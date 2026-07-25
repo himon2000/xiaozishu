@@ -1,0 +1,365 @@
+/* 分红池页面样式 */
+.container {
+  min-height: 100vh;
+  background: #0d0d1a;
+  color: #fff;
+  padding-bottom: 40rpx;
+}
+
+/* 年份选择器 */
+.year-selector {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 30rpx;
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+}
+
+.year-nav {
+  padding: 20rpx 30rpx;
+}
+
+.nav-arrow {
+  font-size: 32rpx;
+  color: #ffd700;
+}
+
+.nav-arrow.disabled {
+  color: #666;
+}
+
+.year-display {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0 60rpx;
+}
+
+.year-text {
+  font-size: 40rpx;
+  font-weight: bold;
+  color: #ffd700;
+}
+
+.year-sub {
+  font-size: 24rpx;
+  color: #888;
+  margin-top: 8rpx;
+}
+
+/* 分红池总览 */
+.pool-header {
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+  margin: 30rpx;
+  border-radius: 20rpx;
+  padding: 40rpx;
+  text-align: center;
+  border: 1px solid #333;
+}
+
+.pool-amount {
+  margin-bottom: 30rpx;
+}
+
+.pool-label {
+  display: block;
+  font-size: 26rpx;
+  color: #888;
+  margin-bottom: 10rpx;
+}
+
+.pool-value {
+  display: block;
+  font-size: 60rpx;
+  font-weight: bold;
+  color: #ffd700;
+  text-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
+}
+
+.pool-stats {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.stat-item {
+  padding: 0 40rpx;
+  text-align: center;
+}
+
+.stat-value {
+  display: block;
+  font-size: 36rpx;
+  font-weight: bold;
+  color: #fff;
+}
+
+.stat-label {
+  display: block;
+  font-size: 22rpx;
+  color: #888;
+  margin-top: 8rpx;
+}
+
+.stat-divider {
+  width: 1px;
+  height: 60rpx;
+  background: #333;
+}
+
+/* 我的分红 */
+.my-section {
+  margin: 30rpx;
+}
+
+.section-title {
+  font-size: 28rpx;
+  color: #888;
+  margin-bottom: 20rpx;
+  padding-left: 10rpx;
+  border-left: 4rpx solid #ffd700;
+}
+
+.my-card {
+  background: #1a1a2e;
+  border-radius: 20rpx;
+  padding: 30rpx;
+  border: 1px solid #333;
+}
+
+.my-card.eligible {
+  border-color: #ffd700;
+  box-shadow: 0 0 20px rgba(255, 215, 0, 0.1);
+}
+
+.my-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20rpx;
+}
+
+.level-badge {
+  font-size: 26rpx;
+  padding: 8rpx 20rpx;
+  background: #333;
+  border-radius: 30rpx;
+}
+
+.level-badge.gold {
+  background: linear-gradient(135deg, #ffd700, #ff8c00);
+  color: #000;
+  font-weight: bold;
+}
+
+.exp-ratio {
+  font-size: 24rpx;
+  color: #888;
+}
+
+.my-amount {
+  text-align: center;
+  padding: 30rpx 0;
+}
+
+.amount-label {
+  display: block;
+  font-size: 26rpx;
+  color: #888;
+  margin-bottom: 10rpx;
+}
+
+.amount-value {
+  display: block;
+  font-size: 56rpx;
+  font-weight: bold;
+  color: #ffd700;
+}
+
+.my-status {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 30rpx 0;
+}
+
+.status-icon {
+  font-size: 40rpx;
+  margin-right: 15rpx;
+}
+
+.status-text {
+  font-size: 26rpx;
+  color: #888;
+}
+
+.claim-btn {
+  margin-top: 20rpx;
+  background: linear-gradient(135deg, #ffd700, #ff8c00);
+  color: #000;
+  font-weight: bold;
+  border-radius: 40rpx;
+  border: none;
+  padding: 20rpx;
+}
+
+.claim-btn.disabled {
+  background: #333;
+  color: #666;
+}
+
+/* 合格大虾列表 */
+.eligible-section {
+  margin: 30rpx;
+}
+
+.eligible-list {
+  background: #1a1a2e;
+  border-radius: 20rpx;
+  overflow: hidden;
+  border: 1px solid #333;
+}
+
+.eligible-item {
+  display: flex;
+  align-items: center;
+  padding: 25rpx;
+  border-bottom: 1px solid #333;
+}
+
+.eligible-item:last-child {
+  border-bottom: none;
+}
+
+.rank-badge {
+  width: 50rpx;
+  height: 50rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24rpx;
+  font-weight: bold;
+  color: #fff;
+  background: #333;
+  border-radius: 50%;
+  margin-right: 20rpx;
+}
+
+.rank-badge.rank-1 {
+  background: linear-gradient(135deg, #ffd700, #ff8c00);
+  color: #000;
+}
+
+.rank-badge.rank-2 {
+  background: linear-gradient(135deg, #c0c0c0, #a0a0a0);
+  color: #000;
+}
+
+.rank-badge.rank-3 {
+  background: linear-gradient(135deg, #cd7f32, #b87333);
+  color: #fff;
+}
+
+.avatar {
+  width: 70rpx;
+  height: 70rpx;
+  border-radius: 50%;
+  margin-right: 20rpx;
+  background: #333;
+}
+
+.info {
+  flex: 1;
+}
+
+.name-row {
+  display: flex;
+  align-items: center;
+  margin-bottom: 8rpx;
+}
+
+.name {
+  font-size: 28rpx;
+  color: #fff;
+  margin-right: 15rpx;
+}
+
+.level-tag {
+  font-size: 22rpx;
+  color: #ffd700;
+}
+
+.stats-row {
+  display: flex;
+}
+
+.exp, .orders {
+  font-size: 22rpx;
+  color: #666;
+  margin-right: 20rpx;
+}
+
+.share {
+  text-align: right;
+}
+
+.share-amount {
+  display: block;
+  font-size: 28rpx;
+  font-weight: bold;
+  color: #ffd700;
+}
+
+.share-ratio {
+  display: block;
+  font-size: 20rpx;
+  color: #888;
+  margin-top: 4rpx;
+}
+
+.empty-eligible {
+  padding: 60rpx;
+  text-align: center;
+  color: #666;
+}
+
+/* 规则说明 */
+.rules-section {
+  margin: 30rpx;
+}
+
+.rules-card {
+  background: #1a1a2e;
+  border-radius: 20rpx;
+  padding: 30rpx;
+  border: 1px solid #333;
+}
+
+.rule-item {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 25rpx;
+}
+
+.rule-item:last-child {
+  margin-bottom: 0;
+}
+
+.rule-icon {
+  font-size: 32rpx;
+  margin-right: 20rpx;
+}
+
+.rule-text {
+  flex: 1;
+  font-size: 26rpx;
+  color: #ccc;
+  line-height: 1.6;
+}
+
+/* 加载状态 */
+.loading-state {
+  padding: 100rpx;
+  text-align: center;
+  color: #666;
+}

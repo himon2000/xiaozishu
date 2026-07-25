@@ -1,0 +1,99 @@
+<!-- pages/cultivation/cultivation.wxml - 修为页面 -->
+<view class="page">
+
+  <!-- 顶部渐变背景 -->
+  <view class="header-bg">
+    <view class="realm-card">
+      <view class="realm-main">
+        <text class="realm-icon">{{currentRole && currentRole.icon || '🌱'}}</text>
+        <view class="realm-info">
+          <text class="realm-name">{{currentRole && currentRole.name || '散修'}}</text>
+          <text class="realm-level">境界 · {{cultivationLevel}}级</text>
+        </view>
+      </view>
+
+      <!-- 进度条 -->
+      <view class="exp-section">
+        <view class="exp-info">
+          <text class="exp-label">修为进度</text>
+          <text class="exp-value">{{cultivationExp}} / {{expToNextLevel + cultivationExp}}</text>
+        </view>
+        <view class="progress-bar">
+          <view class="progress-fill" style="width: {{cultivationProgress}}%"></view>
+        </view>
+        <text class="exp-hint">距离下一境界还需 {{expToNextLevel}} 修为</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 境界图谱 -->
+  <view class="section">
+    <view class="section-title">🧿 境界图谱</view>
+    <view class="realm-list">
+      <view class="realm-item {{item.level <= cultivationLevel ? 'current' : ''}} {{item.level === cultivationLevel ? 'active' : ''}}"
+            wx:for="{{realms}}" wx:key="level">
+        <text class="realm-item-icon">{{item.icon}}</text>
+        <text class="realm-item-name">{{item.name}}</text>
+        <text class="realm-item-level">{{item.level}}级</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 修为获取方式 -->
+  <view class="section">
+    <view class="section-title">📈 如何提升修为</view>
+    <view class="method-list">
+      <view class="method-item">
+        <text class="method-icon">✅</text>
+        <view class="method-info">
+          <text class="method-title">完成任务</text>
+          <text class="method-desc">完成服务或需求，每次 +10~50 修为</text>
+        </view>
+        <text class="method-amount">+10~50</text>
+      </view>
+      <view class="method-item">
+        <text class="method-icon">⭐</text>
+        <view class="method-info">
+          <text class="method-title">获得好评</text>
+          <text class="method-desc">每获得一个5星好评，+20 修为</text>
+        </view>
+        <text class="method-amount">+20</text>
+      </view>
+      <view class="method-item">
+        <text class="method-icon">🎫</text>
+        <view class="method-info">
+          <text class="method-title">邀请道友</text>
+          <text class="method-desc">每邀请一位道友注册，+50 修为</text>
+        </view>
+        <text class="method-amount">+50</text>
+      </view>
+      <view class="method-item">
+        <text class="method-icon">📚</text>
+        <view class="method-info">
+          <text class="method-title">完善资料</text>
+          <text class="method-desc">认证学校、填写经历等，+30~100 修为</text>
+        </view>
+        <text class="method-amount">+30~100</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 修为记录 -->
+  <view class="section">
+    <view class="section-title">📜 修为记录</view>
+    <view class="record-list">
+      <view class="record-item" wx:for="{{expRecords}}" wx:key="index">
+        <view class="record-left">
+          <text class="record-type">{{item.type}}</text>
+          <text class="record-desc">{{item.desc}}</text>
+        </view>
+        <view class="record-right">
+          <text class="record-amount">{{item.amount}}</text>
+          <text class="record-time">{{item.time}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view class="safe-area-bottom"></view>
+</view>

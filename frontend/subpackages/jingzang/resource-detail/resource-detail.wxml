@@ -1,0 +1,128 @@
+<!-- subpackages/jingzang/resource-detail/resource-detail.wxml -->
+<view class="page">
+  <!-- 导航栏 -->
+  <view class="nav-bar safe-area-top">
+    <view class="nav-inner">
+      <view class="nav-back" bindtap="onBack">←</view>
+      <text class="nav-title">道藏详情</text>
+      <view class="nav-share" bindtap="onShare">分享</view>
+    </view>
+  </view>
+
+  <!-- 加载中 -->
+  <view class="loading-state" wx:if="{{loading}}">
+    <text>加载中...</text>
+  </view>
+
+  <!-- 内容区 -->
+  <block wx:elif="{{resource}}">
+    <!-- 封面图 -->
+    <image
+      wx:if="{{resource.cover_image}}"
+      src="{{resource.cover_image}}"
+      mode="widthFix"
+      class="cover-image"
+    />
+
+    <!-- 资源信息 -->
+    <view class="resource-content">
+      <!-- 标题 -->
+      <view class="resource-header">
+        <text class="resource-category {{resource.category}}">
+          {{resource.category === 'notes' ? '📝笔记' : resource.category === 'guide' ? '📖攻略' : resource.category === 'material' ? '📚资料' : resource.category === 'template' ? '📋模板' : resource.category === 'video' ? '🎬视频' : '📦其他'}}
+        </text>
+        <text class="resource-date">{{resource.created_at}}</text>
+      </view>
+      <view class="resource-title">{{resource.title}}</view>
+
+      <!-- 作者信息 -->
+      <view class="author-card">
+        <image
+          class="author-avatar"
+          src="{{resource.author && resource.author.avatar_url ? resource.author.avatar_url : '/assets/default-avatar.png'}}"
+          mode="aspectFill"
+        />
+        <view class="author-info">
+          <text class="author-name">{{resource.author && resource.author.nickname ? resource.author.nickname : '匿名修士'}}</text>
+          <text class="author-school" wx:if="{{resource.author && resource.author.school}}">{{resource.author.school}}</text>
+        </view>
+      </view>
+
+      <!-- 正文内容 -->
+      <view class="main-content">
+        <text class="content-text">{{resource.description || resource.content || '暂无详细内容'}}</text>
+      </view>
+
+      <!-- 标签 -->
+      <view class="tags-row" wx:if="{{resource.tags && resource.tags.length > 0}}">
+        <text class="tag" wx:for="{{resource.tags}}" wx:key="index"># {{item}}</text>
+      </view>
+
+      <!-- 操作栏 -->
+      <view class="action-bar">
+        <view class="action-item" bindtap="onLike">
+          <text>{{resource.is_liked ? '❤️' : '🤍'}}</text>
+          <text class="action-count">{{resource.likes || 0}}</text>
+        </view>
+        <view class="action-item" bindtap="onFavorite">
+          <text>{{resource.is_favorited ? '⭐' : '☆'}}</text>
+          <text class="action-count">{{resource.is_favorited ? '已收藏' : '收藏'}}</text>
+        </view>
+        <view class="action-item" bindtap="scrollToComments">
+          <text>💬</text>
+          <text class="action-count">{{comments.length}}</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 评论区域 -->
+    <view class="comments-section" id="comments">
+      <view class="section-title">💬 道藏评论 ({{comments.length}})</view>
+
+      <!-- 评论列表 -->
+      <view class="comment-list">
+        <view class="comment-item" wx:for="{{comments}}" wx:key="id">
+          <image
+            class="comment-avatar"
+            src="{{item.author && item.author.avatar_url ? item.author.avatar_url : '/assets/default-avatar.png'}}"
+            mode="aspectFill"
+          />
+          <view class="comment-body">
+            <view class="comment-header">
+              <text class="comment-name">{{item.author && item.author.nickname ? item.author.nickname : '匿名修士'}}</text>
+              <text class="comment-time">{{item.created_at}}</text>
+            </view>
+            <text class="comment-text">{{item.content}}</text>
+          </view>
+        </view>
+
+        <!-- 空评论 -->
+        <view class="empty-comments" wx:if="{{!loadingComments && comments.length === 0}}">
+          <text>暂无评论，来发表第一个评论吧～</text>
+        </view>
+
+        <view class="load-more" wx:if="{{loadingComments}}">
+          <text>加载评论中...</text>
+        </view>
+      </view>
+
+      <!-- 评论输入 -->
+      <view class="comment-input-bar safe-area-bottom">
+        <input
+          class="comment-input"
+          placeholder="写下你的感悟..."
+          bindconfirm="onSubmitComment"
+          value="{{commentText}}"
+          bindinput="onCommentInput"
+        />
+        <view class="comment-submit" bindtap="onSubmitComment">发送</view>
+      </view>
+    </view>
+  </block>
+
+  <!-- 加载失败 -->
+  <view class="error-state" wx:elif="{{!loading && !resource}}">
+    <text>道藏不存在或已被删除</text>
+    <view class="back-btn" bindtap="onBack">返回上一页</view>
+  </view>
+</view>

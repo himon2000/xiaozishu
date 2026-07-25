@@ -1,0 +1,72 @@
+<!-- 下山历练 - 首页 -->
+<view class="page">
+
+  <!-- 顶部 Banner -->
+  <view class="banner">
+    <view class="banner-title">💼 下山历练</view>
+    <view class="banner-sub">实习内推 · 名企兼职 · 就业指导</view>
+  </view>
+
+  <!-- 岗位类型 -->
+  <view class="section">
+    <view class="section-header">
+      <text class="section-title">选择岗位类型</text>
+      <text class="section-more" bindtap="onPublishOpportunity">发布机会 ></text>
+    </view>
+    <view class="type-grid">
+      <view
+        class="type-card"
+        wx:for="{{jobTypes}}"
+        wx:key="id"
+        bindtap="onTypeTap"
+        data-type="{{item.id}}"
+      >
+        <view class="type-icon">{{item.icon}}</view>
+        <view class="type-name">{{item.name}}</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 热门机会 -->
+  <view class="section">
+    <view class="section-header">
+      <text class="section-title">🔥 最新机会</text>
+      <text class="section-more" bindtap="onViewAll">更多 ></text>
+    </view>
+
+    <view class="opportunity-list">
+      <view
+        class="opportunity-card"
+        wx:for="{{opportunities}}"
+        wx:key="id"
+        bindtap="onOpportunityTap"
+        data-id="{{item.id}}"
+      >
+        <view class="opp-header">
+          <view class="opp-title">{{item.title}}</view>
+          <view class="opp-salary">{{item.salary}}</view>
+        </view>
+        <view class="opp-company">{{item.company}}</view>
+        <view class="opp-tags">
+          <text class="tag" wx:for="{{item.tags}}" wx:for-item="tag" wx:if="{{index < 3}}">{{tag}}</text>
+        </view>
+        <view class="opp-footer">
+          <text class="opp-time">{{item.created_at}}</text>
+          <text class="opp-views">👁 {{item.views || 0}}</text>
+        </view>
+      </view>
+    </view>
+
+    <view class="empty-state" wx:if="{{!loading && opportunities.length === 0}}">
+      <text class="empty-title">暂无最新机会</text>
+      <text class="empty-sub">敬请期待...</text>
+    </view>
+  </view>
+
+  <!-- 发布悬浮按钮 -->
+  <view class="publish-fab" bindtap="onPublishOpportunity">
+    <text class="fab-icon">📝</text>
+    <text class="fab-label">发布机会</text>
+  </view>
+
+</view>

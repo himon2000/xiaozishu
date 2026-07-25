@@ -1,0 +1,246 @@
+<!-- pages/opportunity-detail/opportunity-detail.wxml -->
+<view class="page">
+  <!-- 加载状态 -->
+  <view class="loading-state" wx:if="{{loading}}">
+    <text>加载中...</text>
+  </view>
+
+  <!-- 资源信息 -->
+  <view class="opp-info" wx:if="{{opportunity && !loading}}">
+    <!-- 类型标签 -->
+    <view class="opp-type tag-{{opportunity.opportunity_type}}">
+      <text>{{opportunity.opportunity_type_name || opportunity.opportunity_type}}</text>
+    </view>
+
+    <!-- 标题 -->
+    <view class="opp-title">{{opportunity.title}}</view>
+
+    <!-- 薪资 -->
+    <view class="opp-salary" wx:if="{{opportunity.salary_range}}">
+      <text class="salary-tag">{{opportunity.salary_range}}</text>
+    </view>
+
+    <!-- 公司信息 -->
+    <view class="company-card card" wx:if="{{opportunity.company_name}}">
+      <view class="company-logo">
+        <text class="logo-placeholder">{{opportunity.company_name.charAt(0)}}</text>
+      </view>
+      <view class="company-info">
+        <view class="company-name">{{opportunity.company_name}}</view>
+        <view class="company-detail" wx:if="{{opportunity.company_industry || opportunity.company_size}}">
+          <text wx:if="{{opportunity.company_industry}}">{{opportunity.company_industry}}</text>
+          <text wx:if="{{opportunity.company_industry && opportunity.company_size}}"> · </text>
+          <text wx:if="{{opportunity.company_size}}">{{opportunity.company_size}}</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 基本信息 -->
+    <view class="info-section card">
+      <view class="info-row" wx:if="{{opportunity.position}}">
+        <text class="info-icon">📋</text>
+        <text class="info-label">职位</text>
+        <text class="info-value">{{opportunity.position}}</text>
+      </view>
+      <view class="info-row" wx:if="{{opportunity.position_type}}">
+        <text class="info-icon">🏷️</text>
+        <text class="info-label">类型</text>
+        <text class="info-value">{{opportunity.position_type}}</text>
+      </view>
+      <view class="info-row" wx:if="{{opportunity.work_location}}">
+        <text class="info-icon">📍</text>
+        <text class="info-label">地点</text>
+        <text class="info-value">{{opportunity.work_location}}</text>
+      </view>
+      <view class="info-row" wx:if="{{opportunity.work_mode}}">
+        <text class="info-icon">💻</text>
+        <text class="info-label">模式</text>
+        <text class="info-value">{{opportunity.work_mode_name || opportunity.work_mode}}</text>
+      </view>
+      <view class="info-row" wx:if="{{opportunity.deadline}}">
+        <text class="info-icon">📅</text>
+        <text class="info-label">截止</text>
+        <text class="info-value {{opportunity.is_expired ? 'expired' : ''}}">
+          {{opportunity.deadline}} {{opportunity.is_expired ? '(已过期)' : ''}}
+        </text>
+      </view>
+    </view>
+
+    <!-- 职位描述 -->
+    <view class="section card" wx:if="{{opportunity.description}}">
+      <view class="section-title">📝 职位描述</view>
+      <view class="section-content">{{opportunity.description}}</view>
+    </view>
+
+    <!-- 任职要求 -->
+    <view class="section card" wx:if="{{opportunity.requirements}}">
+      <view class="section-title">✅ 任职要求</view>
+      <view class="section-content">{{opportunity.requirements}}</view>
+    </view>
+
+    <!-- 福利待遇 -->
+    <view class="section card" wx:if="{{opportunity.benefits}}">
+      <view class="section-title">🎁 福利待遇</view>
+      <view class="section-content">{{opportunity.benefits}}</view>
+    </view>
+
+    <!-- 标签 -->
+    <view class="tags-section" wx:if="{{opportunity.tags.length > 0}}">
+      <text wx:for="{{opportunity.tags}}" wx:for-item="tag" wx:key="tag" class="tag">{{tag}}</text>
+    </view>
+
+    <!-- 发布者信息 -->
+    <view class="publisher-section card">
+      <view class="section-title">👤 发布者</view>
+      <view class="publisher-card" bindtap="onViewProfile" data-openid="{{opportunity.publisher.openid}}">
+        <image class="publisher-avatar" src="{{opportunity.publisher.avatar_url || '/assets/default-avatar.png'}}" />
+        <view class="publisher-info">
+          <view class="publisher-name">
+            {{opportunity.publisher.nickname}}
+            <text class="level-badge">{{opportunity.publisher.level_icon}} {{opportunity.publisher.level_name}}</text>
+          </view>
+          <view class="publisher-school">{{opportunity.publisher.school || '未认证校园'}}</view>
+          <view class="publisher-cert" wx:if="{{opportunity.publisher.cert_status === 'verified'}}">
+            <text class="cert-badge">✓ 已实名认证</text>
+          </view>
+        </view>
+        <text class="view-profile">查看主页 ›</text>
+      </view>
+    </view>
+
+    <!-- 认证要求 -->
+    <view class="requirement-section card" wx:if="{{opportunity.require_cert || opportunity.require_school || opportunity.require_level > 0}}">
+      <view class="section-title">🔒 申请要求</view>
+      <view class="requirement-list">
+        <text class="requirement-item" wx:if="{{opportunity.require_cert}}">✓ 需要实名认证</text>
+        <text class="requirement-item" wx:if="{{opportunity.require_school}}">✓ 需要校园认证</text>
+        <text class="requirement-item" wx:if="{{opportunity.require_level > 0}}">✓ 需要达到 {{opportunity.require_level}} 级</text>
+      </view>
+    </view>
+
+    <!-- 统计数据 -->
+    <view class="stats-section">
+      <view class="stat-item">
+        <text class="stat-value">{{opportunity.view_count}}</text>
+        <text class="stat-label">浏览</text>
+      </view>
+      <view class="stat-item">
+        <text class="stat-value">{{opportunity.favorite_count}}</text>
+        <text class="stat-label">收藏</text>
+      </view>
+      <view class="stat-item">
+        <text class="stat-value">{{opportunity.apply_count}}</text>
+        <text class="stat-label">申请</text>
+      </view>
+    </view>
+
+    <!-- 收到的申请（仅发布者可见） -->
+    <view class="applications-section" wx:if="{{isPublisher && applications.length > 0}}">
+      <view class="section-title">📋 收到的申请 ({{applications.length}})</view>
+      <view wx:for="{{applications}}" wx:key="id" class="application-card card">
+        <view class="app-header">
+          <view class="app-applicant" bindtap="onViewProfile" data-openid="{{item.applicant.openid}}">
+            <image class="app-avatar" src="{{item.applicant.avatar_url || '/assets/default-avatar.png'}}" />
+            <view class="app-info">
+              <view class="app-name">{{item.applicant.nickname}}</view>
+              <view class="app-school">{{item.applicant.school || '未认证'}}</view>
+            </view>
+          </view>
+          <view class="app-status status-{{item.status}}">
+            {{item.status_name}}
+          </view>
+        </view>
+        <view class="app-message" wx:if="{{item.message}}">{{item.message}}</view>
+        <view class="app-actions" wx:if="{{item.status === 'pending'}}">
+          <button class="action-btn accept" bindtap="onHandleApplication" data-id="{{item.id}}" data-status="accepted">通过</button>
+          <button class="action-btn reject" bindtap="onHandleApplication" data-id="{{item.id}}" data-status="rejected">拒绝</button>
+        </view>
+        <view class="app-result" wx:if="{{item.result_message}}">
+          <text>回复：{{item.result_message}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 底部操作栏 -->
+  <view class="bottom-bar" wx:if="{{opportunity && !loading}}">
+    <!-- 左侧操作 -->
+    <view class="left-actions">
+      <view class="action-item" bindtap="onToggleFavorite">
+        <text class="action-icon {{opportunity.is_favorited ? 'active' : ''}}">
+          {{opportunity.is_favorited ? '❤️' : '🤍'}}
+        </text>
+        <text class="action-text">收藏</text>
+      </view>
+    </view>
+
+    <!-- 右侧操作 -->
+    <view class="right-actions">
+      <!-- 联系方式 -->
+      <button class="contact-btn" wx:if="{{opportunity.contact_wx && !isPublisher}}" bindtap="onCopyContact">
+        📱 联系方式
+      </button>
+      <!-- 外部链接 -->
+      <button class="external-btn" wx:if="{{opportunity.apply_url && !isPublisher}}" bindtap="onCopyUrl">
+        🔗 申请链接
+      </button>
+      <!-- 申请按钮 -->
+      <button
+        class="apply-btn"
+        wx:if="{{!isPublisher && !opportunity.has_applied && !opportunity.is_expired}}"
+        bindtap="onOpenApply"
+      >
+        📮 立即申请
+      </button>
+      <!-- 已申请状态 -->
+      <button class="applied-btn" wx:if="{{!isPublisher && opportunity.has_applied}}">
+        {{opportunity.application_status === 'accepted' ? '✅ 已通过' : opportunity.application_status === 'rejected' ? '❌ 已拒绝' : '⏳ 已申请，等待回复'}}
+      </button>
+      <!-- 发布者操作 -->
+      <button class="delete-btn" wx:if="{{isPublisher}}" bindtap="onDeleteOpportunity">
+        🗑️ 删除资源
+      </button>
+    </view>
+  </view>
+
+  <!-- 申请弹窗 -->
+  <view class="modal" wx:if="{{showApplyModal}}">
+    <view class="modal-mask" bindtap="onCloseApply"></view>
+    <view class="modal-content">
+      <view class="modal-header">
+        <text class="modal-title">📮 申请职位</text>
+        <text class="modal-close" bindtap="onCloseApply">✕</text>
+      </view>
+      <view class="modal-body">
+        <view class="apply-title">{{opportunity.title}}</view>
+        <view class="apply-company" wx:if="{{opportunity.company_name}}">
+          {{opportunity.company_name}} · {{opportunity.position}}
+        </view>
+        <view class="form-item">
+          <text class="form-label">申请留言 *</text>
+          <textarea
+            class="form-textarea"
+            placeholder="简单介绍一下自己，为什么适合这个职位..."
+            value="{{applyForm.message}}"
+            bindinput="onApplyInput"
+            data-field="message"
+          ></textarea>
+        </view>
+        <view class="form-item">
+          <text class="form-label">简历链接（可选）</text>
+          <input
+            class="form-input"
+            placeholder="上传简历或提供简历链接"
+            value="{{applyForm.resume_url}}"
+            bindinput="onApplyInput"
+            data-field="resume_url"
+          />
+        </view>
+      </view>
+      <view class="modal-footer">
+        <button class="cancel-btn" bindtap="onCloseApply">取消</button>
+        <button class="confirm-btn" bindtap="onSubmitApply">提交申请</button>
+      </view>
+    </view>
+  </view>
+</view>

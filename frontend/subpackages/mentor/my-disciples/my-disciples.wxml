@@ -1,0 +1,66 @@
+<!-- subpackages/mentor/my-disciples/my-disciples.wxml -->
+<view class="page">
+  <view class="nav-bar safe-area-top">
+    <view class="nav-inner">
+      <view class="nav-back" bindtap="onBack">←</view>
+      <text class="nav-title">我的道友</text>
+    </view>
+  </view>
+
+  <!-- Tab 切换 -->
+  <view class="tab-bar">
+    <view
+      class="tab-item {{tab === 'disciples' ? 'active' : ''}}"
+      bindtap="onTabChange"
+      data-tab="disciples"
+    >我的导师 ({{mentors.length}})</view>
+    <view
+      class="tab-item {{tab === 'mentors' ? 'active' : ''}}"
+      bindtap="onTabChange"
+      data-tab="mentors"
+    >我指导的弟子 ({{disciples.length}})</view>
+  </view>
+
+  <scroll-view scroll-y class="list-area">
+    <!-- 我的导师列表（作为被传承者） -->
+    <view wx:if="{{tab === 'disciples'}}">
+      <view class="disciple-card" wx:for="{{mentors}}" wx:key="id">
+        <image class="disciple-avatar" src="{{item.mentor && item.mentor.avatar_url ? item.mentor.avatar_url : '/assets/default-avatar.png'}}" mode="aspectFill" />
+        <view class="disciple-info">
+          <text class="disciple-name">{{item.mentor && item.mentor.nickname ? item.mentor.nickname : '导师'}}</text>
+          <!-- 道友传承新增：导师类型 -->
+          <view class="type-tag" wx:if="{{item.mentor_type}}">
+            <text class="{{item.mentor_type === 'enterprise' ? 'enterprise-tag' : 'academic-tag'}}">
+              {{item.mentor_type === 'enterprise' ? '🏢 企业导师' : '📚 学术导师'}}
+            </text>
+            <text class="direction-text">{{item.mentor_direction === 'employment' ? '就业方向' : '学术方向'}}</text>
+          </view>
+          <text class="disciple-school" wx:if="{{item.mentor && item.mentor.school}}">{{item.mentor.school}}</text>
+          <text class="disciple-status">状态：{{item.status === 'active' ? '传承中' : item.status}}</text>
+        </view>
+        <view class="tree-btn" bindtap="onViewTree" data-id="{{item.id}}">传承树</view>
+      </view>
+      <view class="empty-list" wx:if="{{!loading && mentors.length === 0}}">
+        <text>暂无道友传承关系</text>
+      </view>
+    </view>
+
+    <!-- 我指导的弟子列表（作为导师） -->
+    <view wx:if="{{tab === 'mentors'}}">
+      <view class="disciple-card" wx:for="{{disciples}}" wx:key="id">
+        <image class="disciple-avatar" src="{{item.disciple && item.disciple.avatar_url ? item.disciple.avatar_url : '/assets/default-avatar.png'}}" mode="aspectFill" />
+        <view class="disciple-info">
+          <text class="disciple-name">{{item.disciple && item.disciple.nickname ? item.disciple.nickname : '弟子'}}</text>
+          <text class="disciple-school" wx:if="{{item.disciple && item.disciple.school}}">{{item.disciple.school}}</text>
+          <text class="disciple-status">状态：{{item.status === 'active' ? '传承中' : item.status}}</text>
+        </view>
+        <view class="tree-btn" bindtap="onViewTree" data-id="{{item.id}}">传承树</view>
+      </view>
+      <view class="empty-list" wx:if="{{!loading && disciples.length === 0}}">
+        <text>暂无弟子</text>
+      </view>
+    </view>
+
+    <view class="load-more" wx:if="{{loading}}"><text>加载中...</text></view>
+  </scroll-view>
+</view>
