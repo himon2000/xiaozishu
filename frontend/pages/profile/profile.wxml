@@ -56,7 +56,7 @@
     </view>
 
     <!-- 我的任务（课题/项目等待办） -->
-    <view class="menu-item" bindtap="onMyTasks">
+    <view class="menu-item" bindtap="onMyTasks" wx:if="{{features.researchTasks}}">
       <text class="menu-icon">🎯</text>
       <text class="menu-title">我的任务</text>
       <text class="menu-note">（课题·待办）</text>
@@ -99,11 +99,12 @@
   </view>
 
   <!-- ========== 4. 财富体系 ========== -->
+  <block wx:if="{{features.payment || features.dividend}}">
   <view class="group-label">💎 财富体系</view>
   <view class="menu-group">
 
     <!-- 我的灵石（支付体系） -->
-    <view class="menu-item" bindtap="onMyAsset">
+    <view class="menu-item" bindtap="onMyAsset" wx:if="{{features.payment}}">
       <text class="menu-icon">💎</text>
       <text class="menu-title">我的灵石</text>
       <text class="menu-note">（充值支付）</text>
@@ -111,7 +112,7 @@
     </view>
 
     <!-- 我的道池（分红） -->
-    <view class="menu-item" bindtap="onDividendPool">
+    <view class="menu-item" bindtap="onDividendPool" wx:if="{{features.dividend}}">
       <text class="menu-icon">💰</text>
       <text class="menu-title">我的道池</text>
       <text class="menu-note">（分红收益）</text>
@@ -119,6 +120,7 @@
     </view>
 
   </view>
+  </block>
 
   <!-- ========== 5. 知识与传承 ========== -->
   <view class="group-label">📖 知识与传承</view>

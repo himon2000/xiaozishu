@@ -3,6 +3,7 @@
  * 路径：subpackages/jingzang/resource-detail/resource-detail
  */
 const { get, post } = require('../../../utils/request');
+const { reportContent } = require('../../../utils/report');
 
 Page({
   data: {
@@ -104,6 +105,15 @@ Page({
     const { resource } = this.data;
     if (!resource) return;
     wx.showShareMenu({ withShareTicket: true });
+  },
+
+  onReportResource() {
+    reportContent('resource', this.data.resourceId);
+  },
+
+  onReportComment(e) {
+    const id = e.currentTarget.dataset.id;
+    if (id) reportContent('comment', id);
   },
 
   onShareAppMessage() {

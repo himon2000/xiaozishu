@@ -101,6 +101,10 @@
   color: var(--text-secondary);
 }
 
+.agreement-link {
+  color: var(--primary);
+}
+
 .cloud-status {
   width: 100%;
   max-width: 600rpx;

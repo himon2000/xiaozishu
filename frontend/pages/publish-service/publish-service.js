@@ -3,6 +3,8 @@
  * 路径：pages/publish-service/publish-service
  */
 const { post } = require('../../utils/request');
+const { uploadImage } = require('../../utils/upload');
+const { ensurePrivacyAuthorized } = require('../../utils/privacy');
 
 Page({
   data: {
@@ -21,7 +23,7 @@ Page({
       description: '',
       cover_image: '',
       tags: '',
-      pricing_mode: 'per_session',
+      pricing_mode: 'free',
       price: '',
       unit: '次',
       min_sessions: 1,
@@ -83,10 +85,7 @@ Page({
     ],
     // 定价方式
     pricingModes: [
-      { id: 'per_session', name: '按时/按次', unit: '次' },
-      { id: 'per_hour', name: '按小时', unit: '小时' },
-      { id: 'per_project', name: '按项目', unit: '项' },
-      { id: 'free', name: '免费', unit: '' },
+      { id: 'free', name: '免费（首个公众版本）', unit: '' },
     ],
     // 教学风格选项
     teachingStyles: [
@@ -171,7 +170,12 @@ Page({
   },
 
   // 选择封面
-  onChooseCover() {
+  async onChooseCover() {
+    try {
+      await ensurePrivacyAuthorized();
+    } catch (error) {
+      return;
+    }
     wx.chooseMedia({
       count: 1,
       mediaType: ['image'],
@@ -365,6 +369,9 @@ Page({
     this.setData({ submitting: true });
 
     try {
+      const coverImage = formData.cover_image
+        ? await uploadImage(formData.cover_image, 'service-covers')
+        : '';
       const payload = {
         dao_fa_type: 'chuan_gong',  // 传功授法
         title: formData.title.trim(),
@@ -372,7 +379,7 @@ Page({
         service_type: formData.service_type,
         subjects: formData.subjects,
         tags: formData.tags ? formData.tags.split(/[,，]/).map(t => t.trim()).filter(t => t) : [],
-        cover_image: formData.cover_image,
+        cover_image: coverImage,
         pricing_mode: formData.pricing_mode,
         price: parseInt(formData.price || '0', 10) * 100,  // 转换为分
         unit: formData.unit,

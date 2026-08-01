@@ -1,0 +1,22 @@
+<view class="legal-page">
+  <view class="legal-title">小紫薯用户协议</view>
+  <view class="legal-date">更新日期：{{updatedAt}}</view>
+
+  <view class="legal-heading">一、服务说明</view>
+  <view class="legal-text">小紫薯是校园知识、经验与互助信息交流平台。当前版本不提供在线支付、充值、提现或平台担保交易。</view>
+
+  <view class="legal-heading">二、账号使用</view>
+  <view class="legal-text">用户应使用本人微信账号登录，不得冒用他人身份、出租账号或利用平台从事违法活动。用户可以在“设置”中申请注销账号。</view>
+
+  <view class="legal-heading">三、内容规范</view>
+  <view class="legal-text">用户发布的昵称、文字、图片、评论、服务和就业信息应真实合法，不得包含违法违规、欺诈、骚扰、侵权、广告导流或危害未成年人的内容。平台可对违规内容采取限制展示、删除或限制账号使用等措施。</view>
+
+  <view class="legal-heading">四、风险提示</view>
+  <view class="legal-text">用户应自行核实其他用户发布的信息，注意保护个人隐私，不在线下私自转账，不轻信兼职、内推和付费承诺。发现异常可使用举报或意见反馈功能。</view>
+
+  <view class="legal-heading">五、隐私保护</view>
+  <view class="legal-text">个人信息的处理范围、目的、保存方式和用户权利，以微信小程序内展示的《隐私保护指引》为准。</view>
+
+  <view class="legal-heading">六、协议更新</view>
+  <view class="legal-text">平台可能根据功能和法规变化更新本协议。重大变化将在小程序内提示，继续使用前请阅读更新内容。</view>
+</view>

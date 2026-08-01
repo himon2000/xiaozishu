@@ -147,7 +147,7 @@
 
   <!-- 定价 -->
   <view class="form-card">
-    <view class="form-title">定价方式 <text class="required">*</text></view>
+    <view class="form-title">服务方式</view>
     <view class="pricing-modes">
       <view
         wx:for="{{pricingModes}}"
@@ -158,16 +158,7 @@
         data-unit="{{item.unit}}"
       >{{item.name}}</view>
     </view>
-    <view class="price-input-row" wx:if="{{formData.pricing_mode !== 'free'}}">
-      <input
-        class="price-input"
-        type="number"
-        placeholder="输入价格"
-        bindinput="onPriceInput"
-        value="{{formData.price}}"
-      />
-      <text class="price-unit">{{formData.unit}}（约 {{formData.price * 10}} 灵石）</text>
-    </view>
+    <view class="form-hint">在线支付暂未开放，当前只能发布免费服务。</view>
   </view>
 
   <!-- 标签 -->

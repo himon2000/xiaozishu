@@ -1,26 +1,6 @@
 <!-- pages/customer-service/customer-service.wxml - 我的客服 -->
 <view class="page">
 
-  <!-- 客服入口 -->
-  <view class="group-label">🎧 联系我们</view>
-  <view class="menu-group">
-
-    <view class="menu-item" bindtap="onOnlineService">
-      <text class="menu-icon">💬</text>
-      <text class="menu-title">在线客服</text>
-      <text class="menu-desc">工作日 9:00-21:00</text>
-      <text class="menu-arrow">›</text>
-    </view>
-
-    <view class="menu-item" bindtap="onCopyEmail">
-      <text class="menu-icon">📧</text>
-      <text class="menu-title">联系邮箱</text>
-      <text class="menu-desc">support@xiaozishu.com</text>
-      <text class="menu-arrow">›</text>
-    </view>
-
-  </view>
-
   <!-- 常见问题 -->
   <view class="group-label">❓ 常见问题</view>
   <view class="menu-group">

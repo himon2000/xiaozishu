@@ -12,6 +12,7 @@ from utils.db import get_db
 from models import Review, Order, Service, User
 from dependencies import get_current_user
 from services.level_service import get_level_info
+from utils.content_guard import guard_user_content
 
 router = APIRouter(prefix="/api/v1/reviews", tags=["评价"])
 
@@ -53,6 +54,7 @@ def create_review(
     db: Session = Depends(get_db),
 ):
     """创建评价（订单完成后）"""
+    guard_user_content(user.openid, body.content, body.tags)
     order = db.query(Order).filter(Order.id == body.order_id).first()
     if not order:
         raise HTTPException(status_code=404, detail="订单不存在")
@@ -214,6 +216,7 @@ def reply_review(
     db: Session = Depends(get_db),
 ):
     """服务者回复评价"""
+    guard_user_content(user.openid, body.content)
     review = db.query(Review).filter(Review.id == review_id).first()
     if not review:
         raise HTTPException(status_code=404, detail="评价不存在")

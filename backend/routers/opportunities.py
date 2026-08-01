@@ -14,6 +14,7 @@ from models import Opportunity, OpportunityApplication, OpportunityFavorite, Use
 from models import OpportunityType, OpportunityStatus, ApplicationStatus
 from dependencies import get_current_user, get_current_user_optional
 from services.level_service import get_level_info
+from utils.content_guard import guard_user_content
 
 router = APIRouter(prefix="/api/v1/opportunities", tags=["下山历练"])
 
@@ -378,6 +379,7 @@ def create_opportunity(
     db: Session = Depends(get_db),
 ):
     """发布就业资源"""
+    guard_user_content(user.openid, body.model_dump())
     # 检查用户认证要求
     if body.require_cert and user.cert_status != "verified":
         raise HTTPException(status_code=400, detail="需要完成实名认证才能发布资源")
@@ -431,6 +433,7 @@ def update_opportunity(
     db: Session = Depends(get_db),
 ):
     """更新就业资源（仅发布者可操作）"""
+    guard_user_content(user.openid, body.model_dump(exclude_unset=True))
     opp = db.query(Opportunity).filter(Opportunity.id == opportunity_id).first()
     if not opp:
         raise HTTPException(status_code=404, detail="资源不存在")
@@ -587,6 +590,7 @@ def apply_opportunity(
     db: Session = Depends(get_db),
 ):
     """申请就业资源"""
+    guard_user_content(user.openid, body.model_dump())
     opp = db.query(Opportunity).filter(Opportunity.id == opportunity_id).first()
     if not opp:
         raise HTTPException(status_code=404, detail="资源不存在")
@@ -650,6 +654,7 @@ def handle_application(
     db: Session = Depends(get_db),
 ):
     """处理申请（通过/拒绝，仅发布者可操作）"""
+    guard_user_content(user.openid, result_message)
     opp = db.query(Opportunity).filter(Opportunity.id == opportunity_id).first()
     if not opp:
         raise HTTPException(status_code=404, detail="资源不存在")

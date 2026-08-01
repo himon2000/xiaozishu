@@ -10,7 +10,7 @@ import random
 
 from datetime import datetime, timedelta
 
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, Request, status
 
 from sqlalchemy.orm import Session
 
@@ -25,6 +25,7 @@ from models import User, Service, Order, Resource, Review, Team, TeamMember
 from services import wechat_auth as wx_auth, stage_service, role_service
 
 from dependencies import get_current_user
+from utils.content_guard import guard_user_content
 
 
 
@@ -152,7 +153,7 @@ async def demo_login(body: DemoLoginRequest, db: Session = Depends(get_db)):
     settings = get_settings()
 
     # P1-8 修复：Demo 数据注入控制
-    enable_demo = settings.debug or os.environ.get("ENABLE_DEMO") == "true"
+    enable_demo = settings.demo_enabled and settings.environment == "development"
     if not enable_demo:
         raise HTTPException(status_code=403, detail="演示登录仅在调试模式下可用")
 
@@ -221,9 +222,6 @@ async def demo_login(body: DemoLoginRequest, db: Session = Depends(get_db)):
         db.commit()
 
         db.refresh(user)
-
-
-
         # provider角色登录时自动生成演示服务
 
         if body.role == "provider":
@@ -348,7 +346,7 @@ async def demo_login(body: DemoLoginRequest, db: Session = Depends(get_db)):
 
 @router.post("/login", response_model=LoginResponse)
 
-async def login(body: LoginRequest, db: Session = Depends(get_db)):
+async def login(body: LoginRequest, request: Request, db: Session = Depends(get_db)):
 
     """
 
@@ -362,19 +360,20 @@ async def login(body: LoginRequest, db: Session = Depends(get_db)):
 
     """
 
-    # 获取 openid（本地开发环境使用模拟openid）
-
-    try:
-
-        session_data = await wx_auth.code2session(body.code)
-
-        openid = session_data["openid"]
-
-    except Exception:
-
-        # 本地开发/测试：使用 code 本身作为 openid
-
-        openid = f"dev_{body.code[:20]}"
+    # callContainer 会由微信网关注入可信 openid；公网调用才需要 code2session。
+    # 生产环境严禁在微信登录失败时生成模拟用户，否则任意无效 code 都能登录。
+    openid = request.headers.get("X-WX-OPENID") or request.headers.get("x-wx-openid")
+    if not openid:
+        try:
+            session_data = await wx_auth.code2session(body.code)
+            openid = session_data["openid"]
+        except Exception as exc:
+            from config import get_settings
+            settings = get_settings()
+            if settings.environment == "development" and settings.demo_enabled:
+                openid = f"dev_{body.code[:20]}"
+            else:
+                raise HTTPException(status_code=502, detail="微信登录验证失败，请稍后重试") from exc
 
 
 
@@ -406,6 +405,16 @@ async def login(body: LoginRequest, db: Session = Depends(get_db)):
 
         db.commit()
 
+        db.refresh(user)
+
+    elif user.status == "deleted":
+        is_new_user = True
+        user.status = "active"
+        user.nickname = f"散修{uuid.uuid4().hex[:4]}"
+        user.avatar_url = ""
+        user.bio = ""
+        user.available = True
+        db.commit()
         db.refresh(user)
 
 
@@ -879,6 +888,7 @@ def update_profile(
     - 生日
 
     """
+    guard_user_content(user.openid, body.nickname, body.bio)
 
     if body.nickname:
 
@@ -901,6 +911,33 @@ def update_profile(
     db.commit()
 
     return {"success": True, "message": "资料更新成功"}
+
+
+@router.delete("/me")
+def delete_my_account(
+    user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    """注销账号并清除可识别个人资料；业务记录保留匿名主体以满足审计。"""
+    user.status = "deleted"
+    user.nickname = "已注销用户"
+    user.avatar_url = ""
+    user.phone = None
+    user.bio = ""
+    user.gender = ""
+    user.birthday = ""
+    user.school = ""
+    user.school_level = ""
+    user.major = ""
+    user.graduation_year = None
+    user.cert_doc_url = ""
+    user.company = ""
+    user.position = ""
+    user.enterprise_email = ""
+    user.enterprise_email_verified = False
+    user.available = False
+    db.commit()
+    return {"success": True, "message": "账号已注销"}
 
 
 

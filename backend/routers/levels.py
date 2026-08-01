@@ -2,11 +2,12 @@
 修为与境界路由
 """
 from datetime import datetime
-from fastapi import APIRouter, Depends, Query
+from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy.orm import Session
 from utils.db import get_db
 from models import User
 from dependencies import get_current_user
+from config import get_settings
 from services.level_service import (
     get_user_cultivation_summary,
     get_ranking,
@@ -24,6 +25,13 @@ from services.dividend_service import (
 )
 
 router = APIRouter(prefix="/api/v1/level", tags=["修为境界"])
+settings = get_settings()
+
+
+def ensure_dividend_enabled():
+    """首个公众版本不开放分红，避免模拟金额和未结算资金能力对外暴露。"""
+    if not settings.dividend_enabled:
+        raise HTTPException(status_code=503, detail="分红功能暂未开放")
 
 
 @router.get("/mine")
@@ -65,6 +73,7 @@ def dividend_pool(
     宗门宝库公示
     年度分红：化神期(Lv5)大虾按修为比例分配20%佣金池
     """
+    ensure_dividend_enabled()
     target_year = year or datetime.now().year
 
     # 获取用户分红信息
@@ -134,6 +143,7 @@ def claim_dividend_api(
     """
     领取年度分红
     """
+    ensure_dividend_enabled()
     target_year = year or datetime.now().year
 
     if user.level < 5:
@@ -152,6 +162,7 @@ def dividend_history(
     """
     获取用户分红历史
     """
+    ensure_dividend_enabled()
     records = get_dividend_history(db, user.openid, limit)
     return {"records": records}
 
@@ -165,6 +176,7 @@ def dividend_summary(
     """
     获取分红池汇总信息（管理端用）
     """
+    ensure_dividend_enabled()
     target_year = year or datetime.now().year
     summary = get_pool_summary(db, target_year)
 

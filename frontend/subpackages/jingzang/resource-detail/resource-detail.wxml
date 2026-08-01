@@ -72,6 +72,10 @@
           <text>💬</text>
           <text class="action-count">{{comments.length}}</text>
         </view>
+        <view class="action-item" bindtap="onReportResource">
+          <text>⚠️</text>
+          <text class="action-count">举报</text>
+        </view>
       </view>
     </view>
 
@@ -93,6 +97,7 @@
               <text class="comment-time">{{item.created_at}}</text>
             </view>
             <text class="comment-text">{{item.content}}</text>
+            <text class="action-count" data-id="{{item.id}}" bindtap="onReportComment">举报</text>
           </view>
         </view>
 

@@ -11,7 +11,7 @@ from fastapi.responses import JSONResponse
 
 from config import get_settings
 from models import init_db
-from routers import auth, services, orders, mentorships, levels, resources, school_wiki, teams, disputes, reviews, init_data, stages, roles, wallet, opportunities, demands
+from routers import auth, services, orders, mentorships, levels, resources, teams, disputes, reviews, init_data, stages, roles, wallet, opportunities, demands, reports, content_security
 
 logger = logging.getLogger(__name__)
 settings = get_settings()
@@ -51,8 +51,8 @@ app.add_middleware(
 @app.on_event("startup")
 def startup():
     init_db()
-    # P2-8: 生产环境校验微信支付参数
-    if settings.environment != "development":
+    # 仅在明确开启支付时检查商户参数；首个公众版本默认关闭支付。
+    if settings.payment_enabled and settings.environment != "development":
         if settings.wechat_mchid == "test_mchid":
             logger.warning("⚠️ 生产环境使用测试微信支付参数！请通过环境变量配置真实值。")
     logger.info(f"《小紫薯》API 启动成功 | 环境: {settings.environment} | 端口: {settings.port}")
@@ -94,7 +94,6 @@ def root():
             "reviews": "/api/v1/reviews",
             "mentorships": "/api/v1/mentorships",
             "levels": "/api/v1/level",
-            "dividend": "/api/v1/level/dividend-pool",
             "resources": "/api/v1/resources",
             "schoolWiki": "/api/v1/school-wiki",
             "teams": "/api/v1/teams",
@@ -105,19 +104,22 @@ def root():
 
 # ── 注册路由 ────────────────────────────────────────────
 app.include_router(auth.router)
-app.include_router(wallet.router)  # 灵石充值
+if settings.payment_enabled:
+    app.include_router(wallet.router)
 app.include_router(services.router)
 app.include_router(orders.router)
 app.include_router(mentorships.router)
 app.include_router(levels.router)
 app.include_router(resources.router)
-app.include_router(school_wiki.router)
 app.include_router(teams.router)
 app.include_router(opportunities.router)  # 下山历练-就业资源
 app.include_router(demands.router)
 app.include_router(disputes.router)
 app.include_router(reviews.router)
-app.include_router(init_data.router)
+app.include_router(reports.router)
+app.include_router(content_security.router)
+if settings.demo_enabled:
+    app.include_router(init_data.router)
 app.include_router(stages.router)
 app.include_router(roles.router)
 

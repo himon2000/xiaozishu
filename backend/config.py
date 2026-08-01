@@ -44,6 +44,10 @@ class Settings(BaseSettings):
     port: int = 80
     debug: bool = False
     environment: str = "development"
+    payment_enabled: bool = False
+    dividend_enabled: bool = False
+    demo_enabled: bool = False
+    content_moderation_enabled: bool = True
 
     class Config:
         env_file = BASE_DIR / ".env"

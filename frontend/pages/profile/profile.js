@@ -8,6 +8,7 @@
  * 3. 设置与账户
  */
 const { get, post } = require('../../utils/request');
+const { FEATURES } = require('../../config');
 
 Page({
   data: {
@@ -21,6 +22,7 @@ Page({
     serviceStats: { total: 0, active: 0, completed: 0, rating: '5.0' },
     taskStats: { pending: 0 },  // 我的任务待办角标
     viewOpenid: '',
+    features: FEATURES,
   },
 
   onLoad(options) {
@@ -133,7 +135,7 @@ Page({
 
   // 我的任务（课题/项目等待办）
   onMyTasks() {
-    wx.navigateTo({ url: '/pages/my-research/my-research' });
+    wx.showToast({ title: '任务功能暂未开放', icon: 'none' });
   },
 
   // 我的传承树（师徒关系树）
@@ -186,7 +188,7 @@ Page({
 
   // 我的资产
   onMyAsset() {
-    wx.navigateTo({ url: '/subpackages/asset/asset' });
+    wx.showToast({ title: '支付功能暂未开放', icon: 'none' });
   },
 
   // 我的课题

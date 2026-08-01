@@ -3,6 +3,8 @@
  * 路径: pages/review/review
  */
 const { get, post } = require('../../utils/request');
+const { uploadImages } = require('../../utils/upload');
+const { ensurePrivacyAuthorized } = require('../../utils/privacy');
 
 Page({
   data: {
@@ -74,9 +76,14 @@ Page({
   },
 
   // 添加图片
-  onAddImage() {
+  async onAddImage() {
     if (this.data.images.length >= 9) {
       wx.showToast({ title: '最多9张图片', icon: 'none' });
+      return;
+    }
+    try {
+      await ensurePrivacyAuthorized();
+    } catch (error) {
       return;
     }
     wx.chooseMedia({
@@ -114,8 +121,7 @@ Page({
     wx.showLoading({ title: '提交中...' });
 
     try {
-      // TODO: 上传图片获取URL
-      const imageUrls = [];
+      const imageUrls = await uploadImages(images, 'review-images');
 
       await post('/reviews', {
         order_id: orderId,

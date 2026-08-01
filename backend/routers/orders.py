@@ -17,6 +17,7 @@ from services.order_machine import (
 from services.payment_service import create_unified_order
 from services.level_service import add_exp
 from services import mentor_service
+from config import get_settings
 
 router = APIRouter(prefix="/api/v1/orders", tags=["订单"])
 
@@ -45,6 +46,8 @@ def create_order(
     db: Session = Depends(get_db),
 ):
     """创建订单（散修视角）"""
+    if not get_settings().payment_enabled:
+        raise HTTPException(status_code=503, detail="预约与支付功能暂未开放")
     svc = db.query(Service).filter(Service.id == body.service_id).first()
     if not svc:
         raise HTTPException(status_code=404, detail="服务不存在")
@@ -264,6 +267,8 @@ async def initiate_payment(
     db: Session = Depends(get_db),
 ):
     """发起微信支付"""
+    if not get_settings().payment_enabled:
+        raise HTTPException(status_code=503, detail="支付功能暂未开放")
     order = db.query(Order).filter(Order.id == order_id).first()
     if not order:
         raise HTTPException(status_code=404, detail="订单不存在")
@@ -466,6 +471,8 @@ def apply_refund(
     - 需在服务完成前申请
     - 退款原因：不想买了 | 服务不满意 | 联系不上 | 其他
     """
+    if not get_settings().payment_enabled:
+        raise HTTPException(status_code=503, detail="支付与退款功能暂未开放")
     order = db.query(Order).filter(Order.id == order_id).first()
     if not order:
         raise HTTPException(status_code=404, detail="订单不存在")

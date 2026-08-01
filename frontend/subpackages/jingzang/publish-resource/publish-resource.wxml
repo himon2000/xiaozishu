@@ -103,28 +103,6 @@
         <text class="access-label">免费</text>
         <text class="access-desc">所有修士可免费查看</text>
       </view>
-      <view
-        class="access-item {{formData.access_mode === 'points' ? 'selected' : ''}}"
-        bindtap="onAccessSelect"
-        data-mode="points"
-      >
-        <text class="access-icon">💎</text>
-        <text class="access-label">灵石兑换</text>
-        <text class="access-desc">修士需消耗灵石解锁</text>
-      </view>
-    </view>
-    <view class="points-input" wx:if="{{formData.access_mode === 'points'}}">
-      <text class="points-label">设置灵石价格：</text>
-      <input
-        class="points-field"
-        type="number"
-        placeholder="1-100"
-        min="1"
-        max="100"
-        bindinput="onPointsInput"
-        value="{{formData.points_price}}"
-      />
-      <text class="points-unit">灵石</text>
     </view>
   </view>
 

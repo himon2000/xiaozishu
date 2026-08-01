@@ -3,6 +3,8 @@
  * 路径：pages/dispute-apply/dispute-apply
  */
 const { post } = require('../../utils/request');
+const { uploadImages } = require('../../utils/upload');
+const { ensurePrivacyAuthorized } = require('../../utils/privacy');
 
 Page({
   data: {
@@ -19,7 +21,6 @@ Page({
       { id: 'quality', label: '📜 传法有瑕', sub: '(服务质量问题)' },
       { id: 'delay', label: '⏰ 逾时未竟', sub: '(超时未完成)' },
       { id: 'attitude', label: '😤 道心不正', sub: '(态度问题)' },
-      { id: 'refund', label: '💰 灵石纷争', sub: '(退款争议)' },
       { id: 'cheating', label: '⚠️ 欺心背道', sub: '(作弊/欺诈)' },
       { id: 'other', label: '❓ 其他', sub: '(其他问题)' },
     ],
@@ -54,7 +55,12 @@ Page({
     });
   },
 
-  onChooseImage() {
+  async onChooseImage() {
+    try {
+      await ensurePrivacyAuthorized();
+    } catch (error) {
+      return;
+    }
     wx.chooseMedia({
       count: 3 - this.data.formData.evidence_images.length,
       mediaType: ['image'],
@@ -96,8 +102,7 @@ Page({
     this.setData({ submitting: true });
 
     try {
-      // TODO: 上传图片获取URL
-      const evidenceUrls = formData.evidence_images;
+      const evidenceUrls = await uploadImages(formData.evidence_images, 'dispute-evidence');
 
       await post('/disputes', {
         order_id: orderId,

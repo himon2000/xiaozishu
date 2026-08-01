@@ -74,24 +74,24 @@
     <view class="form-title">期望处理方式 <text class="required">*</text></view>
     <view class="radio-group">
       <view
-        class="radio-item {{formData.expected_action === 'full_refund' ? 'selected' : ''}}"
+        class="radio-item {{formData.expected_action === 're_deliver' ? 'selected' : ''}}"
         bindtap="onSelectAction"
-        data-action="full_refund"
+        data-action="re_deliver"
       >
         <view class="radio-circle">
-          <view class="radio-dot" wx:if="{{formData.expected_action === 'full_refund'}}"></view>
+          <view class="radio-dot" wx:if="{{formData.expected_action === 're_deliver'}}"></view>
         </view>
-        <text class="radio-label">全额退款</text>
+        <text class="radio-label">重新提供服务</text>
       </view>
       <view
-        class="radio-item {{formData.expected_action === 'partial_refund' ? 'selected' : ''}}"
+        class="radio-item {{formData.expected_action === 'platform_coordination' ? 'selected' : ''}}"
         bindtap="onSelectAction"
-        data-action="partial_refund"
+        data-action="platform_coordination"
       >
         <view class="radio-circle">
-          <view class="radio-dot" wx:if="{{formData.expected_action === 'partial_refund'}}"></view>
+          <view class="radio-dot" wx:if="{{formData.expected_action === 'platform_coordination'}}"></view>
         </view>
-        <text class="radio-label">部分退款</text>
+        <text class="radio-label">平台协调</text>
       </view>
       <view
         class="radio-item {{formData.expected_action === 'other' ? 'selected' : ''}}"
