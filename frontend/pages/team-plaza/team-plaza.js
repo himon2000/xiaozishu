@@ -44,7 +44,22 @@ Page({
   async loadCategories() {
     try {
       const res = await get('/teams/categories');
-      this.setData({ categories: res.categories });
+      const categoryNames = {
+        mi_jing: '课题/科研',
+        competition: '竞赛组队',
+        project: '项目合作',
+        study: '学习小组',
+        internship: '寻觅道场',
+        referral: '求取推荐',
+        job: '问道职涯',
+        job_resource: '布施机缘',
+      };
+      const categories = (res.categories || []).map((item) => {
+        const icon = String(item.icon || '').trim();
+        const name = categoryNames[item.id] || String(item.name || '').trim();
+        return { ...item, icon, name };
+      });
+      this.setData({ categories });
     } catch (e) {
       console.error('加载分类失败', e);
     }

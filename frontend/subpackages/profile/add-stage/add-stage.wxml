@@ -60,7 +60,7 @@
         bindtap="onSelectRole"
         data-role="seeker"
       >
-        <text class="role-icon">🎓</text>
+        <text class="role-icon">🧭</text>
         <text class="role-name">散修</text>
         <text class="role-desc">寻找帮助</text>
       </view>
@@ -69,8 +69,8 @@
         bindtap="onSelectRole"
         data-role="provider"
       >
-        <text class="role-icon">🍠</text>
-        <text class="role-name">大虾</text>
+        <text class="role-icon">🧑‍🎓</text>
+        <text class="role-name">宗门弟子</text>
         <text class="role-desc">提供服务</text>
       </view>
       <view
@@ -78,8 +78,8 @@
         bindtap="onSelectRole"
         data-role="elder"
       >
-        <text class="role-icon">🏛️</text>
-        <text class="role-name">长老</text>
+        <text class="role-icon">🧙</text>
+        <text class="role-name">大能</text>
         <text class="role-desc">行业专家</text>
       </view>
     </view>

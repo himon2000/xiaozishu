@@ -27,6 +27,8 @@ Page({
   },
 
   async onShow() {
+    const tabBar = typeof this.getTabBar === 'function' ? this.getTabBar() : null;
+    if (tabBar) tabBar.setData({ selected: 0 });
     const app = getApp();
     this.setData({ viewMode: (app && app.globalData && app.globalData.viewMode) || 'seeker' });
     await this.loadHomeData();

@@ -6,7 +6,6 @@
 
   <!-- Logo 区域 -->
   <view class="logo-section">
-    <image class="logo-icon" src="/assets/logo.png" mode="aspectFit" />
     <text class="logo-text">小紫薯</text>
     <view class="slogan">{{slogan}}</view>
     <view class="sub-slogan">{{subSlogan}}</view>
@@ -25,7 +24,6 @@
       disabled="{{loading || cloudStatus === 'checking' || !agreed}}"
       hover-class="none"
     >
-      <view class="wechat-icon">🍜</view>
       {{loading ? '正在登录...' : (cloudStatus === 'checking' ? '检查连接...' : '微信一键登录')}}
     </button>
     <checkbox-group class="login-tip" bindchange="onAgreementChange">
@@ -44,20 +42,20 @@
     <view class="role-title">选择你的身份，开启互助之旅</view>
     <view class="role-list">
       <view class="role-card" bindtap="onSelectRole" data-role="seeker">
-        <text class="role-icon">🎓</text>
+        <text class="role-icon">🧭</text>
         <text class="role-name">散修</text>
         <text class="role-desc">初中/高中生，寻找学长学姐帮助</text>
         <view class="role-btn">进入</view>
       </view>
       <view class="role-card provider" bindtap="onSelectRole" data-role="provider">
-        <text class="role-icon">🍠</text>
-        <text class="role-name">大虾</text>
+        <text class="role-icon">🧑‍🎓</text>
+        <text class="role-name">宗门弟子</text>
         <text class="role-desc">大学生/研究生，分享技能与经验</text>
         <view class="role-btn">认证入驻</view>
       </view>
       <view class="role-card elder" bindtap="onSelectRole" data-role="elder">
-        <text class="role-icon">🏛️</text>
-        <text class="role-name">长老</text>
+        <text class="role-icon">🧙</text>
+        <text class="role-name">大能</text>
         <text class="role-desc">家长/导师，发布实习与资源</text>
         <view class="role-btn">入驻</view>
       </view>

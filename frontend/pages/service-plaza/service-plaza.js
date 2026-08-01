@@ -60,6 +60,21 @@ Page({
       { id: 'exam_prep', name: '考前冲刺', icon: '✏️' },
       { id: 'thesis', name: '论文指导', icon: '📄' },
     ],
+    serviceTypeNameMap: {
+      tutoring: '📚 学科辅导',
+      competition: '🏆 竞赛陪练',
+      exam_prep: '✏️ 考前冲刺',
+      thesis: '📄 论文指导',
+    },
+    subjectNameMap: {
+      math: '📐 高等数学',
+      physics: '⚡ 大学物理',
+      programming: '💻 编程/Python',
+      english: '🇬🇧 英语',
+      data_structure: '🔢 数据结构',
+      acm: '🏆 ACM竞赛',
+      'math建模': '🏆 建模竞赛',
+    },
     // 道法类型 → 显示名称映射
     daoFaNameMap: {
       chuan_gong: '📚 传功授法',
@@ -83,6 +98,8 @@ Page({
   },
 
   onShow() {
+    const tabBar = typeof this.getTabBar === 'function' ? this.getTabBar() : null;
+    if (tabBar) tabBar.setData({ selected: 1 });
     // 刷新服务列表（保持当前筛选状态）
     // 注意：daoFaType 在 onLoad 中通过 URL 参数设置
   },
@@ -276,7 +293,7 @@ Page({
     if (!this.data.canPublish) {
       wx.showModal({
         title: '🔒 发布权限不足',
-        content: '发布服务需要先成为「🍠 大虾」或「🏛️ 长老」。\n\n解锁条件：\n① 发布 2 个服务 → 自动成为大虾\n② 认证企业邮箱 → 自动成为长老',
+        content: '发布服务需要先成为「🧑‍🎓 宗门弟子」或「🧙 大能」。\n\n解锁条件：\n① 发布 2 个服务 → 自动成为宗门弟子\n② 认证企业邮箱 → 自动成为大能',
         confirmText: '前往解锁',
         cancelText: '我知道了',
         success: (res) => {

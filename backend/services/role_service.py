@@ -18,15 +18,15 @@ def generate_id():
 ROLE_CONFIG = {
     "seeker": {
         "name": "散修",
-        "icon": "🌱",
+        "icon": "🧭",
         "desc": "发布需求，寻仙问道",
         "color": "#52c41a",
         "default_enabled": True,
         "unlock_condition": None,  # 默认解锁
     },
     "provider": {
-        "name": "大虾",
-        "icon": "🍠",
+        "name": "宗门弟子",
+        "icon": "🧑‍🎓",
         "desc": "发布服务，传功授法",
         "color": "#fa8c16",
         "default_enabled": False,
@@ -37,8 +37,8 @@ ROLE_CONFIG = {
         },
     },
     "elder": {
-        "name": "长老",
-        "icon": "🏛️",
+        "name": "大能",
+        "icon": "🧙",
         "desc": "职场专家，引领后辈",
         "color": "#722ed1",
         "default_enabled": False,
@@ -207,10 +207,10 @@ def check_role_eligibility(db: Session, user: User, role: str) -> tuple:
             UserRole.status == RoleStatus.ENABLED,
         ).first()
         if ur and ur.total_services_published >= 5:
-            return True, "大虾服务数达标，自动解锁"
+            return True, "宗门弟子服务数达标，自动解锁"
         if ur:
-            return False, f"大虾需发布 5 个服务（当前 {ur.total_services_published}/5）"
-        return False, "请先成为大虾，或认证企业邮箱"
+            return False, f"宗门弟子需发布 5 个服务（当前 {ur.total_services_published}/5）"
+        return False, "请先成为宗门弟子，或认证企业邮箱"
 
     return False, "条件不满足"
 
@@ -342,8 +342,8 @@ def _get_unlock_tips(role: str, db: Session, user: User) -> str:
             UserRole.status == RoleStatus.ENABLED,
         ).first()
         if ur:
-            return f"大虾服务数需达 5 个（当前 {ur.total_services_published}/5）或认证企业邮箱"
-        return "需先成为大虾（2 个服务）或认证企业邮箱"
+            return f"宗门弟子服务数需达 5 个（当前 {ur.total_services_published}/5）或认证企业邮箱"
+        return "需先成为宗门弟子（2 个服务）或认证企业邮箱"
     return ""
 
 
