@@ -34,9 +34,9 @@ Page({
 
     // 角色列表（默认兜底）
     defaultRoles: [
-      { role: 'seeker', name: '散修', icon: '🌱', desc: '浏览和发布需求', enabled: true },
-      { role: 'provider', name: '大虾', icon: '📜', desc: '提供服务', enabled: false },
-      { role: 'elder', name: '长老', icon: '🐲', desc: '传承与指导', enabled: false },
+      { role: 'seeker', name: '散修', icon: '🧭', desc: '浏览和发布需求', enabled: true },
+      { role: 'provider', name: '宗门弟子', icon: '🧑‍🎓', desc: '提供服务', enabled: false },
+      { role: 'elder', name: '大能', icon: '🧙', desc: '传承与指导', enabled: false },
     ],
   },
 

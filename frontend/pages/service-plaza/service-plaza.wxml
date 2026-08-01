@@ -104,19 +104,19 @@
   <!-- 结果统计条 -->
   <view class="stats-bar" wx:if="{{!loading || services.length > 0}}">
     <view class="active-filters">
-      <text wx:if="{{daoFaType}}" class="active-tag">
+      <view wx:if="{{daoFaType}}" class="active-tag">
         {{daoFaNameMap[daoFaType]}} <text bindtap="onResetFilter" class="tag-close">×</text>
-      </text>
-      <text wx:if="{{serviceType}}" class="active-tag">
-        {{serviceTypes[serviceType] || serviceType}} <text bindtap="onServiceTypeChange" data-type="">×</text>
-      </text>
-      <text wx:if="{{selectedSubject}}" class="active-tag">
-        {{selectedSubject}} <text bindtap="onSubjectChange" data-subject="">×</text>
-      </text>
-      <text wx:if="{{priceRange !== 'all'}}" class="active-tag">
+      </view>
+      <view wx:if="{{serviceType}}" class="active-tag">
+        {{serviceTypeNameMap[serviceType] || serviceType}} <text bindtap="onServiceTypeChange" data-type="" class="tag-close">×</text>
+      </view>
+      <view wx:if="{{selectedSubject}}" class="active-tag">
+        {{subjectNameMap[selectedSubject] || selectedSubject}} <text bindtap="onSubjectChange" data-subject="" class="tag-close">×</text>
+      </view>
+      <view wx:if="{{priceRange !== 'all'}}" class="active-tag">
         {{priceRange === '0-50' ? '50灵石以下' : priceRange === '500+' ? '500灵石以上' : priceRange + '灵石'}}
         <text bindtap="onResetFilter" class="tag-close">×</text>
-      </text>
+      </view>
     </view>
     <text class="stats-text">共 {{total}} 个服务</text>
   </view>

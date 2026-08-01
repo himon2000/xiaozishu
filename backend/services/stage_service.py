@@ -284,8 +284,8 @@ def _get_role_label(role: str) -> str:
     """获取角色标签"""
     labels = {
         "seeker": "散修",
-        "provider": "大虾",
-        "elder": "长老",
+        "provider": "宗门弟子",
+        "elder": "大能",
         "admin": "执事",
     }
     return labels.get(role, "散修")

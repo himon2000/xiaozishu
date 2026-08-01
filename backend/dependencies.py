@@ -127,4 +127,4 @@ def require_provider(user: User = Depends(get_current_user)) -> User:
     # 旧系统兼容检查
     if user.role in ("provider", "elder", "admin"):
         return user
-    raise HTTPException(status_code=403, detail="您暂无服务提供资格，请先解锁「🍠 大虾」或「🏛️ 长老」角色")
+    raise HTTPException(status_code=403, detail="您暂无服务提供资格，请先解锁「🧑‍🎓 宗门弟子」或「🧙 大能」角色")

@@ -4,7 +4,7 @@
   <!-- 自定义导航 -->
   <view class="nav-bar safe-area-top">
     <view class="nav-inner">
-      <text class="nav-title">🍠 小紫薯</text>
+      <text class="nav-title">小紫薯</text>
     </view>
   </view>
 
@@ -183,7 +183,7 @@
   <!-- 优秀大虾推荐 -->
   <view class="section" wx:if="{{topProviders.length > 0}}">
     <view class="section-header">
-      <text class="section-title">🏆 优秀大虾</text>
+      <text class="section-title">🏆 优秀宗门弟子</text>
       <text class="section-more" bindtap="onGoToFindMentor">更多 ></text>
     </view>
     <scroll-view class="horizontal-scroll" scroll-x enable-flex>

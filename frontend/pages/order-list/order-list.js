@@ -36,6 +36,11 @@ Page({
     this.loadOrders(true);
   },
 
+  onShow() {
+    const tabBar = typeof this.getTabBar === 'function' ? this.getTabBar() : null;
+    if (tabBar) tabBar.setData({ selected: 2 });
+  },
+
   async loadOrders(reset = false) {
     if (this.data.loading) return;
     if (reset) {

@@ -11,7 +11,7 @@
       data-index="0"
       bindtap="onTabTap"
     >
-      <view class="tab-icon">
+      <view class="tab-icon" aria-label="首页">
         <image src="{{selected === 0 ? '/assets/tab-home-active.png' : '/assets/tab-home.png'}}" mode="aspectFit" />
       </view>
       <text class="tab-text">首页</text>
@@ -23,7 +23,7 @@
       data-index="1"
       bindtap="onTabTap"
     >
-      <view class="tab-icon">
+      <view class="tab-icon" aria-label="服务广场">
         <image src="{{selected === 1 ? '/assets/tab-plaza-active.png' : '/assets/tab-plaza.png'}}" mode="aspectFit" />
       </view>
       <text class="tab-text">服务广场</text>
@@ -32,7 +32,10 @@
     <!-- 中间"+"按钮 -->
     <view class="tab-center" bindtap="onCreateTap">
       <view class="create-btn">
-        <text class="create-icon">+</text>
+        <view class="create-icon" aria-label="发布">
+          <view class="create-icon-line create-icon-horizontal"></view>
+          <view class="create-icon-line create-icon-vertical"></view>
+        </view>
       </view>
     </view>
 
@@ -42,7 +45,7 @@
       data-index="2"
       bindtap="onTabTap"
     >
-      <view class="tab-icon">
+      <view class="tab-icon" aria-label="我的订单">
         <image src="{{selected === 2 ? '/assets/tab-order-active.png' : '/assets/tab-order.png'}}" mode="aspectFit" />
       </view>
       <text class="tab-text">我的订单</text>
@@ -54,7 +57,7 @@
       data-index="3"
       bindtap="onTabTap"
     >
-      <view class="tab-icon">
+      <view class="tab-icon" aria-label="我的">
         <image src="{{selected === 3 ? '/assets/tab-profile-active.png' : '/assets/tab-profile.png'}}" mode="aspectFit" />
       </view>
       <text class="tab-text">我的</text>

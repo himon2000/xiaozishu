@@ -184,7 +184,7 @@ def verify_enterprise_email(
 
     return {
         "success": True,
-        "message": "企业邮箱认证成功，长老角色已解锁！",
+        "message": "企业邮箱认证成功，大能角色已解锁！",
         "email": email,
     }
 

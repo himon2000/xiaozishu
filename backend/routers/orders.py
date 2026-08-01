@@ -228,7 +228,7 @@ def add_session_log(
     if not order:
         raise HTTPException(status_code=404, detail="订单不存在")
     if user.openid != order.provider_openid:
-        raise HTTPException(status_code=403, detail="只有大虾可以记录课次")
+        raise HTTPException(status_code=403, detail="只有宗门弟子可以记录课次")
 
     logs = order.session_logs or []
     logs.append({

@@ -130,7 +130,7 @@ Page({
     if (!this.data.canPublish) {
       wx.showModal({
         title: '🔒 发布权限',
-        content: '成为大虾后才能发布传功服务',
+        content: '成为宗门弟子后才能发布传功服务',
         confirmText: '去认证',
         success: (res) => {
           if (res.confirm) {

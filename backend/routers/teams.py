@@ -46,15 +46,15 @@ def list_categories():
     return {
         "categories": [
             # 联袂问道（通用组队）
-            {"id": "mi_jing", "name": "🔬 课题/科研", "icon": "🔬", "desc": "科研项目、课题组队", "group": "问道"},
-            {"id": "competition", "name": "🏆 竞赛组队", "icon": "🏆", "desc": "建模、编程、创业竞赛", "group": "问道"},
-            {"id": "project", "name": "💡 项目合作", "icon": "💡", "desc": "创业项目、产品开发", "group": "问道"},
-            {"id": "study", "name": "📚 学习小组", "icon": "📚", "desc": "考研、考证、期末冲刺", "group": "问道"},
+            {"id": "mi_jing", "name": "课题/科研", "icon": "🔬", "desc": "科研项目、课题组队", "group": "问道"},
+            {"id": "competition", "name": "竞赛组队", "icon": "🏆", "desc": "建模、编程、创业竞赛", "group": "问道"},
+            {"id": "project", "name": "项目合作", "icon": "💡", "desc": "创业项目、产品开发", "group": "问道"},
+            {"id": "study", "name": "学习小组", "icon": "📚", "desc": "考研、考证、期末冲刺", "group": "问道"},
             # 下山历练（就业相关）
-            {"id": "internship", "name": "🏢 寻觅道场", "icon": "🏢", "desc": "寻找实习机会", "group": "历练"},
-            {"id": "referral", "name": "🎯 求取推荐", "icon": "🎯", "desc": "寻求内推机会", "group": "历练"},
-            {"id": "job", "name": "💼 问道职涯", "icon": "💼", "desc": "求职、就职机会", "group": "历练"},
-            {"id": "job_resource", "name": "🌟 布施机缘", "icon": "🌟", "desc": "分享实习/内推/职位", "group": "历练"},
+            {"id": "internship", "name": "寻觅道场", "icon": "🏢", "desc": "寻找实习机会", "group": "历练"},
+            {"id": "referral", "name": "求取推荐", "icon": "🎯", "desc": "寻求内推机会", "group": "历练"},
+            {"id": "job", "name": "问道职涯", "icon": "💼", "desc": "求职、就职机会", "group": "历练"},
+            {"id": "job_resource", "name": "布施机缘", "icon": "🌟", "desc": "分享实习/内推/职位", "group": "历练"},
         ]
     }
 

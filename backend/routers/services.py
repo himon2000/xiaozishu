@@ -427,7 +427,7 @@ def get_provider_profile(openid: str, db: Session = Depends(get_db)):
     """大虾主页（含服务列表+评价摘要+传承树）"""
     provider = db.query(User).filter(User.openid == openid).first()
     if not provider:
-        raise HTTPException(status_code=404, detail="大虾不存在")
+        raise HTTPException(status_code=404, detail="宗门弟子不存在")
 
     services = db.query(Service).filter(
         Service.provider_openid == openid,

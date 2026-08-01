@@ -19,12 +19,18 @@ Component({
     this.setSelectedTab();
   },
 
+  pageLifetimes: {
+    show() {
+      this.setSelectedTab();
+    },
+  },
+
   methods: {
     // 设置选中的Tab
     setSelectedTab() {
       const pages = getCurrentPages();
       const currentPage = pages[pages.length - 1];
-      const route = currentPage.route;
+      const route = currentPage && (currentPage.route || currentPage.__route__);
 
       const tabMap = {
         'pages/home/home': 0,
@@ -33,7 +39,9 @@ Component({
         'pages/profile/profile': 3,
       };
 
-      this.setData({ selected: tabMap[route] ?? 0 });
+      if (route && Object.prototype.hasOwnProperty.call(tabMap, route)) {
+        this.setData({ selected: tabMap[route] });
+      }
     },
 
     // Tab切换
