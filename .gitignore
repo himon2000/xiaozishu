@@ -20,6 +20,7 @@
 **/Thumbs.db
 preview-qr.png
 preview-info.json
+upload-info.json
 
 # Local databases and logs
 **/*.db
