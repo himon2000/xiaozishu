@@ -15,16 +15,19 @@ Page({
     showRoleSelect: false,
     cloudStatus: 'checking', // 'checking' | 'ok' | 'error'
     cloudError: '',
+    agreed: false,
   },
 
   onLoad(options) {
+    const agreed = wx.getStorageSync('privacy_agreed_v1') === true;
+    this.setData({ agreed });
     // 处理飞花令牌
     if (options.ref) {
       wx.setStorageSync('referral_code', options.ref);
     }
 
     // 已登录 → 直接进入首页
-    if (isLoggedIn()) {
+    if (isLoggedIn() && agreed) {
       this.redirectToHome();
       return;
     }
@@ -51,6 +54,10 @@ Page({
 
   async onLoginTap() {
     if (this.data.loading) return;
+    if (!this.data.agreed) {
+      wx.showToast({ title: '请先阅读并同意协议', icon: 'none' });
+      return;
+    }
     this.setData({ loading: true });
 
     try {
@@ -72,6 +79,22 @@ Page({
         content: e.message || '请检查网络后重试',
         showCancel: false,
       });
+    }
+  },
+
+  onAgreementChange(e) {
+    const agreed = Array.isArray(e.detail.value) && e.detail.value.includes('agree');
+    this.setData({ agreed });
+    wx.setStorageSync('privacy_agreed_v1', agreed);
+  },
+
+  onOpenAgreement() {
+    wx.navigateTo({ url: '/pages/legal/legal' });
+  },
+
+  onOpenPrivacy() {
+    if (typeof wx.openPrivacyContract === 'function') {
+      wx.openPrivacyContract({});
     }
   },
 

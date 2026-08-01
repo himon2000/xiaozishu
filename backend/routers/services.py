@@ -7,10 +7,12 @@ from sqlalchemy.orm import Session
 from pydantic import BaseModel, Field
 from typing import Optional
 from utils.db import get_db
-from models import Service, User, Review, Order
+from models import ContentReport, Service, User, Review, Order
 from dependencies import get_current_user, require_provider, require_certified
 from services.level_service import get_level_info
 from sqlalchemy import func
+from utils.content_guard import guard_user_content
+from config import get_settings
 
 router = APIRouter(prefix="/api/v1/services", tags=["服务"])
 
@@ -231,6 +233,9 @@ def create_service(
     db: Session = Depends(get_db),
 ):
     """大虾发布新服务"""
+    guard_user_content(user.openid, body.model_dump())
+    if not get_settings().payment_enabled and (body.pricing_mode != "free" or body.price != 0):
+        raise HTTPException(status_code=403, detail="当前版本仅允许发布免费服务")
     # 检查境界是否满足要求
     from services.level_service import get_level_info as gli
     user_level_cfg = gli(user.level)
@@ -324,6 +329,7 @@ def update_service(
     db: Session = Depends(get_db),
 ):
     """更新服务（仅服务所有者可操作）"""
+    guard_user_content(user.openid, body.model_dump(exclude_unset=True))
     svc = db.query(Service).filter(Service.id == service_id).first()
     if not svc:
         raise HTTPException(status_code=404, detail="服务不存在")
@@ -542,17 +548,32 @@ def report_service(
     # 不能举报自己的服务
     if svc.provider_openid == user.openid:
         return {"success": False, "message": "不能举报自己的服务"}
+    guard_user_content(user.openid, body.description)
 
-    # 更新服务举报数（预留字段，如果没有则创建）
+    existing = db.query(ContentReport).filter(
+        ContentReport.reporter_openid == user.openid,
+        ContentReport.target_type == "service",
+        ContentReport.target_id == service_id,
+        ContentReport.status == "pending",
+    ).first()
+    if existing:
+        return {"success": True, "message": "举报已提交", "report_id": existing.id}
+
     svc.report_count = (svc.report_count or 0) + 1
-
-    # TODO: 创建 Report 记录表（当前使用字段标记）
-
+    report = ContentReport(
+        id=f"RPT{uuid.uuid4().hex[:12].upper()}",
+        reporter_openid=user.openid,
+        target_type="service",
+        target_id=service_id,
+        reason=body.reason,
+        description=body.description,
+    )
+    db.add(report)
     db.commit()
     return {
         "success": True,
         "message": "举报已提交，感谢您的反馈",
-        "report_id": f"RPT{int(datetime.now().timestamp() * 1000) % 100000:05d}"
+        "report_id": report.id,
     }
 
 

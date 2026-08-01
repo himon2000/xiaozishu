@@ -1,4 +1,5 @@
 // pages/customer-service/customer-service.js - 我的客服
+const { post } = require('../../utils/request');
 Page({
   data: {
     expandedIndex: -1,
@@ -6,8 +7,8 @@ Page({
     faqList: [
       {
         id: 1,
-        q: '如何充值灵石？',
-        a: '进入「我的」→「我的灵石」，点击充值按钮即可。目前支持微信支付，100灵石 = 1元。',
+        q: '目前支持在线支付吗？',
+        a: '首个公众版本暂不开放充值和在线支付，开放时间以后续公告为准。',
       },
       {
         id: 2,
@@ -66,17 +67,26 @@ Page({
     this.setData({ feedbackText: e.detail.value });
   },
 
-  onSubmitFeedback() {
+  async onSubmitFeedback() {
     const { feedbackText } = this.data;
     if (!feedbackText.trim()) {
       wx.showToast({ title: '请输入反馈内容', icon: 'none' });
       return;
     }
     wx.showLoading({ title: '提交中...' });
-    setTimeout(() => {
+    try {
+      await post('/reports', {
+        target_type: 'platform',
+        target_id: 'xiaozishu',
+        reason: 'other',
+        description: feedbackText.trim(),
+      });
       wx.hideLoading();
       wx.showToast({ title: '提交成功，感谢反馈！', icon: 'success' });
       this.setData({ feedbackText: '' });
-    }, 300);
+    } catch (error) {
+      wx.hideLoading();
+      wx.showToast({ title: error.message || '提交失败', icon: 'none' });
+    }
   },
 });

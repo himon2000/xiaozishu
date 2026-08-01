@@ -3,7 +3,8 @@
  * 路径：pages/service-detail/service-detail
  */
 const { get, post } = require('../../utils/request');
-const { requestPayment } = require('../../utils/payment');
+const { FEATURES } = require('../../config');
+const { reportContent } = require('../../utils/report');
 
 Page({
   data: {
@@ -13,6 +14,7 @@ Page({
     totalFee: 0,
     loading: true,
     reviewStats: null,
+    features: FEATURES,
   },
 
   onLoad(options) {
@@ -26,14 +28,7 @@ Page({
   async loadService(serviceId) {
     try {
       const data = await get(`/services/${serviceId}`);
-      // 补充默认信任数据
       const provider = data.provider || {};
-      if (provider && !provider.reply_rate) {
-        provider.reply_rate = 95; // 默认回复率
-      }
-      if (provider && !provider.on_time_rate) {
-        provider.on_time_rate = 90; // 默认准时率
-      }
       this.setData({
         service: data,
         provider,
@@ -72,12 +67,6 @@ Page({
     try {
       const data = await get(`/services/provider/${openid}`);
       const provider = data.provider || {};
-      if (provider && !provider.reply_rate) {
-        provider.reply_rate = 95;
-      }
-      if (provider && !provider.on_time_rate) {
-        provider.on_time_rate = 90;
-      }
       this.setData({ provider, loading: false });
     } catch (e) {
       this.setData({ loading: false });
@@ -108,6 +97,14 @@ Page({
   },
 
   async onBook() {
+    if (!FEATURES.payment) {
+      wx.showModal({
+        title: '预约暂未开放',
+        content: '首个公众版本暂不启用支付和付费预约功能。',
+        showCancel: false,
+      });
+      return;
+    }
     const { service, sessions } = this.data;
     if (!service) return;
 
@@ -119,21 +116,16 @@ Page({
       });
       wx.hideLoading();
 
-      // 调起支付
-      const result = await requestPayment(order.id);
-      if (result.success) {
-        wx.showToast({ title: '支付成功！灵契已签订', icon: 'success' });
-        setTimeout(() => {
-          wx.navigateTo({ url: `/pages/order-detail/order-detail?order_id=${order.id}` });
-        }, 1500);
-      } else if (result.reason === 'cancelled') {
-        wx.showToast({ title: '支付已取消', icon: 'none' });
-      } else {
-        wx.showToast({ title: '支付失败', icon: 'none' });
-      }
+      wx.showToast({ title: '预约已提交', icon: 'success' });
     } catch (e) {
       wx.hideLoading();
       wx.showToast({ title: e.message || '下单失败', icon: 'none' });
+    }
+  },
+
+  onReport() {
+    if (this.data.service && this.data.service.id) {
+      reportContent('service', this.data.service.id);
     }
   },
 

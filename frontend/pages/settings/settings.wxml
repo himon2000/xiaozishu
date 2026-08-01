@@ -35,6 +35,12 @@
       <text class="menu-arrow">›</text>
     </view>
 
+    <view class="menu-item" bindtap="onDeleteAccount">
+      <text class="menu-icon">🗑️</text>
+      <text class="menu-title">注销账号</text>
+      <text class="menu-arrow">›</text>
+    </view>
+
   </view>
 
   <!-- 存储 -->

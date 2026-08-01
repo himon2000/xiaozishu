@@ -22,13 +22,21 @@
     <button
       class="btn btn-primary btn-login"
       bindtap="onLoginTap"
-      disabled="{{loading || cloudStatus === 'checking'}}"
+      disabled="{{loading || cloudStatus === 'checking' || !agreed}}"
       hover-class="none"
     >
       <view class="wechat-icon">🍜</view>
       {{loading ? '正在登录...' : (cloudStatus === 'checking' ? '检查连接...' : '微信一键登录')}}
     </button>
-    <view class="login-tip">登录即表示同意《小紫薯用户协议》</view>
+    <checkbox-group class="login-tip" bindchange="onAgreementChange">
+      <label>
+        <checkbox value="agree" checked="{{agreed}}" color="#9b59b6" />
+        我已阅读并同意
+      </label>
+      <text class="agreement-link" catchtap="onOpenAgreement">《用户协议》</text>
+      <text>和</text>
+      <text class="agreement-link" catchtap="onOpenPrivacy">《隐私保护指引》</text>
+    </checkbox-group>
   </view>
 
   <!-- 角色选择（新用户） -->
@@ -44,7 +52,7 @@
       <view class="role-card provider" bindtap="onSelectRole" data-role="provider">
         <text class="role-icon">🍠</text>
         <text class="role-name">大虾</text>
-        <text class="role-desc">大学生/研究生，分享技能赚收益</text>
+        <text class="role-desc">大学生/研究生，分享技能与经验</text>
         <view class="role-btn">认证入驻</view>
       </view>
       <view class="role-card elder" bindtap="onSelectRole" data-role="elder">

@@ -23,6 +23,8 @@ from services import resource_service
 from utils.db import get_db as get_db_session
 from models import Resource, ResourceFavorite, User
 from sqlalchemy import func
+from utils.content_guard import guard_user_content
+from config import get_settings
 
 
 # ═══════════════════════════════════════════════════════════
@@ -156,6 +158,9 @@ def publish_resource(
     """
     if not payload.get("title"):
         return {"code": 400, "message": "标题不能为空"}
+    guard_user_content(current_user.openid, payload)
+    if not get_settings().payment_enabled and payload.get("access_mode", "free") != "free":
+        return {"code": 403, "message": "当前版本仅允许发布免费内容"}
 
     try:
         resource = resource_service.publish_resource(
@@ -234,6 +239,7 @@ def add_resource_comment(
     current_user=Depends(get_current_user),
 ):
     """添加资源评论"""
+    guard_user_content(current_user.openid, payload.content)
     try:
         comment = resource_service.add_comment(
             db, resource_id, current_user.openid, payload.content, payload.parent_id

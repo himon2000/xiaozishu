@@ -10,6 +10,7 @@ from typing import Optional
 from utils.db import get_db
 from models import Dispute, Order, User
 from dependencies import get_current_user
+from utils.content_guard import guard_user_content
 from services.order_machine import add_timeline_entry, can_transition
 
 router = APIRouter(prefix="/api/v1/disputes", tags=["仲裁"])
@@ -59,8 +60,8 @@ DISPUTE_TYPES = [
 ]
 
 EXPECTED_ACTIONS = [
-    {"id": "full_refund", "name": "全额退款", "description": "取消订单并全额退款"},
-    {"id": "partial_refund", "name": "部分退款", "description": "按比例退还部分金额"},
+    {"id": "re_deliver", "name": "重新服务", "description": "由服务者重新履行服务"},
+    {"id": "platform_coordination", "name": "平台协调", "description": "由平台联系双方协调处理"},
     {"id": "re_deliver", "name": "重新服务", "description": "服务者重新提供服务"},
     {"id": "platform_compensation", "name": "平台补偿", "description": "申请平台额外补偿"},
     {"id": "other", "name": "其他处理", "description": "其他合理的处理方式"},
@@ -105,6 +106,7 @@ def create_dispute(
     db: Session = Depends(get_db),
 ):
     """创建仲裁申请"""
+    guard_user_content(user.openid, body.description)
     # 检查订单是否存在
     order = db.query(Order).filter(Order.id == body.order_id).first()
     if not order:
@@ -229,9 +231,9 @@ def resolve_dispute(
     db: Session = Depends(get_db),
 ):
     """管理员处理仲裁"""
-    # 权限检查（简化版，实际应检查admin角色）
-    # if user.role != "admin":
-    #     raise HTTPException(status_code=403, detail="仅管理员可处理仲裁")
+    if user.role != "admin":
+        raise HTTPException(status_code=403, detail="仅管理员可处理仲裁")
+    guard_user_content(user.openid, body.resolution, body.admin_remark)
 
     dispute = db.query(Dispute).filter(Dispute.id == dispute_id).first()
     if not dispute:
@@ -248,14 +250,9 @@ def resolve_dispute(
     # 更新订单状态
     order = db.query(Order).filter(Order.id == dispute.order_id).first()
     if order:
-        if body.resolution == "full_refund":
-            order.status = "cancelled"
-            # TODO: 执行退款逻辑
-        elif body.resolution == "partial_refund":
-            order.status = "completed"
-            # TODO: 执行部分退款逻辑
-        else:
-            order.status = "completed"
+        if body.resolution in {"full_refund", "partial_refund"}:
+            raise HTTPException(status_code=503, detail="支付与退款功能暂未开放")
+        order.status = "completed"
 
         add_timeline_entry(order, order.status, f"仲裁结果：{body.resolution}", "平台管理员")
 
@@ -433,6 +430,7 @@ def submit_evidence(
     """
     补充证据材料
     """
+    guard_user_content(user.openid, content)
     dispute = db.query(Dispute).filter(Dispute.id == dispute_id).first()
     if not dispute:
         raise HTTPException(status_code=404, detail="仲裁不存在")

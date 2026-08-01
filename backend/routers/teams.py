@@ -11,6 +11,7 @@ from pydantic import BaseModel, Field, Field
 from utils.db import get_db
 from models import Team, TeamMember, User
 from dependencies import get_current_user
+from utils.content_guard import guard_user_content
 from services.level_service import get_level_info
 
 router = APIRouter(prefix="/api/v1/teams", tags=["联袂问道"])
@@ -139,6 +140,7 @@ def create_team(
     db: Session = Depends(get_db),
 ):
     """创建组队"""
+    guard_user_content(user.openid, body.model_dump())
     team_id = f"TM{uuid.uuid4().hex[:10].upper()}"
 
     team = Team(
@@ -178,6 +180,7 @@ def update_team(
     db: Session = Depends(get_db),
 ):
     """更新组队（仅创建者可操作）"""
+    guard_user_content(user.openid, body.model_dump(exclude_unset=True))
     team = db.query(Team).filter(Team.id == team_id).first()
     if not team:
         raise HTTPException(status_code=404, detail="组队不存在")

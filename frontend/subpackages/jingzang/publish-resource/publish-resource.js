@@ -3,6 +3,8 @@
  * 路径：subpackages/jingzang/publish-resource/publish-resource
  */
 const { post } = require('../../../utils/request');
+const { uploadImage } = require('../../../utils/upload');
+const { ensurePrivacyAuthorized } = require('../../../utils/privacy');
 
 Page({
   data: {
@@ -45,15 +47,18 @@ Page({
   },
 
   // 选择封面图
-  onChooseCover() {
+  async onChooseCover() {
+    try {
+      await ensurePrivacyAuthorized();
+    } catch (error) {
+      return;
+    }
     wx.chooseMedia({
       count: 1,
       mediaType: ['image'],
       sizeType: ['compressed'],
       success: (res) => {
         const filePath = res.tempFiles[0].tempFilePath;
-        // 实际项目中应上传到服务器获取 URL，这里直接使用本地路径演示
-        // TODO: 调用 wx.cloud.uploadFile 或自己的文件上传 API
         this.setData({ 'formData.cover_image': filePath });
       },
       fail: () => {
@@ -137,7 +142,7 @@ Page({
       };
 
       if (formData.cover_image) {
-        payload.cover_image = formData.cover_image;
+        payload.cover_image = await uploadImage(formData.cover_image, 'resource-covers');
       }
       if (formData.tags) {
         // 将逗号分隔的标签转为数组

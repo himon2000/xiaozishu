@@ -14,7 +14,11 @@
     "JWT_SECRET": "set_in_wechat_cloud_hosting",
     "DATABASE_URL": "mysql+pymysql://user:password@mysql-host:3306/xunlongge?charset=utf8mb4",
     "ENVIRONMENT": "production",
-    "DEBUG": "false"
+    "DEBUG": "false",
+    "PAYMENT_ENABLED": "false",
+    "DIVIDEND_ENABLED": "false",
+    "DEMO_ENABLED": "false",
+    "CONTENT_MODERATION_ENABLED": "true"
   },
   "customLogs": "stdout",
   "initialDelaySeconds": 3

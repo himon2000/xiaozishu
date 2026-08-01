@@ -15,13 +15,8 @@
   },
   "compileType": "miniprogram",
   "libVersion": "3.4.0",
+  "__usePrivacyCheck__": true,
   "lazyCodeLoading": "requiredComponents",
-  "permission": {
-    "scope.userLocation": {
-      "desc": "你的位置信息将用于推荐附近的服务"
-    }
-  },
-  "requiredPrivateInfos": ["getLocation", "chooseAddress"],
 
   "pages": [
     "pages/splash/splash",
@@ -34,7 +29,6 @@
     "pages/order-detail/order-detail",
     "pages/dispute-apply/dispute-apply",
     "pages/profile/profile",
-    "pages/dividend-pool/dividend-pool",
     "pages/team-plaza/team-plaza",
     "pages/team-detail/team-detail",
     "pages/my-teams/my-teams",
@@ -45,11 +39,10 @@
     "pages/opportunities/opportunities",
     "pages/opportunity-detail/opportunity-detail",
     "pages/my-opportunities/my-opportunities",
-    "pages/cultivation/cultivation",
-    "pages/my-research/my-research",
     "pages/settings/settings",
     "pages/customer-service/customer-service",
-    "pages/edit-profile/edit-profile"
+    "pages/edit-profile/edit-profile",
+    "pages/legal/legal"
   ],
 
   "tabBar": {
@@ -92,8 +85,7 @@
       "root": "subpackages/chuan-gong",
       "pages": [
         "index/index",
-        "search/search",
-        "publish/publish"
+        "search/search"
       ]
     },
     {
@@ -121,10 +113,7 @@
       "pages": [
         "resource-list/resource-list",
         "resource-detail/resource-detail",
-        "publish-resource/publish-resource",
-        "school-wiki/school-wiki",
-        "school-wiki-history/school-wiki-history",
-        "recharge/recharge"
+        "publish-resource/publish-resource"
       ]
     },
     {
@@ -133,12 +122,6 @@
         "add-stage/add-stage",
         "referral-code/referral-code",
         "growth-detail/growth-detail"
-      ]
-    },
-    {
-      "root": "subpackages/asset",
-      "pages": [
-        "asset"
       ]
     }
   ],

@@ -140,7 +140,7 @@ Page({
       });
       return;
     }
-    wx.navigateTo({ url: '/subpackages/chuan-gong/publish/publish' });
+    wx.navigateTo({ url: '/pages/publish-service/publish-service' });
   },
 
   // ========== 跳转到通用搜索页 ==========

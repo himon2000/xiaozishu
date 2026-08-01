@@ -78,10 +78,11 @@
   <view class="section card">
     <view class="section-title-sm">📜 服务说明</view>
     <view class="description">{{service.description || '暂无详细说明'}}</view>
+    <view class="text-muted" bindtap="onReport" style="margin-top: 24rpx; text-align: right;">举报此服务</view>
   </view>
 
   <!-- 底部操作栏 -->
-  <view class="bottom-bar safe-area-bottom">
+  <view class="bottom-bar safe-area-bottom" wx:if="{{features.payment}}">
     <view class="bottom-info">
       <text class="bottom-label">合计</text>
       <text class="bottom-price">💎{{service.price}} 灵石</text>

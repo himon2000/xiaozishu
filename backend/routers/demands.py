@@ -12,6 +12,7 @@ from sqlalchemy.orm import Session
 from dependencies import get_current_user, get_current_user_optional
 from models import Demand, Resource, Service, User
 from utils.db import get_db
+from utils.content_guard import guard_user_content
 
 router = APIRouter(prefix="/api/v1", tags=["需求"])
 
@@ -201,6 +202,7 @@ def get_demand(
 
 
 def _create_demand(body: DemandCreate, user: User, db: Session) -> Demand:
+    guard_user_content(user.openid, body.model_dump())
     demand_type = body.request_type or body.type
     demand = Demand(
         id=f"DM{uuid.uuid4().hex[:10].upper()}",

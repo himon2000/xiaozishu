@@ -29,6 +29,8 @@ def _get_openid_from_wx_header(request: Request) -> Optional[str]:
 def _get_or_create_user_by_openid(openid: str, db: Session) -> User:
     """根据 openid 查找用户，不存在则自动创建"""
     user = db.query(User).filter(User.openid == openid).first()
+    if user and user.status == "deleted":
+        raise HTTPException(status_code=403, detail="账号已注销，请重新登录后启用")
     if not user:
         from services import wechat_auth as wx_auth
         user = User(

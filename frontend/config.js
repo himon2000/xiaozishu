@@ -5,6 +5,11 @@ const TOKEN_KEY = 'access_token';
 const LOCAL_API_BASE = 'http://127.0.0.1:8000';
 // cloud：连接微信云托管；local：仅开发版连接本机 Docker 后端。
 const API_MODE = 'cloud';
+const FEATURES = Object.freeze({
+  payment: false,
+  dividend: false,
+  researchTasks: false,
+});
 
 // 只有显式切换为 local 时，微信开发者工具才读取本机 MySQL。
 function shouldUseLocalApi() {
@@ -23,5 +28,6 @@ module.exports = {
   TOKEN_KEY,
   API_MODE,
   LOCAL_API_BASE,
+  FEATURES,
   USE_LOCAL_API: shouldUseLocalApi(),
 };

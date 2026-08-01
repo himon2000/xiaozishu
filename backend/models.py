@@ -810,6 +810,22 @@ class UserRole(Base):
     user = relationship("User", back_populates="user_roles")
 
 
+class ContentReport(Base):
+    """用户举报记录，覆盖服务、资源、评价和评论。"""
+    __tablename__ = "content_reports"
+
+    id = Column(String, primary_key=True)
+    reporter_openid = Column(String, ForeignKey("users.openid"), nullable=False, index=True)
+    target_type = Column(String, nullable=False, index=True)
+    target_id = Column(String, nullable=False, index=True)
+    reason = Column(String, nullable=False)
+    description = Column(Text, default="")
+    status = Column(String, default="pending", index=True)
+    handled_by = Column(String, default="")
+    handled_at = Column(DateTime, nullable=True)
+    created_at = Column(DateTime, server_default=func.now())
+
+
 # ── 数据库初始化 ────────────────────────────────────────
 def init_db():
     settings = get_settings()

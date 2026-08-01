@@ -1,5 +1,6 @@
 // pages/settings/settings.js - 我的设置
 const app = getApp();
+const { del } = require('../../utils/request');
 
 Page({
   data: {
@@ -9,7 +10,7 @@ Page({
     version: '1.0.0',
   },
 
-  onLoad() {
+  onLoad(options) {
     this.calcCacheSize();
     // 读取本地存储的用户偏好
     const settings = wx.getStorageSync('settings') || {};
@@ -60,21 +61,15 @@ Page({
   // ========== 菜单跳转 ==========
 
   onPrivacy() {
-    wx.showModal({
-      title: '隐私协议',
-      content: '小紫薯重视用户隐私保护。我们仅收集必要信息以提供服务，不会将您的个人信息出售或共享给第三方。详情请关注后续更新。',
-      showCancel: false,
-      confirmText: '我知道了',
-    });
+    if (typeof wx.openPrivacyContract === 'function') {
+      wx.openPrivacyContract({
+        fail: () => wx.showToast({ title: '请先在公众平台完善隐私保护指引', icon: 'none' }),
+      });
+    }
   },
 
   onUserAgreement() {
-    wx.showModal({
-      title: '用户协议',
-      content: '欢迎使用小紫薯校园服务互助平台。使用本服务即表示您同意遵守平台规则，尊重其他用户，合法合规使用平台功能。',
-      showCancel: false,
-      confirmText: '我知道了',
-    });
+    wx.navigateTo({ url: '/pages/legal/legal' });
   },
 
   onClearCache() {
@@ -85,10 +80,10 @@ Page({
         if (res.confirm) {
           // 保留 settings 和 token
           const settings = wx.getStorageSync('settings');
-          const token = wx.getStorageSync('token');
+          const token = wx.getStorageSync('access_token');
           wx.clearStorageSync();
           if (settings) wx.setStorageSync('settings', settings);
-          if (token) wx.setStorageSync('token', token);
+          if (token) wx.setStorageSync('access_token', token);
           this.calcCacheSize();
           wx.showToast({ title: '缓存已清除', icon: 'success' });
         }
@@ -107,5 +102,27 @@ Page({
 
   onCheckUpdate() {
     wx.showToast({ title: '已是最新版本', icon: 'none' });
+  },
+
+  onDeleteAccount() {
+    wx.showModal({
+      title: '注销账号',
+      content: '注销后个人资料将被清除，且当前操作不可撤销。是否继续？',
+      confirmText: '确认注销',
+      confirmColor: '#d93025',
+      success: async (result) => {
+        if (!result.confirm) return;
+        try {
+          await del('/auth/me');
+          app.clearSession();
+          wx.reLaunch({ url: '/pages/splash/splash' });
+        } catch (error) {
+          wx.showToast({ title: error.message || '注销失败', icon: 'none' });
+        }
+      },
+    });
+    if (options && options.doc === 'agreement') {
+      setTimeout(() => this.onUserAgreement(), 0);
+    }
   },
 });
