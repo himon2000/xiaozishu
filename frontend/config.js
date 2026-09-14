@@ -1,5 +1,5 @@
-const CLOUD_ENV_ID = 'prod-9gkacmh0fb9cd5e6';
-const SERVICE_NAME = 'flask-4k93';
+const CLOUD_ENV_ID = 'prod-8g726qeod6aba0bd';
+const SERVICE_NAME = 'flask-qp8j';
 const API_PREFIX = '/api/v1';
 const TOKEN_KEY = 'access_token';
 const LOCAL_API_BASE = 'http://127.0.0.1:8000';

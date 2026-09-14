@@ -5,16 +5,14 @@
  * 调用模式：wx.cloud.callContainer 内网调用（无需域名白名单）
  *
  * ⚙️  云托管配置：
- *   CLOUD_ENV_ID  →  腾讯云云开发环境ID
+ *   CLOUD_ENV_ID  →  微信云托管环境ID
  *   SERVICE_NAME  →  云托管服务名称
  */
 
 // ──────────────────────────────────────────────
 // 🔧 云开发配置
-// ⚠️ 发布前请替换为实际环境值
+// 发布前核对 config.js 中的环境 ID 和服务名称
 // ──────────────────────────────────────────────
-// const CLOUD_ENV_ID = 'prod-9gkacmh0fb9cd5e6'; // 云开发环境ID（生产）
-// const SERVICE_NAME = 'flask-4k93';   // 云托管服务名（生产）
 // 统一使用同一套云环境（开发/体验/生产均对应同一个云环境）
 // 如有独立开发环境可在此处区分
 const { CLOUD_ENV_ID, SERVICE_NAME } = require('./config');
