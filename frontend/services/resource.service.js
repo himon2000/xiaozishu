@@ -145,19 +145,6 @@ const addComment = (resourceId, content, parentId = null) => {
 };
 
 /**
- * 高校百科 AI 问答
- * @param {string} question 问题
- * @param {string} schoolName 学校名称（可选）
- */
-const askSchoolWiki = (question, schoolName = '') => {
-  return request({
-    url: '/school-wiki/ask',
-    method: 'POST',
-    data: { question, school_name: schoolName },
-  });
-};
-
-/**
  * 获取高校列表
  */
 const getSchoolList = () => {
@@ -187,16 +174,6 @@ const getSchoolDetail = (schoolName) => {
   });
 };
 
-/**
- * 获取问答历史
- */
-const getQAHistory = (params = {}) => {
-  return request({
-    url: '/school-wiki/history',
-    data: { page: 1, page_size: 20, ...params },
-  });
-};
-
 // ── 资源类型中文映射 ──────────────────────────────────────
 const RESOURCE_TYPE_MAP = {
   question_set: '题库',
@@ -214,11 +191,9 @@ module.exports = {
   likeResource,
   myResources,
   listSchoolGuides,
-  askSchoolWiki,
   getSchoolList,
   searchSchool,
   getSchoolDetail,
-  getQAHistory,
   toggleFavorite,
   checkFavoriteStatus,
   myFavorites,

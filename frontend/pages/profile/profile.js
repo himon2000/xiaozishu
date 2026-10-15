@@ -125,11 +125,6 @@ Page({
     wx.navigateTo({ url: '/subpackages/jingzang/resource-list/resource-list' });
   },
 
-  // 万宗宝鉴
-  onSchoolWiki() {
-    wx.navigateTo({ url: '/subpackages/jingzang/school-wiki/school-wiki' });
-  },
-
   // 我的历练（就业资源）
   onMyOpportunities() {
     wx.navigateTo({ url: '/pages/my-opportunities/my-opportunities' });
