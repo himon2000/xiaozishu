@@ -92,7 +92,8 @@ Page({
       wx.hideLoading();
       if (e && e.errMsg && e.errMsg.indexOf('cancel') >= 0) return;
       console.error('头像上传失败', e);
-      wx.showToast({ title: (e && e.message) || '头像上传失败', icon: 'none' });
+      const msg = (e && (e.message || e.errMsg)) || '头像上传失败';
+      wx.showToast({ title: String(msg).slice(0, 40), icon: 'none' });
     }
   },
 
