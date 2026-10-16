@@ -26,6 +26,7 @@ from PIL import Image
 
 from config import get_settings
 from utils.http_verify import ssl_verify
+from utils.wx_api import wx_api_base
 
 logger = logging.getLogger(__name__)
 
@@ -98,7 +99,7 @@ def _get_token() -> tuple[str, str]:
         settings = get_settings()
         try:
             response = httpx.get(
-                "https://api.weixin.qq.com/cgi-bin/token",
+                f"{wx_api_base()}/cgi-bin/token",
                 params={
                     "grant_type": "client_credential",
                     "appid": settings.wechat_appid,
@@ -137,7 +138,7 @@ def ensure_safe_text(openid: str, *values: Any) -> None:
         token, token_param = _get_token()
         try:
             response = httpx.post(
-                "https://api.weixin.qq.com/wxa/msg_sec_check",
+                f"{wx_api_base()}/wxa/msg_sec_check",
                 params={token_param: token},
                 json={"content": chunk, "version": 2, "scene": 2, "openid": openid},
                 timeout=8,
@@ -170,7 +171,7 @@ def ensure_safe_image(content: bytes, content_type: str) -> None:
     token, token_param = _get_token()
     try:
         response = httpx.post(
-            "https://api.weixin.qq.com/wxa/img_sec_check",
+            f"{wx_api_base()}/wxa/img_sec_check",
             params={token_param: token},
             files={"media": ("upload.jpg", content, content_type)},
             timeout=12,

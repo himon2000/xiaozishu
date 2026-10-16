@@ -7,6 +7,7 @@ import random
 import string
 from config import get_settings
 from utils.http_verify import ssl_verify
+from utils.wx_api import wx_api_base
 
 settings = get_settings()
 
@@ -23,7 +24,7 @@ async def code2session(js_code: str) -> dict:
     微信 code2session 接口
     小程序端通过 wx.login() 获取 code，传给后端换 openid
     """
-    url = "https://api.weixin.qq.com/sns/jscode2session"
+    url = f"{wx_api_base()}/sns/jscode2session"
     params = {
         "appid": settings.wechat_appid,
         "secret": settings.wechat_secret,
@@ -43,7 +44,7 @@ async def get_phone_number(access_token: str, code: str) -> str | None:
     通过微信获取用户手机号
     需要用户主动点击按钮触发
     """
-    url = "https://api.weixin.qq.com/wxa/business/getuserphonenumber"
+    url = f"{wx_api_base()}/wxa/business/getuserphonenumber"
     async with httpx.AsyncClient(timeout=10, verify=ssl_verify()) as client:
         resp = await client.post(
             url,
