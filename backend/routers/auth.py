@@ -380,6 +380,12 @@ async def login(body: LoginRequest, request: Request, db: Session = Depends(get_
             session_data = await wx_auth.code2session(body.code)
             openid = session_data["openid"]
         except Exception as exc:
+            import logging
+            logging.getLogger("auth.login").warning(
+                "code2session 失败: %s | body.code=%r | X-WX-OPENID 未注入，"
+                "请检查环境变量 WECHAT_APPID/WECHAT_SECRET 是否为目标小程序(wx776c4b107e04e36a)的配对值",
+                exc, body.code,
+            )
             from config import get_settings
             settings = get_settings()
             if settings.environment == "development" and settings.demo_enabled:
