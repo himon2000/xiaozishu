@@ -25,6 +25,7 @@ import httpx
 from PIL import Image
 
 from config import get_settings
+from utils.http_verify import ssl_verify
 
 logger = logging.getLogger(__name__)
 
@@ -104,6 +105,7 @@ def _get_token() -> tuple[str, str]:
                     "secret": settings.wechat_secret,
                 },
                 timeout=8,
+                verify=ssl_verify(),
             )
             response.raise_for_status()
             payload = response.json()
@@ -139,6 +141,7 @@ def ensure_safe_text(openid: str, *values: Any) -> None:
                 params={token_param: token},
                 json={"content": chunk, "version": 2, "scene": 2, "openid": openid},
                 timeout=8,
+                verify=ssl_verify(),
             )
             response.raise_for_status()
             payload = response.json()
@@ -171,6 +174,7 @@ def ensure_safe_image(content: bytes, content_type: str) -> None:
             params={token_param: token},
             files={"media": ("upload.jpg", content, content_type)},
             timeout=12,
+            verify=ssl_verify(),
         )
         response.raise_for_status()
         payload = response.json()

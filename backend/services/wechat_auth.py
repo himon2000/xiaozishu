@@ -6,6 +6,7 @@ import uuid
 import random
 import string
 from config import get_settings
+from utils.http_verify import ssl_verify
 
 settings = get_settings()
 
@@ -29,7 +30,7 @@ async def code2session(js_code: str) -> dict:
         "js_code": js_code,
         "grant_type": "authorization_code",
     }
-    async with httpx.AsyncClient(timeout=10) as client:
+    async with httpx.AsyncClient(timeout=10, verify=ssl_verify()) as client:
         resp = await client.get(url, params=params)
         data = resp.json()
         if "errcode" in data and data["errcode"] != 0:
@@ -43,7 +44,7 @@ async def get_phone_number(access_token: str, code: str) -> str | None:
     需要用户主动点击按钮触发
     """
     url = "https://api.weixin.qq.com/wxa/business/getuserphonenumber"
-    async with httpx.AsyncClient(timeout=10) as client:
+    async with httpx.AsyncClient(timeout=10, verify=ssl_verify()) as client:
         resp = await client.post(
             url,
             params={"access_token": access_token},
