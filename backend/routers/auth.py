@@ -98,6 +98,8 @@ class ProfileUpdateRequest(BaseModel):
 
     birthday: str = ""  # YYYY-MM-DD
 
+    avatar_url: str = ""  # 头像：云存储 fileID 或 http(s) 地址
+
 
 
 
@@ -924,11 +926,15 @@ def update_profile(
 
         user.birthday = body.birthday
 
+    if body.avatar_url is not None and body.avatar_url != "":
+
+        user.avatar_url = body.avatar_url
+
 
 
     db.commit()
 
-    return {"success": True, "message": "资料更新成功"}
+    return {"success": True, "message": "资料更新成功", "avatar_url": user.avatar_url}
 
 
 @router.delete("/me")

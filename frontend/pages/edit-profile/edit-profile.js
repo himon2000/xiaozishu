@@ -6,6 +6,7 @@
  * API：PUT /auth/users/profile
  */
 const { get, put } = require('../../utils/request');
+const { uploadImage } = require('../../utils/upload');
 
 Page({
   data: {
@@ -14,6 +15,7 @@ Page({
     gender: '',       // male | female | secret
     birthday: '',     // YYYY-MM-DD
     avatarUrl: '',
+    uploadingAvatar: false,
     saving: false,
     loading: true,
 
@@ -62,6 +64,38 @@ Page({
 
   // ========== 编辑操作 ==========
 
+  // 选择并上传头像（真机/模拟器均支持；微信头像填写能力需 button open-type，故统一用相册/拍照）
+  async onAvatarTap() {
+    if (this.data.uploadingAvatar) return;
+    try {
+      const choose = await new Promise((resolve, reject) => {
+        wx.chooseMedia({
+          count: 1,
+          mediaType: ['image'],
+          sizeType: ['compressed'],
+          sourceType: ['album', 'camera'],
+          success: resolve,
+          fail: reject,
+        });
+      });
+      const file = (choose.tempFiles || [])[0];
+      if (!file || !file.tempFilePath) return;
+
+      this.setData({ uploadingAvatar: true });
+      wx.showLoading({ title: '上传中...' });
+      const fileID = await uploadImage(file.tempFilePath, 'avatar');
+      this.setData({ avatarUrl: fileID, uploadingAvatar: false });
+      wx.hideLoading();
+      wx.showToast({ title: '已选择，点保存生效', icon: 'none' });
+    } catch (e) {
+      this.setData({ uploadingAvatar: false });
+      wx.hideLoading();
+      if (e && e.errMsg && e.errMsg.indexOf('cancel') >= 0) return;
+      console.error('头像上传失败', e);
+      wx.showToast({ title: (e && e.message) || '头像上传失败', icon: 'none' });
+    }
+  },
+
   onNicknameInput(e) {
     this.setData({ nickname: e.detail.value });
   },
@@ -95,7 +129,7 @@ Page({
 
   // 保存
   async onSave() {
-    const { nickname, bio, gender, birthday, saving } = this.data;
+    const { nickname, bio, gender, birthday, avatarUrl, saving } = this.data;
 
     if (saving) return;
 
@@ -118,6 +152,7 @@ Page({
         bio: bio.trim(),
         gender: gender || '',
         birthday: birthday || '',
+        avatar_url: avatarUrl || '',
       });
 
       wx.hideLoading();

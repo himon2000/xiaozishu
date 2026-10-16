@@ -9,10 +9,10 @@
 
   <block wx:if="{{!loading}}">
 
-    <!-- 头像区域（仅查看） -->
+    <!-- 头像区域（点击更换） -->
     <view class="group-label">头像</view>
     <view class="menu-group">
-      <view class="menu-item avatar-row">
+      <view class="menu-item avatar-row" bindtap="onAvatarTap">
         <text class="menu-title">头像</text>
         <image class="avatar-preview" src="{{avatarUrl || '/assets/default-avatar.png'}}" mode="aspectFill" />
         <text class="menu-arrow">›</text>
