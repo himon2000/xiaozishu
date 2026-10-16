@@ -24,9 +24,35 @@ function buildQuery(params = {}) {
     .join('&');
 }
 
-function request(options) {
+// 等待「资源复用」云环境就绪，并返回其 Cloud 实例
+// 未就绪时给出可定位的错误，避免用户只看到含糊的网络失败
+async function ensureCloud() {
+  const app = getApp();
+  if (app && app.globalData && app.globalData.cloudReady) {
+    try {
+      await app.globalData.cloudReady;
+    } catch (err) {
+      throw {
+        code: -601034,
+        message: '云环境初始化失败，请确认已在资源方控制台开通资源复用',
+        detail: (err && (err.errMsg || err.message)) || String(err),
+      };
+    }
+    if (app.globalData.cloud) return app.globalData.cloud;
+  }
+  throw {
+    code: -601034,
+    message: '云环境未就绪，请确认已开通资源复用',
+    detail: '请先初始化 wx.cloud.Cloud(resourceAppid/resourceEnv)',
+  };
+}
+
+async function request(options) {
   const { url, method = 'GET', data, header = {} } = options;
   const upperMethod = method.toUpperCase();
+
+  // 资源复用的 init() 是异步的，发请求前必须等待完成
+  const cloud = await ensureCloud();
 
   // 安全获取 token（在函数内部延迟获取，避免初始化时序问题）
   const app = getApp();
@@ -93,7 +119,7 @@ function request(options) {
       return;
     }
 
-    wx.cloud.callContainer({
+    cloud.callContainer({
       config: { env: CLOUD_ENV_ID },
       path,
       method: upperMethod,

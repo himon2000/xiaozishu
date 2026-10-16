@@ -1,5 +1,9 @@
-const CLOUD_ENV_ID = 'prod-9gkacmh0fb9cd5e6';
-const SERVICE_NAME = 'flask-4k93';
+// 云托管环境所属账号（资源提供方 AppID）
+// 本小程序 wx776c4b107e04e36a 并非该云托管环境的开通方，是通过「资源复用」借用的。
+// 前提：两个 AppID 必须同一主体，且已在资源方控制台完成资源复用授权。
+const RESOURCE_APPID = 'wx616f58ee521ab283';
+const CLOUD_ENV_ID = 'prod-8g726qeod6aba0bd';
+const SERVICE_NAME = 'flask-qp8j';
 const API_PREFIX = '/api/v1';
 const TOKEN_KEY = 'access_token';
 const LOCAL_API_BASE = 'http://127.0.0.1:8000';
@@ -22,6 +26,7 @@ function shouldUseLocalApi() {
 }
 
 module.exports = {
+  RESOURCE_APPID,
   CLOUD_ENV_ID,
   SERVICE_NAME,
   API_PREFIX,

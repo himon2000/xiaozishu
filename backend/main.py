@@ -11,7 +11,7 @@ from fastapi.responses import JSONResponse
 
 from config import get_settings
 from models import init_db
-from routers import auth, services, orders, mentorships, levels, resources, teams, disputes, reviews, init_data, stages, roles, wallet, opportunities, demands, reports, content_security
+from routers import auth, services, orders, mentorships, levels, resources, teams, disputes, reviews, init_data, stages, roles, wallet, opportunities, demands, reports, content_security, admin
 
 logger = logging.getLogger(__name__)
 settings = get_settings()
@@ -78,6 +78,12 @@ def health_check():
     }
 
 
+@app.api_route("/__tcb_probe__", methods=["GET", "HEAD"])
+def tcb_probe():
+    """微信云托管健康检查探针（平台固定探测此路径，缺失会返回 404 被判不健康）"""
+    return {"status": "ok", "environment": settings.environment}
+
+
 @app.get("/")
 def root():
     return {
@@ -122,6 +128,7 @@ if settings.demo_enabled:
     app.include_router(init_data.router)
 app.include_router(stages.router)
 app.include_router(roles.router)
+app.include_router(admin.router)
 
 
 def prioritize_static_routes() -> None:

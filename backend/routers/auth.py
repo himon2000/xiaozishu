@@ -37,7 +37,7 @@ router = APIRouter(prefix="/api/v1/auth", tags=["认证"])
 
 class DemoLoginRequest(BaseModel):
 
-    role: str = Field(default="seeker", pattern="^(seeker|provider|elder)$")  # seeker, provider, elder
+    role: str = Field(default="seeker", pattern="^(seeker|provider|elder|admin)$")
 
 
 
@@ -175,6 +175,8 @@ async def demo_login(body: DemoLoginRequest, db: Session = Depends(get_db)):
 
         "elder": {"nickname": "🏛️ 长老王老师", "level": 5, "school": "复旦附中", "cert_status": "verified"},
 
+        "admin": {"nickname": "小紫薯执事", "level": 5, "school": "平台运营中心", "cert_status": "verified"},
+
     }
 
 
@@ -252,6 +254,11 @@ async def demo_login(body: DemoLoginRequest, db: Session = Depends(get_db)):
 
             db.commit()
 
+        if body.role == "admin":
+            user.enabled_roles = ["seeker", "admin"]
+            user.current_role = "admin"
+            db.commit()
+
 
 
 
@@ -270,6 +277,11 @@ async def demo_login(body: DemoLoginRequest, db: Session = Depends(get_db)):
 
         user.current_role = body.role
 
+        db.commit()
+
+    if body.role == "admin":
+        user.enabled_roles = ["seeker", "admin"]
+        user.current_role = "admin"
         db.commit()
 
 

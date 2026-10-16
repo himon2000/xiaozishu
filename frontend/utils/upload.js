@@ -53,7 +53,17 @@ async function uploadImage(filePath, purpose = 'ugc') {
   });
 
   const cloudPath = `ugc/${purpose}/${new Date().toISOString().slice(0, 10)}/${randomName()}.${safeExtension(filePath)}`;
-  const result = await wx.cloud.uploadFile({
+  // 资源复用模式下，云存储也必须走同一个 Cloud 实例，否则会报权限错误
+  const app = getApp();
+  if (app && app.globalData && app.globalData.cloudReady) {
+    await app.globalData.cloudReady;
+  }
+  const cloud = (app && app.globalData && app.globalData.cloud);
+  if (!cloud) {
+    throw new Error('云环境未就绪，请确认已在资源方控制台开通资源复用');
+  }
+
+  const result = await cloud.uploadFile({
     config: { env: CLOUD_ENV_ID },
     cloudPath,
     filePath: checkedPath,

@@ -826,6 +826,19 @@ class ContentReport(Base):
     created_at = Column(DateTime, server_default=func.now())
 
 
+class AdminAuditLog(Base):
+    """后台关键操作审计日志，不记录口令、令牌等敏感信息。"""
+    __tablename__ = "admin_audit_logs"
+
+    id = Column(String, primary_key=True)
+    admin_openid = Column(String, ForeignKey("users.openid"), nullable=False, index=True)
+    action = Column(String, nullable=False, index=True)
+    target_type = Column(String, nullable=False, index=True)
+    target_id = Column(String, default="", index=True)
+    detail = Column(JSON, default=dict)
+    created_at = Column(DateTime, server_default=func.now(), index=True)
+
+
 # ── 数据库初始化 ────────────────────────────────────────
 def init_db():
     settings = get_settings()
