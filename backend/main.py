@@ -47,10 +47,44 @@ app.add_middleware(
 )
 
 
+# ── 启动时为开发者账号套用角色预置 ───────────────────────
+def apply_dev_role_presets_on_boot() -> None:
+    """
+    启动时对存量用户套用 DEV_ROLE_PRESETS，并把结果打到运行日志，
+    便于在云托管日志里直接核对（无需直连数据库）。
+    """
+    from utils.db import SessionLocal
+    from models import User
+    from services import role_service
+
+    raw = (settings.dev_role_presets or "").strip()
+    print(f"[dev-role-presets] config={raw!r}")
+    if not raw:
+        return
+
+    db = SessionLocal()
+    try:
+        users = db.query(User).all()
+        print(f"[dev-role-presets] total users: {len(users)}")
+        for u in users[:50]:
+            print(f"[dev-role-presets] user: nickname={u.nickname!r} openid={u.openid} "
+                  f"role={u.role} enabled={u.enabled_roles} current={u.current_role}")
+        applied = []
+        for u in users:
+            for role in role_service.apply_dev_role_presets(db, u):
+                applied.append({"nickname": u.nickname, "openid": u.openid, "role": role})
+        print(f"[dev-role-presets] applied: {applied}")
+    except Exception as exc:
+        print(f"[dev-role-presets] startup error: {exc}")
+    finally:
+        db.close()
+
+
 # ── 启动时初始化数据库 ───────────────────────────────────
 @app.on_event("startup")
 def startup():
     init_db()
+    apply_dev_role_presets_on_boot()
     # 仅在明确开启支付时检查商户参数；首个公众版本默认关闭支付。
     if settings.payment_enabled and settings.environment != "development":
         if settings.wechat_mchid == "test_mchid":

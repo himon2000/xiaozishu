@@ -6,7 +6,7 @@
 """
 from typing import List, Optional
 
-from fastapi import APIRouter, Depends, Header, HTTPException, Query
+from fastapi import APIRouter, Depends, Header, HTTPException, Query, Request
 from pydantic import BaseModel, Field
 from sqlalchemy import or_
 from sqlalchemy.orm import Session
@@ -19,12 +19,30 @@ from services import role_service
 router = APIRouter(prefix="/api/v1/dev", tags=["运维工具"])
 
 
-def verify_dev_token(x_dev_token: str = Header(default="", alias="X-Dev-Token")) -> None:
+def verify_dev_token(
+    request: Request,
+    x_dev_token: str = Header(default="", alias="X-Dev-Token"),
+) -> None:
+    """
+    鉴权满足其一即可：
+      1. X-Dev-Token 等于环境变量 DEV_ADMIN_TOKEN（两端 strip，容忍误粘贴空格）
+      2. 云托管内网调用且 X-WX-OPENID 落在 DEV_ADMIN_OPENIDS 白名单
+    """
     settings = get_settings()
-    if not settings.dev_admin_token:
+    token = (settings.dev_admin_token or "").strip()
+    openids = [o.strip() for o in (settings.dev_admin_openids or "").split(",") if o.strip()]
+
+    if not token and not openids:
         raise HTTPException(status_code=404, detail="dev tools disabled")
-    if not x_dev_token or x_dev_token != settings.dev_admin_token:
-        raise HTTPException(status_code=401, detail="invalid dev token")
+
+    if token and (x_dev_token or "").strip() == token:
+        return
+
+    wx_openid = request.headers.get("X-WX-OPENID") or request.headers.get("x-wx-openid") or ""
+    if wx_openid and wx_openid in openids:
+        return
+
+    raise HTTPException(status_code=401, detail="invalid dev token")
 
 
 def _user_brief(u: User) -> dict:

@@ -48,6 +48,8 @@ class Settings(BaseSettings):
     # 运维工具（/api/v1/dev/*）
     # 置空则整组接口关闭（返回 404）
     dev_admin_token: str = ""
+    # 免令牌白名单：填 openid（逗号分隔），云托管内网调用自动携带 X-WX-OPENID 即视为管理员
+    dev_admin_openids: str = ""
     # 开发者角色预置：昵称关键字或 openid : 角色，英文逗号分隔
     # 例：himon:provider,吴燕:elder
     dev_role_presets: str = "himon:provider,吴燕:elder"

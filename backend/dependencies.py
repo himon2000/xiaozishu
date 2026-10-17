@@ -26,6 +26,18 @@ def _get_openid_from_wx_header(request: Request) -> Optional[str]:
     return request.headers.get("X-WX-OPENID") or request.headers.get("x-wx-openid")
 
 
+def _apply_dev_presets(user: Optional[User], db: Session) -> Optional[User]:
+    """开发者账号角色预置（DEV_ROLE_PRESETS），幂等；未配置时零开销"""
+    if user is None:
+        return user
+    try:
+        from services import role_service
+        role_service.apply_dev_role_presets(db, user)
+    except Exception as exc:  # 预置失败不影响正常登录
+        print(f"[dev-role-presets] skip: {exc}")
+    return user
+
+
 def _get_or_create_user_by_openid(openid: str, db: Session) -> User:
     """根据 openid 查找用户，不存在则自动创建"""
     user = db.query(User).filter(User.openid == openid).first()
@@ -44,14 +56,7 @@ def _get_or_create_user_by_openid(openid: str, db: Session) -> User:
         db.commit()
         db.refresh(user)
 
-    # 开发者账号角色预置（DEV_ROLE_PRESETS），幂等，未配置时零开销
-    try:
-        from services import role_service
-        role_service.apply_dev_role_presets(db, user)
-    except Exception as exc:  # 预置失败不影响正常登录
-        print(f"[dev-role-presets] skip: {exc}")
-
-    return user
+    return _apply_dev_presets(user, db)
 
 
 def get_current_user_optional(
@@ -71,7 +76,8 @@ def get_current_user_optional(
     payload = decode_token(credentials.credentials)
     if not payload:
         return None
-    return db.query(User).filter(User.openid == payload["sub"]).first()
+    user = db.query(User).filter(User.openid == payload["sub"]).first()
+    return _apply_dev_presets(user, db)
 
 
 def get_current_user(
@@ -94,7 +100,7 @@ def get_current_user(
     user = db.query(User).filter(User.openid == payload["sub"]).first()
     if not user:
         raise HTTPException(status_code=401, detail="用户不存在")
-    return user
+    return _apply_dev_presets(user, db)
 
 
 def require_role(*roles: str):
