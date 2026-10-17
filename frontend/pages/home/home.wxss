@@ -297,6 +297,31 @@
   color: #999;
 }
 
+/* ========== 游客提示条 ========== */
+.guest-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 16rpx 24rpx 0;
+  padding: 16rpx 24rpx;
+  background: #f5eef8;
+  border: 1rpx solid #e0d3ec;
+  border-radius: 16rpx;
+  font-size: 24rpx;
+  color: #6a4c93;
+}
+
+.guest-login-btn {
+  color: #fff;
+  background: #9b59b6;
+  font-size: 22rpx;
+  font-weight: 600;
+  padding: 8rpx 24rpx;
+  border-radius: 24rpx;
+  flex-shrink: 0;
+  margin-left: 16rpx;
+}
+
 /* ========== 热门需求 ========== */
 .demand-list {
   padding: 0 30rpx;

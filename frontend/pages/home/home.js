@@ -3,9 +3,11 @@
  * 路径：pages/home/home
  */
 const { get } = require('../../utils/request');
+const auth = require('../../utils/auth');
 
 Page({
   data: {
+    isGuest: false,       // 游客模式（未登录可浏览）
     viewMode: 'seeker',  // 'seeker' | 'provider'
     hotServices: [],      // 热门服务推荐
     topProviders: [],     // 优秀大虾推荐
@@ -30,8 +32,16 @@ Page({
     const tabBar = typeof this.getTabBar === 'function' ? this.getTabBar() : null;
     if (tabBar) tabBar.setData({ selected: 0 });
     const app = getApp();
-    this.setData({ viewMode: (app && app.globalData && app.globalData.viewMode) || 'seeker' });
+    this.setData({
+      viewMode: (app && app.globalData && app.globalData.viewMode) || 'seeker',
+      isGuest: !auth.isLoggedIn(),
+    });
     await this.loadHomeData();
+  },
+
+  // 游客登录引导
+  onGuestLogin() {
+    wx.reLaunch({ url: '/pages/splash/splash' });
   },
 
   async onPullDownRefresh() {

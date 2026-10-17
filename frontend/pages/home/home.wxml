@@ -16,8 +16,14 @@
     </view>
   </view>
 
+  <!-- 游客提示条 -->
+  <view class="guest-bar" wx:if="{{isGuest}}" bindtap="onGuestLogin">
+    <text>👀 游客浏览中，登录后可发布服务、下单、评价</text>
+    <text class="guest-login-btn">去登录</text>
+  </view>
+
   <!-- Banner区 -->
-  <view class="hero-banner">
+  <view class="hero-banner" bindtap="onGoToServicePlaza">
     <view class="banner-content">
       <view class="banner-main">明明相代，代代相传</view>
       <view class="banner-sub">学长学姐带你飞升 🎓</view>
@@ -207,7 +213,7 @@
   <!-- 最新需求 -->
   <view class="section" wx:if="{{latestDemands.length > 0}}">
     <view class="section-header">
-      <text class="section-title">📝 热门需求</text>
+      <text class="section-title" bindtap="onGoToDemandList">📝 热门需求</text>
       <text class="section-more" bindtap="onGoToDemandList">更多 ></text>
     </view>
     <view class="demand-list">

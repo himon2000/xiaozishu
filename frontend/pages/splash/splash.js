@@ -88,6 +88,12 @@ Page({
     wx.setStorageSync('privacy_agreed_v1', agreed);
   },
 
+  // 游客浏览：不登录也能逛首页 / 服务广场（发布、下单等操作时再引导登录）
+  onGuestBrowse() {
+    wx.setStorageSync('privacy_agreed_v1', true);
+    wx.switchTab({ url: '/pages/home/home' });
+  },
+
   onOpenAgreement() {
     wx.navigateTo({ url: '/pages/legal/legal' });
   },

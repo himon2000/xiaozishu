@@ -68,11 +68,25 @@ async function request(options) {
   return new Promise((resolve, reject) => {
     const success = (res) => {
       if (res.statusCode === 401) {
-        // Token 失效，触发重新登录
+        // Token 失效 / 未登录：清除会话并给出明确的登录引导
+        // 防抖：页面常并发多个请求，3 秒内只弹一次引导
         if (app) app.clearSession();
-        wx.showToast({ title: '请重新登录', icon: 'none' });
-        wx.reLaunch({ url: '/pages/splash/splash' });
-        return reject({ code: 401, message: '请重新登录', detail: '请重新登录' });
+        const now = Date.now();
+        if (!wx.__lastLoginPromptAt || now - wx.__lastLoginPromptAt > 3000) {
+          wx.__lastLoginPromptAt = now;
+          wx.showModal({
+            title: '需要登录',
+            content: '该功能需要登录后使用，先去登录吗？（也可以继续逛一逛）',
+            confirmText: '去登录',
+            cancelText: '继续逛',
+            success: (r) => {
+              if (r.confirm) {
+                wx.reLaunch({ url: '/pages/splash/splash' });
+              }
+            },
+          });
+        }
+        return reject({ code: 401, message: '请先登录', detail: '请先登录' });
       }
       if (res.statusCode >= 200 && res.statusCode < 300) {
         const payload = res.data;

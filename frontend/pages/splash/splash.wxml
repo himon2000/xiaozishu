@@ -26,6 +26,7 @@
     >
       {{loading ? '正在登录...' : (cloudStatus === 'checking' ? '检查连接...' : '微信一键登录')}}
     </button>
+    <view class="guest-entry" bindtap="onGuestBrowse">先逛逛，随便看看 →</view>
     <checkbox-group class="login-tip" bindchange="onAgreementChange">
       <label>
         <checkbox value="agree" checked="{{agreed}}" color="#9b59b6" />

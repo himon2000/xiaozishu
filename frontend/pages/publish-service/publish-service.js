@@ -184,6 +184,12 @@ Page({
         const filePath = res.tempFiles[0].tempFilePath;
         this.setData({ 'formData.cover_image': filePath });
       },
+      fail: (err) => {
+        const msg = (err && err.errMsg) || '';
+        if (msg.indexOf('cancel') >= 0) return; // 用户主动取消，不提示
+        console.error('选择封面失败', err);
+        wx.showToast({ title: msg.includes('privacy') ? '请先同意隐私保护指引后再选择图片' : '选择图片失败，请重试', icon: 'none' });
+      },
     });
   },
 
