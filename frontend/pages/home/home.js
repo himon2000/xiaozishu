@@ -23,9 +23,13 @@ Page({
     loading: false,
   },
 
-  onLoad() {
+  onLoad(options) {
     const app = getApp();
     this.setData({ viewMode: (app && app.globalData && app.globalData.viewMode) || 'seeker' });
+    // 首页为小程序入口页：承接分享/邀请参数（原由启动页处理）
+    if (options && options.ref) {
+      wx.setStorageSync('referral_code', options.ref);
+    }
   },
 
   async onShow() {

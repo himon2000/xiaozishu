@@ -19,8 +19,8 @@
   "lazyCodeLoading": "requiredComponents",
 
   "pages": [
-    "pages/splash/splash",
     "pages/home/home",
+    "pages/splash/splash",
     "pages/search/search",
     "pages/service-plaza/service-plaza",
     "pages/service-detail/service-detail",

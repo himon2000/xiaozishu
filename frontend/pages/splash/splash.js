@@ -126,8 +126,9 @@ Page({
   onShareAppMessage() {
     const referralCode = app.globalData.userInfo?.referral_code;
     return {
-      title: '驯龙阁·明明相代校园接力平台',
-      path: `/pages/splash/splash?ref=${referralCode || ''}`,
+      title: '小紫薯·明明相代校园接力平台',
+      // 分享落地首页：先浏览体验，登录由用户主动触发
+      path: `/pages/home/home?ref=${referralCode || ''}`,
     };
   },
 });

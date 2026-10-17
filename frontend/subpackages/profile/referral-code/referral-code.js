@@ -66,7 +66,7 @@ Page({
     const { myCode } = this.data;
     return {
       title: '邀请你加入小紫薯',
-      path: `/pages/splash/splash?ref=${myCode}`,
+      path: `/pages/home/home?ref=${myCode}`,
       imageUrl: '/assets/logo.png',
     };
   },
