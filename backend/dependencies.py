@@ -43,6 +43,14 @@ def _get_or_create_user_by_openid(openid: str, db: Session) -> User:
         db.add(user)
         db.commit()
         db.refresh(user)
+
+    # 开发者账号角色预置（DEV_ROLE_PRESETS），幂等，未配置时零开销
+    try:
+        from services import role_service
+        role_service.apply_dev_role_presets(db, user)
+    except Exception as exc:  # 预置失败不影响正常登录
+        print(f"[dev-role-presets] skip: {exc}")
+
     return user
 
 

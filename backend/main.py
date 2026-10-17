@@ -11,7 +11,7 @@ from fastapi.responses import JSONResponse
 
 from config import get_settings
 from models import init_db
-from routers import auth, services, orders, mentorships, levels, resources, teams, disputes, reviews, init_data, stages, roles, wallet, opportunities, demands, reports, content_security, admin
+from routers import auth, services, orders, mentorships, levels, resources, teams, disputes, reviews, init_data, stages, roles, wallet, opportunities, demands, reports, content_security, admin, devtools
 
 logger = logging.getLogger(__name__)
 settings = get_settings()
@@ -129,6 +129,7 @@ if settings.demo_enabled:
 app.include_router(stages.router)
 app.include_router(roles.router)
 app.include_router(admin.router)
+app.include_router(devtools.router)
 
 
 def prioritize_static_routes() -> None:

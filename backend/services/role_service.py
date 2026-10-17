@@ -254,6 +254,124 @@ def get_role_by_user(db: Session, openid: str, role: str) -> Optional[UserRole]:
     ).first()
 
 
+def force_assign_role(db: Session, user: User, role: str, reason: str = "管理员指派") -> Optional[UserRole]:
+    """
+    强制指派角色（跳过所有解锁条件），供运营/开发运维使用。
+
+    同时维护三处数据，保证新旧两套角色体系都生效：
+      1. users.role         —— 旧字段，前端与 require_role 兼容分支
+      2. users.enabled_roles —— 新体系，require_provider 优先读取
+      3. user_roles 表       —— 多角色明细（等级/认证/解锁来源）
+    """
+    if role not in ("seeker", "provider", "elder", "admin"):
+        return None
+
+    enabled = list(user.enabled_roles or [])
+    if "seeker" not in enabled:
+        enabled.append("seeker")
+    if role not in enabled:
+        enabled.append(role)
+    user.enabled_roles = enabled
+    user.current_role = role
+    user.role = role  # 兼容旧字段
+    user.available = True
+
+    ur = None
+    if role != "admin":  # admin 不进入多角色明细表
+        ur = db.query(UserRole).filter(
+            UserRole.user_openid == user.openid,
+            UserRole.role == role,
+        ).first()
+        if not ur:
+            ur = UserRole(
+                id=generate_id(),
+                user_openid=user.openid,
+                role=role,
+                status=RoleStatus.ENABLED,
+                level=1,
+                exp_points=0,
+                verified=True,
+                verified_at=datetime.now(),
+                unlocked_at=datetime.now(),
+                unlock_condition=reason,
+            )
+            db.add(ur)
+        else:
+            ur.status = RoleStatus.ENABLED
+            ur.verified = True
+            if not ur.unlocked_at:
+                ur.unlocked_at = datetime.now()
+            if not ur.verified_at:
+                ur.verified_at = datetime.now()
+            ur.unlock_condition = ur.unlock_condition or reason
+            ur.updated_at = datetime.now()
+
+    # 补一条散修明细，保证角色列表页正常
+    seeker_ur = db.query(UserRole).filter(
+        UserRole.user_openid == user.openid,
+        UserRole.role == "seeker",
+    ).first()
+    if not seeker_ur:
+        db.add(UserRole(
+            id=generate_id(),
+            user_openid=user.openid,
+            role="seeker",
+            status=RoleStatus.ENABLED,
+            level=1,
+            unlocked_at=datetime.now(),
+            unlock_condition="默认解锁",
+        ))
+
+    db.commit()
+    return ur
+
+
+# ── 开发者角色预置 ────────────────────────────────────────
+
+def parse_role_presets(raw: str) -> List[tuple]:
+    """解析预置配置：'himon:provider,吴燕:elder' -> [('himon','provider'), ...]"""
+    result = []
+    for item in (raw or "").split(","):
+        item = item.strip()
+        if not item or ":" not in item:
+            continue
+        key, role = item.rsplit(":", 1)
+        key, role = key.strip(), role.strip()
+        if key and role in ("seeker", "provider", "elder", "admin"):
+            result.append((key, role))
+    return result
+
+
+def match_presets(user: User, raw: str) -> List[str]:
+    """返回该用户命中的预置角色列表"""
+    nickname = (user.nickname or "").lower()
+    return [
+        role for key, role in parse_role_presets(raw)
+        if key.lower() in nickname or key == (user.openid or "")
+    ]
+
+
+def apply_dev_role_presets(db: Session, user: User) -> List[str]:
+    """
+    按 DEV_ROLE_PRESETS 为开发者账号自动授权（幂等）。
+    在每次解析当前用户时调用，命中即自动解锁，无需手动到后台指派。
+    """
+    from config import get_settings
+    raw = get_settings().dev_role_presets
+    if not raw or not raw.strip():
+        return []
+
+    applied = []
+    for role in match_presets(user, raw):
+        enabled = user.enabled_roles or []
+        # 已生效则跳过，避免每次请求都写库
+        if role in enabled and user.role == role and user.current_role == role:
+            continue
+        force_assign_role(db, user, role, reason="开发者预置授权")
+        applied.append(role)
+    return applied
+
+
 def init_user_roles(db: Session, openid: str) -> List[dict]:
     """
     初始化用户角色（新用户注册时调用）
