@@ -65,6 +65,43 @@ class AssignRoleRequest(BaseModel):
     exact: bool = Field(default=False, description="True 时昵称必须完全相等")
 
 
+class ServicePatch(BaseModel):
+    """服务修补：ref 可为服务 id 或标题关键字（模糊且需唯一）"""
+    ref: str = Field(..., description="服务 id 或标题关键字")
+    cover_image: Optional[str] = Field(default=None, description="封面图 URL，留空不修改")
+    status: Optional[str] = Field(default=None, pattern="^(on_sale|off_sale|reviewing|rejected)$")
+    title: Optional[str] = None
+    description: Optional[str] = None
+
+
+class CopyCoverRequest(BaseModel):
+    from_ref: str = Field(..., description="封面来源：服务 id 或标题关键字")
+    to_ref: str = Field(..., description="封面目标：服务 id 或标题关键字")
+
+
+def _find_service(db: Session, ref: str):
+    """按 id 精确匹配，否则按标题模糊匹配（多条则报错，避免误改）"""
+    from models import Service
+    svc = db.query(Service).filter(Service.id == ref).first()
+    if svc:
+        return svc, None
+    rows = db.query(Service).filter(Service.title.like(f"%{ref}%")).all()
+    if len(rows) > 1:
+        return None, [{"id": r.id, "title": r.title, "provider": r.provider_openid} for r in rows]
+    return (rows[0] if rows else None), None
+
+
+def _service_brief(s) -> dict:
+    return {
+        "id": s.id,
+        "title": s.title,
+        "provider_openid": s.provider_openid,
+        "status": s.status,
+        "cover_image": s.cover_image or "",
+        "created_at": s.created_at.isoformat() if s.created_at else "",
+    }
+
+
 # ── 接口 ────────────────────────────────────────────────
 
 @router.get("/ping")
@@ -206,3 +243,81 @@ def user_roles(
             for r in (rows or [])
         ],
     }
+
+
+# ── 服务内容运维 ────────────────────────────────────────
+
+@router.get("/services", response_model=List[dict])
+def list_services(
+    q: str = Query(default="", description="标题关键字"),
+    provider: str = Query(default="", description="服务者 openid"),
+    limit: int = Query(default=50, ge=1, le=200),
+    db: Session = Depends(get_db),
+    _: None = Depends(verify_dev_token),
+):
+    """列出服务，用于核对封面/状态等线上数据"""
+    from models import Service
+    query = db.query(Service)
+    if q:
+        query = query.filter(Service.title.like(f"%{q}%"))
+    if provider:
+        query = query.filter(Service.provider_openid == provider)
+    rows = query.order_by(Service.created_at.desc()).limit(limit).all()
+    return [_service_brief(s) for s in rows]
+
+
+@router.post("/services/patch")
+def patch_service(
+    req: ServicePatch,
+    db: Session = Depends(get_db),
+    _: None = Depends(verify_dev_token),
+):
+    """修补服务字段（封面、状态、标题、描述），ref 支持 id 或标题关键字"""
+    svc, candidates = _find_service(db, req.ref)
+    if candidates:
+        return {"success": False, "detail": "标题匹配到多条服务，请改用服务 id", "candidates": candidates}
+    if not svc:
+        raise HTTPException(status_code=404, detail=f"未找到服务：{req.ref}")
+
+    before = _service_brief(svc)
+    changed = {}
+    for field in ("cover_image", "status", "title", "description"):
+        value = getattr(req, field)
+        if value is not None and value != "":
+            setattr(svc, field, value)
+            changed[field] = value
+    if changed:
+        from datetime import datetime as _dt
+        svc.updated_at = _dt.now()
+        db.commit()
+        db.refresh(svc)
+    return {"success": True, "changed": changed, "before": before, "after": _service_brief(svc)}
+
+
+@router.post("/services/copy-cover")
+def copy_cover(
+    req: CopyCoverRequest,
+    db: Session = Depends(get_db),
+    _: None = Depends(verify_dev_token),
+):
+    """把一条服务的封面复制给另一条（用于补齐空白封面，无需重新上传图片）"""
+    src, src_candidates = _find_service(db, req.from_ref)
+    if src_candidates:
+        return {"success": False, "detail": "来源匹配到多条服务", "candidates": src_candidates}
+    if not src:
+        raise HTTPException(status_code=404, detail=f"未找到来源服务：{req.from_ref}")
+    if not src.cover_image:
+        raise HTTPException(status_code=400, detail="来源服务本身没有封面")
+
+    dst, dst_candidates = _find_service(db, req.to_ref)
+    if dst_candidates:
+        return {"success": False, "detail": "目标匹配到多条服务", "candidates": dst_candidates}
+    if not dst:
+        raise HTTPException(status_code=404, detail=f"未找到目标服务：{req.to_ref}")
+
+    dst.cover_image = src.cover_image
+    from datetime import datetime as _dt
+    dst.updated_at = _dt.now()
+    db.commit()
+    db.refresh(dst)
+    return {"success": True, "cover_image": dst.cover_image, "target": _service_brief(dst)}
