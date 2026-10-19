@@ -1,0 +1,70 @@
+<!-- pages/demand-detail/demand-detail.wxml - 需求详情 -->
+<view class="page" wx:if="{{!loading && demand}}">
+  <!-- 需求状态与类型 -->
+  <view class="section card">
+    <view class="demand-badges">
+      <text class="tag tag-type">{{demand.typeName}}</text>
+      <text class="tag tag-status">{{demand.statusText}}</text>
+    </view>
+    <view class="demand-title title-lg">{{demand.title}}</view>
+    <view class="demand-meta">
+      <text class="meta-item">🕐 {{demand.createdText}}</text>
+      <text class="meta-item">👁 {{demand.view_count || 0}}</text>
+    </view>
+  </view>
+
+  <!-- 预算 -->
+  <view class="section card">
+    <view class="section-title-sm">💰 预算</view>
+    <view class="budget-row">
+      <text class="budget-value">{{demand.budgetText}}</text>
+      <text class="budget-note" wx:if="{{demand.isFree}}">免费互助</text>
+    </view>
+  </view>
+
+  <!-- 需求描述 -->
+  <view class="section card">
+    <view class="section-title-sm">📝 需求说明</view>
+    <view class="description">{{demand.description || '发起人未填写详细说明'}}</view>
+    <view class="tags" wx:if="{{demand.tags.length > 0}}">
+      <text class="mini-tag" wx:for="{{demand.tags}}" wx:key="index">{{item}}</text>
+    </view>
+  </view>
+
+  <!-- 发起人 -->
+  <view class="section card" wx:if="{{demand.author}}">
+    <view class="section-title-sm">🍠 发起人</view>
+    <view class="author-row">
+      <image class="author-avatar" src="{{demand.author.avatar_url || '/assets/default-avatar.png'}}" mode="aspectFill" />
+      <view class="author-info">
+        <view class="author-name">{{demand.author.nickname || '匿名道友'}}</view>
+        <view class="author-school">{{demand.author.school || '未填写院校'}}</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 联系方式（仅在存在时显示） -->
+  <view class="section card" wx:if="{{demand.contact}}">
+    <view class="section-title-sm">📮 联系方式</view>
+    <view class="contact-text">{{demand.contact}}</view>
+  </view>
+
+  <!-- 底部操作 -->
+  <view class="footer-bar">
+    <view class="footer-hint">如需承接，请先与发起人沟通确认</view>
+    <button class="btn btn-primary" bindtap="onContact" wx:if="{{demand.contact}}">复制联系方式</button>
+    <button class="btn btn-ghost" bindtap="onBack">返回</button>
+  </view>
+</view>
+
+<!-- 加载中 -->
+<view class="loading-wrap" wx:if="{{loading}}">
+  <text>加载中...</text>
+</view>
+
+<!-- 需求不存在 -->
+<view class="empty-wrap" wx:if="{{!loading && !demand}}">
+  <text class="empty-icon">🔍</text>
+  <text class="empty-text">{{errorText || '需求不存在或已下架'}}</text>
+  <button class="btn btn-ghost" bindtap="onBack">返回</button>
+</view>

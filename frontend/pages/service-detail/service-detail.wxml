@@ -6,7 +6,7 @@
   <!-- 服务信息 -->
   <view class="section card">
     <view class="tag-dao-{{service.dao_fa_type}} tag" style="margin-bottom: 16rpx;">
-      {{service.dao_fa_type}}
+      {{service.daoFaName || service.dao_fa_type_name || '综合服务'}}
     </view>
     <view class="service-title title-lg">{{service.title}}</view>
     <view class="service-tags">
@@ -61,6 +61,11 @@
           <view class="stat-divider"></view>
           <view class="stat-item">
             <text class="stat-val">{{provider.rating_count || 0}}</text>
+            <text class="stat-label">评价</text>
+          </view>
+          <view class="stat-divider"></view>
+          <view class="stat-item">
+            <text class="stat-val">{{provider.service_count || 0}}</text>
             <text class="stat-label">服务</text>
           </view>
         </view>
@@ -96,4 +101,11 @@
 <!-- 加载中 -->
 <view class="loading-container" wx:if="{{loading}}">
   <text>加载中...</text>
+</view>
+
+<!-- 加载失败错误态（避免云调用失败时整页白屏） -->
+<view class="error-container" wx:if="{{!loading && !service && loadError}}">
+  <text class="error-icon">⚠️</text>
+  <text class="error-text">{{loadError}}</text>
+  <button class="btn btn-ghost error-retry" bindtap="onRetryLoad">重新加载</button>
 </view>

@@ -12,6 +12,7 @@ Page({
     isCreator: false,
     isMember: false,
     loading: true,
+    loadError: '',   // 加载失败提示；非空时显示错误态，避免白屏
   },
 
   onLoad(options) {
@@ -32,7 +33,7 @@ Page({
   },
 
   async loadTeamDetail() {
-    this.setData({ loading: true });
+    this.setData({ loading: true, loadError: '' });
     try {
       const res = await get(`/teams/${this.data.teamId}`);
       const app = getApp();
@@ -47,8 +48,20 @@ Page({
       });
     } catch (e) {
       console.error('加载组队详情失败', e);
-      wx.showToast({ title: '加载失败', icon: 'none' });
-      this.setData({ loading: false });
+      this.setData({
+        loading: false,
+        team: null,
+        loadError: (e && e.message) || '加载失败，请稍后重试',
+      });
+    }
+  },
+
+  // 错误态重试
+  onRetryLoad() {
+    if (this.data.teamId) {
+      this.loadTeamDetail();
+    } else {
+      wx.navigateBack();
     }
   },
 

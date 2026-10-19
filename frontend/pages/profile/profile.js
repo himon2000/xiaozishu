@@ -174,8 +174,14 @@ Page({
   },
 
   // 我的服务
+  // service-plaza 是 TabBar 页面，必须用 switchTab；
+  // 视角通过 globalData 传递，由广场页 onShow 读取后切到「我的服务」
   onMyServices() {
-    wx.navigateTo({ url: '/pages/service-plaza/service-plaza?view=mine' });
+    const app = getApp();
+    if (app && app.globalData) {
+      app.globalData.plazaView = 'mine';
+    }
+    wx.switchTab({ url: '/pages/service-plaza/service-plaza' });
   },
 
   // 我的修为

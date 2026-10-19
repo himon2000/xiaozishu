@@ -95,6 +95,18 @@ Page({
     this.loadData(true);
   },
 
+  // 清空搜索框（叉号）
+  onClearSearch() {
+    this.setData({
+      search: '',
+      page: 1,
+      services: [],
+      mentors: [],
+      noMore: false,
+    });
+    this.loadData(true);
+  },
+
   // ========== 筛选 ==========
   onToggleFilter() {
     this.setData({ showFilter: !this.data.showFilter });

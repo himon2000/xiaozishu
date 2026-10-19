@@ -52,6 +52,19 @@ Page({
     this.saveSettings({ soundEnabled: enabled });
   },
 
+  // 点击整行也可切换开关（switch 自身的 bindchange 会同步触发）
+  onToggleNotify() {
+    const enabled = !this.data.notifyEnabled;
+    this.setData({ notifyEnabled: enabled });
+    this.saveSettings({ notifyEnabled: enabled });
+  },
+
+  onToggleSound() {
+    const enabled = !this.data.soundEnabled;
+    this.setData({ soundEnabled: enabled });
+    this.saveSettings({ soundEnabled: enabled });
+  },
+
   saveSettings(partial) {
     const settings = wx.getStorageSync('settings') || {};
     Object.assign(settings, partial);

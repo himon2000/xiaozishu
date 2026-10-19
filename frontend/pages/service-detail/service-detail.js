@@ -5,6 +5,7 @@
 const { get, post } = require('../../utils/request');
 const { FEATURES } = require('../../config');
 const { reportContent } = require('../../utils/report');
+const { formatDaoFa } = require('../../utils/format');
 
 Page({
   data: {
@@ -13,6 +14,8 @@ Page({
     sessions: 1,
     totalFee: 0,
     loading: true,
+    loadError: '',   // 加载失败提示；非空时显示错误态与重试按钮
+    lastServiceId: '',
     reviewStats: null,
     features: FEATURES,
   },
@@ -26,9 +29,13 @@ Page({
   },
 
   async loadService(serviceId) {
+    this.setData({ loading: true, loadError: '', lastServiceId: serviceId });
     try {
       const data = await get(`/services/${serviceId}`);
       const provider = data.provider || {};
+      // 类别统一展示中文名，避免暴露 chuan_gong 等内部枚举
+      data.daoFaName = data.dao_fa_type_name || formatDaoFa(data.dao_fa_type);
+      data.serviceTypeName = data.service_type_name || '';
       this.setData({
         service: data,
         provider,
@@ -39,8 +46,21 @@ Page({
       // 加载评价统计
       this.loadReviewStats(serviceId);
     } catch (e) {
-      wx.showToast({ title: '加载失败', icon: 'none' });
-      this.setData({ loading: false });
+      console.error('加载服务详情失败', e);
+      this.setData({
+        loading: false,
+        service: null,
+        loadError: (e && e.message) || '加载失败，请稍后重试',
+      });
+    }
+  },
+
+  // 错误态重试
+  onRetryLoad() {
+    if (this.data.lastServiceId) {
+      this.loadService(this.data.lastServiceId);
+    } else {
+      wx.navigateBack();
     }
   },
 

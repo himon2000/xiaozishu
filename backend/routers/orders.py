@@ -2,6 +2,7 @@
 订单路由：订单全生命周期
 """
 import uuid
+import threading
 from datetime import datetime
 from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy.orm import Session
@@ -39,6 +40,33 @@ class SessionLogCreate(BaseModel):
     summary: str = Field(default="", max_length=500)
 
 
+# 允许在途记录的订单状态
+_DELIVERABLE_STATUSES = ("paid", "assigned", "in_progress", "pending_confirm")
+
+# 结算锁：同一订单同一时刻只允许一个结算事务进入
+_SETTLE_LOCKS: dict[str, threading.Lock] = {}
+_SETTLE_LOCKS_GUARD = threading.Lock()
+
+
+def _settle_lock(order_id: str) -> threading.Lock:
+    with _SETTLE_LOCKS_GUARD:
+        lock = _SETTLE_LOCKS.get(order_id)
+        if lock is None:
+            lock = threading.Lock()
+            _SETTLE_LOCKS[order_id] = lock
+        return lock
+
+
+def _is_settled(order: Order) -> bool:
+    """订单是否已经结算入账（timeline 中出现 settled 标记）"""
+    if order.status in ("completed", "resolved"):
+        for item in (order.timeline or []):
+            if isinstance(item, dict) and item.get("status") == "settled":
+                return True
+        return True
+    return False
+
+
 @router.post("")
 def create_order(
     body: OrderCreate,
@@ -55,7 +83,8 @@ def create_order(
         raise HTTPException(status_code=400, detail="该服务已下架")
 
     sessions = max(body.sessions, svc.min_sessions or 1)
-    service_fee = svc.price * sessions
+    unit_price = int(svc.price or 0)
+    service_fee = unit_price * sessions
 
     order = Order(
         id=generate_order_id(),
@@ -68,11 +97,13 @@ def create_order(
         service_title=svc.title,
         service_dao_fa=svc.dao_fa_type,
         service_cover=svc.cover_image,
-        service_price=svc.price,
+        service_price=unit_price,
         service_unit=svc.unit,
         status="pending_payment",
         sessions_total=sessions,
         sessions_done=0,
+        # 金额必须在构造时就写入，否则 calculate_order_amounts 会对 None 做乘法
+        service_fee=service_fee,
         total_paid=service_fee,
     )
 
@@ -81,6 +112,8 @@ def create_order(
     order.platform_commission = amounts["platform_commission"]
     order.provider_income = amounts["provider_income"]
     order.mentor_bonus = amounts["mentor_bonus"]
+    # 合计以服务费为准，避免 total_paid 与服务费口径不一致
+    order.total_paid = amounts["service_fee"]
 
     add_timeline_entry(order, "pending_payment", "散修发起订单")
     db.add(order)
@@ -204,15 +237,26 @@ def update_order_status(
     if not can_transition(order.status, body.status):
         raise HTTPException(status_code=400, detail=f"无法从 {order.status} 流转到 {body.status}")
 
-    order.status = body.status
-    add_timeline_entry(order, body.status, body.remark, user.nickname)
-    db.commit()
+    # 已完成/已结算订单为终态，任何角色都不能回退重开
+    if body.status == "completed" and _is_settled(order):
+        raise HTTPException(status_code=400, detail="该订单已结算，不能重复确认")
 
-    # 订单完成：结算 + 修为 + 触发师徒关系
+    order.status = body.status
+    if body.status == "paid":
+        order.paid_at = order.paid_at or datetime.now()
+
     if body.status == "completed":
-        _settle_order(db, order)
+        # 完成 + 结算必须在同一个事务里提交；
+        # 状态与 completed 时间线由这里写，结算内部只追加结算流水，
+        # 异常时由 _settle_order 统一 rollback。
+        add_timeline_entry(order, "completed", body.remark or "确认完成", user.nickname)
+        _settle_order(db, order, operator=user.nickname)
+    else:
+        add_timeline_entry(order, body.status, body.remark, user.nickname)
+        db.commit()
 
     return {"success": True, "status": order.status, "display": get_status_display_name(body.status)}
+
 
 
 @router.post("/{order_id}/session-log")
@@ -230,24 +274,45 @@ def add_session_log(
     if user.openid != order.provider_openid:
         raise HTTPException(status_code=403, detail="只有宗门弟子可以记录课次")
 
-    logs = order.session_logs or []
-    logs.append({
+    # 终态保护：已完成/已结算/已解除的订单不允许补日志重开
+    if _is_settled(order):
+        raise HTTPException(status_code=400, detail="订单已完成，不能再补记课次")
+    if order.status not in _DELIVERABLE_STATUSES:
+        raise HTTPException(status_code=400, detail=f"订单当前状态（{get_status_display_name(order.status)}）不可记录课次")
+    if body.session_no > (order.sessions_total or 1):
+        raise HTTPException(status_code=400, detail=f"课次序号超出总课次（共 {order.sessions_total} 次）")
+
+    logs = [dict(item) for item in (order.session_logs or [])]
+    # 同一课次编号只保留一条，重复提交视为更新而非新增课次
+    duplicated = any(item.get("session_no") == body.session_no for item in logs)
+    entry = {
         "session_no": body.session_no,
         "date": datetime.now().isoformat(),
         "duration_min": body.duration_min,
         "summary": body.summary,
         "seeker_confirmed": False,
-    })
-    order.session_logs = logs
+    }
+    if duplicated:
+        logs = [entry if item.get("session_no") == body.session_no else item for item in logs]
+    else:
+        logs.append(entry)
+
+    order.session_logs = logs  # 重新赋值整个 list，确保 JSON 列被标记为脏
     order.sessions_done = len(logs)
 
-    # 所有课次完成 → 自动进入待确认
-    if order.sessions_done >= order.sessions_total:
+    # 所有课次完成 → 自动进入待确认（终态不回退）
+    if order.sessions_done >= (order.sessions_total or 1) and order.status in ("paid", "assigned", "in_progress"):
         order.status = "pending_confirm"
         add_timeline_entry(order, "pending_confirm", "所有课次已完成，等待散修确认")
 
     db.commit()
-    return {"success": True, "sessions_done": order.sessions_done}
+    return {
+        "success": True,
+        "sessions_done": order.sessions_done,
+        "sessions_total": order.sessions_total,
+        "duplicated": duplicated,
+        "session_logs": order.session_logs,
+    }
 
 
 async def _initiate_payment(order_id: str, openid: str, db: Session):
@@ -281,26 +346,45 @@ async def initiate_payment(
     return pay_params
 
 
-def _settle_order(db: Session, order: Order):
+def _settle_order(db: Session, order: Order, operator: str = "系统"):
     """
-    订单完成时结算
-    - 事务保护
-    - 师傅奖励分成（5%）
-    - 平台佣金记录
+    订单完成时结算（同一事务内完成，异常整体回滚）
+
+    - 幂等：timeline 已有 settled 记录则直接返回，不重复入账
+    - 串行：同一订单加进程内锁，并重新读取订单状态，防并发双写
+    - 原子：订单状态、服务者余额、修为、服务统计、时间线一次提交
     """
+    lock = _settle_lock(order.id)
+    if not lock.acquire(blocking=False):
+        raise HTTPException(status_code=409, detail="订单正在结算中，请稍后重试")
     try:
-        provider = db.query(User).filter(User.openid == order.provider_openid).first()
+        # 锁内重新读取，拿到最新状态，避免用旧对象重复结算
+        fresh = db.query(Order).filter(Order.id == order.id).first()
+        if not fresh:
+            raise HTTPException(status_code=404, detail="订单不存在")
+        if fresh.timeline and any(
+            isinstance(t, dict) and t.get("status") == "settled" for t in fresh.timeline
+        ):
+            # 已经结算过，幂等返回，不重复入账
+            order.status = fresh.status
+            order.timeline = fresh.timeline
+            return
+
+        provider = db.query(User).filter(User.openid == fresh.provider_openid).first()
         if not provider:
             raise HTTPException(status_code=404, detail="服务者不存在")
 
+        provider_income = int(fresh.provider_income or 0)
+        platform_commission = int(fresh.platform_commission or 0)
+        mentor_bonus = int(fresh.mentor_bonus or 0)
+
         # 1. 服务者收入入账（使用灵石余额字段）
-        provider.spirit_stones = (provider.spirit_stones or 0) + order.provider_income
-        provider.spirit_stones_earned += order.provider_income
-        provider.total_orders_done += 1
+        provider.spirit_stones = (provider.spirit_stones or 0) + provider_income
+        provider.spirit_stones_earned = (provider.spirit_stones_earned or 0) + provider_income
+        provider.total_orders_done = (provider.total_orders_done or 0) + 1
 
         # 2. 师傅奖励分成（如果有）
-        if order.mentor_bonus and order.mentor_bonus > 0:
-            # 查找师傅关系
+        if mentor_bonus > 0:
             from models import Mentorship
             mentorship = db.query(Mentorship).filter(
                 Mentorship.disciple_openid == provider.openid,
@@ -309,45 +393,56 @@ def _settle_order(db: Session, order: Order):
             if mentorship:
                 mentor = db.query(User).filter(User.openid == mentorship.mentor_openid).first()
                 if mentor:
-                    mentor.spirit_stones = (mentor.spirit_stones or 0) + order.mentor_bonus
-                    mentorship.mentor_income_from_lineage += order.mentor_bonus
-                    # 记录师傅分成日志
+                    mentor.spirit_stones = (mentor.spirit_stones or 0) + mentor_bonus
+                    mentorship.mentor_income_from_lineage = (
+                        mentorship.mentor_income_from_lineage or 0
+                    ) + mentor_bonus
                     add_timeline_entry(
-                        order, "mentor_bonus",
-                        f"师傅 {mentor.nickname} 获得分成 {order.mentor_bonus} 灵石",
+                        fresh, "mentor_bonus",
+                        f"师傅 {mentor.nickname} 获得分成 {mentor_bonus} 灵石",
                         "系统"
                     )
 
         # 3. 平台佣金记录（预留扩展点）
-        if order.platform_commission > 0:
+        if platform_commission > 0:
             add_timeline_entry(
-                order, "platform_commission",
-                f"平台佣金 {order.platform_commission} 灵石",
+                fresh, "platform_commission",
+                f"平台佣金 {platform_commission} 灵石",
                 "系统"
             )
+        # 4. 修为 +10（完成订单）—— auto_commit=False，纳入同一事务
+        add_exp(db, provider, "earn_order_done", related_id=fresh.id,
+                remark=f"完成订单 {fresh.id}", auto_commit=False)
 
-        # 4. 修为 +10（完成订单）
-        add_exp(db, provider, "earn_order_done", related_id=order.id,
-                remark=f"完成订单 {order.id}")
-
-        # 5. 更新服务统计
-        svc = db.query(Service).filter(Service.id == order.service_id).first()
+        # 5. 更新服务统计（服务可能已下架，下架也照常计数）
+        svc = db.query(Service).filter(Service.id == fresh.service_id).first()
         if svc:
-            svc.order_count += 1
+            svc.order_count = (svc.order_count or 0) + 1
 
-        # 6. 记录结算日志
+        # 6. 状态与结算日志（completed 由调用方写入，这里只补结算流水）
+        fresh.status = "completed"
         add_timeline_entry(
-            order, "settled",
-            f"订单结算完成：服务者收入 {order.provider_income} 灵石" +
-            (f"，师傅分成 {order.mentor_bonus} 灵石" if order.mentor_bonus else ""),
+            fresh, "settled",
+            f"订单结算完成：服务者收入 {provider_income} 灵石" +
+            (f"，师傅分成 {mentor_bonus} 灵石" if mentor_bonus else ""),
             "系统"
         )
 
         db.commit()
+        db.refresh(fresh)
+        order.status = fresh.status
+        order.timeline = fresh.timeline
+        order.sessions_done = fresh.sessions_done
 
+    except HTTPException:
+        db.rollback()
+        raise
     except Exception as e:
         db.rollback()
         raise HTTPException(status_code=500, detail=f"订单结算失败: {str(e)}")
+    finally:
+        lock.release()
+
 
 
 def _order_to_dict(order: Order, db: Session) -> dict:
@@ -667,7 +762,8 @@ def get_order_timeline(
         "timeline": [
             {
                 "status": t.get("status"),
-                "message": t.get("message"),
+                "status_display": get_status_display_name(t.get("status")),
+                "message": t.get("remark") or t.get("message") or "",
                 "operator": t.get("operator"),
                 "timestamp": t.get("timestamp"),
             }

@@ -39,7 +39,7 @@
         data-id="{{item.id}}"
       >
         <view class="team-header">
-          <view class="team-category">{{item.category}}</view>
+          <view class="team-category">{{item.category_name}}</view>
           <view class="team-status {{item.status}}">{{item.status === 'recruiting' ? '招募中' : '已满'}}</view>
         </view>
         <view class="team-title">{{item.title}}</view>
@@ -47,7 +47,7 @@
         <view class="team-footer">
           <view class="team-members">
             <text class="member-icon">👥</text>
-            <text>{{item.currentMembers || 0}}/{{item.maxMembers}}人</text>
+            <text>{{item.current_members || 0}}/{{item.max_members || 0}}人</text>
           </view>
           <view class="team-time">{{item.created_at}}</view>
         </view>

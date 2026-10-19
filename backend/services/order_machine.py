@@ -37,18 +37,23 @@ def can_transition(current: str, target: str) -> bool:
     return target in VALID_TRANSITIONS.get(current, [])
 
 
+def _now_iso() -> str:
+    return datetime.now().isoformat()
+
+
 def add_timeline_entry(order: Order, status: str, remark: str = "", operator: str = "") -> None:
-    """向订单timeline追加一条记录"""
-    import json
+    """向订单timeline追加一条记录
+
+    注意：JSON 列的原地 append 不会被 SQLAlchemy 识别为脏数据，
+    必须重新赋值一个新的 list，否则时间线不会落库。
+    """
     entry = {
         "status": status,
         "remark": remark,
         "operator": operator,
-        "timestamp": datetime.now().isoformat(),
+        "timestamp": _now_iso(),
     }
-    timeline = order.timeline or []
-    timeline.append(entry)
-    order.timeline = timeline
+    order.timeline = list(order.timeline or []) + [entry]
 
 
 def get_default_commission_rate(dao_fa_type: str) -> float:
@@ -69,7 +74,11 @@ def calculate_order_amounts(order: Order) -> dict:
     计算订单各部分金额
     返回: { service_fee, platform_commission, provider_income, mentor_bonus, total_paid }
     """
+    # service_fee 可能尚未赋值（新建对象），先按单价×课次兜底，避免 None 参与乘法
     service_fee = order.service_fee
+    if service_fee is None:
+        service_fee = int(order.service_price or 0) * int(order.sessions_total or 1)
+    service_fee = int(service_fee or 0)
     commission_rate = get_default_commission_rate(order.dao_fa_type)
     commission = int(service_fee * commission_rate)
     mentor_bonus = 0  # 后续根据师徒关系计算

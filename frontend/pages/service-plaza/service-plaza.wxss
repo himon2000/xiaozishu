@@ -579,3 +579,26 @@
   margin-top: 2rpx;
   letter-spacing: 1rpx;
 }
+
+/* 我的服务视角提示条 */
+.mine-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 16rpx 24rpx 0;
+  padding: 18rpx 24rpx;
+  background: #f6effc;
+  border: 1rpx solid #eadcf7;
+  border-radius: 14rpx;
+}
+
+.mine-label {
+  font-size: 26rpx;
+  color: #7d3c98;
+  font-weight: 600;
+}
+
+.mine-exit {
+  font-size: 24rpx;
+  color: #9b59b6;
+}

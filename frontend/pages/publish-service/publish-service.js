@@ -119,27 +119,44 @@ Page({
     });
   },
 
-  // 科目分类选择（切换分类）
+  // 科目分类选择（按被点击的分类切换，不再固定轮转）
   onSubjectCategoryChange(e) {
-    const categories = Object.keys(this.data.subjectsByCategory);
-    const currentIdx = categories.indexOf(this.data.currentSubjectCategory || '理工');
-    const nextIdx = (currentIdx + 1) % categories.length;
-    this.setData({ currentSubjectCategory: categories[nextIdx] });
+    const dataset = (e && e.currentTarget && e.currentTarget.dataset) || {};
+    const category = dataset.category || dataset.item;
+    if (!category) return;
+    if (!this.data.subjectsByCategory[category]) {
+      console.warn('未知科目分类', category);
+      return;
+    }
+    if (category === this.data.currentSubjectCategory) return;
+    this.setData({ currentSubjectCategory: category });
   },
 
-  // 切换科目弹窗
+  // 打开科目弹窗：保留上次查看的分类与已选科目
   onToggleSubjectPicker() {
     const categories = Object.keys(this.data.subjectsByCategory);
+    const current = this.data.currentSubjectCategory;
     this.setData({
       showSubjectPicker: true,
-      currentSubjectCategory: categories[0],
+      currentSubjectCategory: this.data.subjectsByCategory[current] ? current : categories[0],
     });
+  },
+
+  // 关闭科目弹窗（叉号 / 遮罩 / 取消）：只收起弹窗，保留已选科目与当前分类
+  onCloseSubjectPicker() {
+    this.setData({ showSubjectPicker: false });
+  },
+
+  // 兼容旧绑定名（仅关闭，不重置状态）
+  onToggleSubjectPickerClose() {
+    this.setData({ showSubjectPicker: false });
   },
 
   // 选择/取消科目
   onSubjectToggle(e) {
     const { id } = e.currentTarget.dataset;
-    const subjects = this.data.formData.subjects;
+    if (!id) return;
+    const subjects = (this.data.formData.subjects || []).slice();
     const idx = subjects.indexOf(id);
     if (idx >= 0) {
       subjects.splice(idx, 1);
@@ -251,6 +268,11 @@ Page({
     });
   },
 
+  // 关闭战绩弹窗（叉号 / 遮罩）
+  onToggleAchievementModal() {
+    this.setData({ showAchievementModal: false });
+  },
+
   // 战绩类型选择
   onAchievementTypeSelect(e) {
     const { id } = e.currentTarget.dataset;
@@ -303,6 +325,11 @@ Page({
       showCaseModal: true,
       newCase: { title: '', description: '', result: '' },
     });
+  },
+
+  // 关闭案例弹窗（叉号 / 遮罩）
+  onToggleCaseModal() {
+    this.setData({ showCaseModal: false });
   },
 
   // 案例标题输入

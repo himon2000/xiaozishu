@@ -35,6 +35,7 @@
     "pages/review/review",
     "pages/publish-service/publish-service",
     "pages/publish-demand/publish-demand",
+    "pages/demand-detail/demand-detail",
     "pages/review-list/review-list",
     "pages/opportunities/opportunities",
     "pages/opportunity-detail/opportunity-detail",

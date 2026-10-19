@@ -260,3 +260,34 @@
   color: #e74c3c;
   border: 1rpx solid #e74c3c;
 }
+
+/* 加载失败错误态 */
+.error-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20rpx;
+  padding: 200rpx 48rpx 0;
+}
+
+.error-icon {
+  font-size: 72rpx;
+}
+
+.error-text {
+  font-size: 26rpx;
+  color: #9a8fae;
+  text-align: center;
+  line-height: 1.6;
+}
+
+.error-retry {
+  margin-top: 12rpx;
+  height: 72rpx;
+  line-height: 72rpx;
+  padding: 0 48rpx;
+  border-radius: 36rpx;
+  background: #f6effc;
+  color: #7d3c98;
+  font-size: 28rpx;
+}

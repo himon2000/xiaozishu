@@ -35,6 +35,11 @@ Page({
     this.loadData();
   },
 
+  // 空状态按钮：发布 -> 去机会广场发帖；收藏 -> 去机会广场逛逛
+  goToPublish() {
+    wx.navigateTo({ url: '/pages/opportunities/opportunities' });
+  },
+
   // 切换标签
   onTabChange(e) {
     const tab = e.currentTarget.dataset.tab;

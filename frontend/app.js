@@ -34,6 +34,10 @@ App({
     // 'provider' 大虾模式（卖家视图）
     viewMode: 'seeker',
 
+    // 服务广场视角标记：'mine' 表示从「我的服务」入口进入，
+    // 由 service-plaza 的 onShow 读取后清空（TabBar 页面无法带参跳转）
+    plazaView: '',
+
     // 境界配置（从后端加载）
     levelConfig: [
       { level: 1, name: '炼气期', color: '#999999', icon: '🌫' },

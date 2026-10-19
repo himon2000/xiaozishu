@@ -451,9 +451,8 @@ def submit_evidence(
         "submitted_at": datetime.now().isoformat(),
     }
 
-    if not dispute.evidence_extra:
-        dispute.evidence_extra = []
-    dispute.evidence_extra.append(evidence)
+    # JSON 列需整体重新赋值，原地 append 不会触发脏检查
+    dispute.evidence_extra = list(dispute.evidence_extra or []) + [evidence]
 
     dispute.updated_at = datetime.now()
     db.commit()

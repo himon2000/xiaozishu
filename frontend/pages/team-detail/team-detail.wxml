@@ -117,3 +117,10 @@
     </block>
   </view>
 </view>
+
+<!-- 加载失败错误态（避免云调用失败时整页白屏） -->
+<view class="error-state" wx:if="{{!loading && !team && loadError}}">
+  <text class="error-icon">⚠️</text>
+  <text class="error-text">{{loadError}}</text>
+  <button class="error-retry" bindtap="onRetryLoad">重新加载</button>
+</view>

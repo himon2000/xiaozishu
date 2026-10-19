@@ -8,10 +8,16 @@ from pydantic import BaseModel, Field
 from typing import Optional
 from utils.db import get_db
 from models import ContentReport, Service, User, Review, Order
-from dependencies import get_current_user, require_provider, require_certified
+from dependencies import (
+    get_current_user,
+    get_current_user_optional,
+    require_provider,
+    require_certified,
+)
 from services.level_service import get_level_info
 from sqlalchemy import func
 from utils.content_guard import guard_user_content
+from utils.enum_names import dao_fa_name, service_type_name
 from config import get_settings
 
 router = APIRouter(prefix="/api/v1/services", tags=["服务"])
@@ -53,15 +59,23 @@ def list_services(
     sort: Optional[str] = Query("hot"),
     min_price: Optional[int] = Query(None),  # 最低价格（分）
     max_price: Optional[int] = Query(None),  # 最高价格（分）
+    mine: bool = Query(False),  # 只看本人发布的服务（含已下架）
     page: int = Query(1, ge=1),
     page_size: int = Query(20, ge=1, le=50),
+    user: Optional[User] = Depends(get_current_user_optional),
     db: Session = Depends(get_db),
 ):
     """
     服务广场列表
-    支持：道法类型 / 科目 / 服务类型 / 学段 / 最低境界 / 关键词搜索 / 排序 / 价格区间
+    支持：道法类型 / 科目 / 服务类型 / 学段 / 最低境界 / 关键词搜索 / 排序 / 价格区间 / 我的服务
     """
     query = db.query(Service).filter(Service.status == "on_sale")
+
+    # 我的服务：只看自己发布的，且包含已下架（便于管理）
+    if mine:
+        if not user:
+            raise HTTPException(status_code=401, detail="请先登录后查看我的服务")
+        query = db.query(Service).filter(Service.provider_openid == user.openid)
 
     if dao_fa_type:
         query = query.filter(Service.dao_fa_type == dao_fa_type)
@@ -219,10 +233,16 @@ def get_service(service_id: str, db: Session = Depends(get_db)):
     if not svc:
         raise HTTPException(status_code=404, detail="服务不存在")
     result = _service_to_dict(svc, db)
-    # 追加大虾详细信息
+    # 追加大虾详细信息（含在售服务数，与评价数区分）
     provider = db.query(User).filter(User.openid == svc.provider_openid).first()
     if provider:
-        result["provider"] = _provider_to_dict(provider)
+        result["provider"] = _provider_to_dict(
+            provider,
+            db.query(Service).filter(
+                Service.provider_openid == provider.openid,
+                Service.status == "on_sale",
+            ).count(),
+        )
     return result
 
 
@@ -435,7 +455,7 @@ def get_provider_profile(openid: str, db: Session = Depends(get_db)):
     ).all()
 
     return {
-        "provider": _provider_to_dict(provider),
+        "provider": _provider_to_dict(provider, len(services)),
         "services": [_service_to_dict(s, db) for s in services],
     }
 
@@ -447,6 +467,7 @@ def _service_to_dict(svc: Service, db: Session) -> dict:
     return {
         "id": svc.id,
         "dao_fa_type": svc.dao_fa_type,
+        "dao_fa_type_name": dao_fa_name(svc.dao_fa_type),
         "title": svc.title,
         "description": svc.description,
         "cover_image": svc.cover_image,
@@ -471,6 +492,7 @@ def _service_to_dict(svc: Service, db: Session) -> dict:
         "max_group_size": svc.max_group_size,
         # 传功授法特有
         "service_type": svc.service_type,
+        "service_type_name": service_type_name(svc.service_type),
         "achievements": svc.achievements or [],
         "cases": svc.cases or [],
         "expertise": svc.expertise or [],
@@ -484,14 +506,27 @@ def _service_to_dict(svc: Service, db: Session) -> dict:
         "rating": svc.rating,
         "review_count": svc.review_count,
         "order_count": svc.order_count,
-        "provider": _provider_to_dict(provider) if provider else None,
+        "provider": _provider_to_dict(
+            provider,
+            # 列表场景按需统计一次在售服务数，避免 rating_count 被误读为服务数
+            db.query(func.count(Service.id)).filter(
+                Service.provider_openid == provider.openid,
+                Service.status == "on_sale",
+            ).scalar() or 0,
+        ) if provider else None,
         "created_at": svc.created_at.isoformat() if svc.created_at else "",
         "cover": svc.cover_image,
     }
 
 
-def _provider_to_dict(user: User) -> dict:
-    """将 User 模型转为大虾信息字典"""
+def _provider_to_dict(user: User, service_count: Optional[int] = None) -> dict:
+    """将 User 模型转为大虾信息字典
+
+    指标口径：
+    - rating_count：收到的评价条数（不是服务数）
+    - on_sale_service_count：在售服务数
+    - total_orders_done：已完成订单数
+    """
     level_info = get_level_info(user.level)
     return {
         "openid": user.openid,
@@ -515,9 +550,11 @@ def _provider_to_dict(user: User) -> dict:
         "cert_status": user.cert_status,
         "cert_badges": user.cert_badges or [],
         "rating": user.rating,
-        "rating_count": user.rating_count,
-        "total_orders_done": user.total_orders_done,
-        "totalOrders": user.total_orders_done,
+        "rating_count": user.rating_count or 0,
+        "on_sale_service_count": service_count or 0,
+        "service_count": service_count or 0,
+        "total_orders_done": user.total_orders_done or 0,
+        "totalOrders": user.total_orders_done or 0,
         "total_disciples": user.total_disciples,
         "active_disciples": user.active_disciples,
     }

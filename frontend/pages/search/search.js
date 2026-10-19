@@ -42,10 +42,33 @@ Page({
 
   // 点击搜索
   onSearch() {
-    const keyword = this.data.searchValue.trim();
+    this.doSearchWithCheck();
+  },
+
+  // 键盘回车确认（bindconfirm）
+  onConfirm(e) {
+    const value = (e && e.detail && e.detail.value) !== undefined
+      ? e.detail.value
+      : this.data.searchValue;
+    if (value !== this.data.searchValue) {
+      this.setData({ searchValue: value || '' });
+    }
+    this.doSearchWithCheck();
+  },
+
+  // 统一的关键词校验 + 搜索
+  doSearchWithCheck() {
+    const raw = this.data.searchValue || '';
+    const keyword = raw.trim();
     if (!keyword) {
+      // 空白关键词不发起请求，明确提示并回到搜索前界面
       wx.showToast({ title: '请输入搜索关键词', icon: 'none' });
+      this.setData({ services: [], users: [], demands: [], loading: false });
       return;
+    }
+    // 顺带去掉首尾空格，避免把空格带进历史
+    if (raw !== keyword) {
+      this.setData({ searchValue: keyword });
     }
 
     // 保存搜索历史
@@ -97,6 +120,21 @@ Page({
     history = history.slice(0, 10);
     this.setData({ historySearch: history });
     wx.setStorageSync('searchHistory', history);
+  },
+
+  // 清空搜索框（点击叉号）
+  // 清空后回到搜索前界面：历史 + 热门；同时清掉上一次结果，避免残留
+  onClearInput() {
+    this.setData({
+      searchValue: '',
+      services: [],
+      users: [],
+      demands: [],
+      activeTab: 'service',
+      loading: false,
+      page: 1,
+      hasMore: true
+    });
   },
 
   // 清除搜索历史
@@ -164,9 +202,15 @@ Page({
   },
 
   // 点击需求卡片
+  // 注意：service-plaza 是 TabBar 页面，不能用 navigateTo 带参数打开；
+  // 需求详情是独立页面，直接以 demand_id 跳转
   onDemandTap(e) {
     const id = e.currentTarget.dataset.id;
-    wx.navigateTo({ url: `/pages/service-plaza/service-plaza?view=demands&id=${id}` });
+    if (!id) {
+      wx.showToast({ title: '需求信息缺失', icon: 'none' });
+      return;
+    }
+    wx.navigateTo({ url: `/pages/demand-detail/demand-detail?demand_id=${id}` });
   },
 
   // 取消返回

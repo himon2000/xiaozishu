@@ -7,6 +7,7 @@ const { get } = require('../../utils/request');
 Page({
   data: {
     daoFaType: '',
+    isMine: false,   // 我的服务视角（本人发布的服务）
     serviceType: '',  // 传功授法服务类型
     search: '',
     selectedSubject: '',  // 选中的科目
@@ -89,6 +90,9 @@ Page({
     if (options.dao_fa_type) {
       this.setData({ daoFaType: options.dao_fa_type });
     }
+    if (options.view === 'mine') {
+      this.setData({ isMine: true });
+    }
     await this.checkPublishPermission();
     if (options.action === 'publish') {
       this.onPublishTap();
@@ -100,8 +104,26 @@ Page({
   onShow() {
     const tabBar = typeof this.getTabBar === 'function' ? this.getTabBar() : null;
     if (tabBar) tabBar.setData({ selected: 1 });
+
+    // TabBar 页面无法通过 navigateTo 带参数进入，
+    // 因此「我的服务」入口用 switchTab + 全局标记传递视角
+    const app = getApp();
+    const pendingMine = app && app.globalData && app.globalData.plazaView === 'mine';
+    if (pendingMine) {
+      app.globalData.plazaView = '';
+      if (!this.data.isMine) {
+        this.setData({ isMine: true, daoFaType: '', serviceType: '', selectedSubject: '' });
+        this.loadServices(true);
+      }
+    }
     // 刷新服务列表（保持当前筛选状态）
     // 注意：daoFaType 在 onLoad 中通过 URL 参数设置
+  },
+
+  // 退出「我的服务」视角
+  onExitMine() {
+    this.setData({ isMine: false });
+    this.loadServices(true);
   },
 
   async checkPublishPermission() {
@@ -133,6 +155,7 @@ Page({
         sort:      this.data.sort,
       };
       if (this.data.daoFaType) params.dao_fa_type = this.data.daoFaType;
+      if (this.data.isMine)     params.mine = true;
       if (this.data.search)    params.search = this.data.search;
       // 传功授法科目筛选
       if (this.data.daoFaType === 'chuan_gong' && this.data.selectedSubject) {
@@ -281,7 +304,6 @@ Page({
     });
     this.loadServices(true);
   },
-
   // 点击服务卡片
   onServiceTap(e) {
     const { id } = e.currentTarget.dataset;

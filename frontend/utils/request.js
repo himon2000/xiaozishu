@@ -109,7 +109,23 @@ async function request(options) {
     };
     const fail = (err) => {
       console.error('[request] request fail:', path, err);
-      reject({ code: -1, message: '网络请求失败，请检查网络', detail: '网络请求失败，请检查网络' });
+      const rawMsg = (err && (err.errMsg || err.message)) || '';
+      // -404011 系统错误 / -601036 等云调用平台层错误：瞬时故障常见，先自动重试一次
+      if (/(-404011|-601036|系统错误)/.test(rawMsg) && !options.__retried) {
+        options.__retried = true;
+        console.warn('[request] 云调用瞬时失败，自动重试一次:', path, rawMsg);
+        setTimeout(() => {
+          request(options).then(resolve).catch(reject);
+        }, 600);
+        return;
+      }
+      let message = '网络请求失败，请检查网络';
+      if (err && err.errMsg && err.errMsg.includes('云函数')) {
+        message = '云环境暂时不可用，请稍后重试或重启微信开发者工具';
+      } else if (/(-404011|系统错误)/.test(rawMsg)) {
+        message = '云环境调用失败（系统错误），请稍后重试；若持续出现请重启开发者工具或检查资源复用授权';
+      }
+      reject({ code: -1, message, detail: rawMsg || message });
     };
     const commonHeaders = {
       'Content-Type': 'application/json',

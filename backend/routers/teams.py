@@ -12,6 +12,7 @@ from utils.db import get_db
 from models import Team, TeamMember, User
 from dependencies import get_current_user
 from utils.content_guard import guard_user_content
+from utils.enum_names import team_category_name
 from services.level_service import get_level_info
 
 router = APIRouter(prefix="/api/v1/teams", tags=["联袂问道"])
@@ -320,6 +321,7 @@ def _team_to_dict(team: Team, db: Session) -> dict:
         "title": team.title,
         "description": team.description,
         "category": team.category,
+        "category_name": team_category_name(team.category),
         "max_members": team.max_members,
         "current_members": team.current_members,
         "tags": team.tags or [],
@@ -515,9 +517,8 @@ def assign_task(
     }
 
     # 存储到组队记录（临时方案）
-    if not team.team_tasks:
-        team.team_tasks = []
-    team.team_tasks.append(task)
+    # JSON 列需整体重新赋值，原地 append 不会触发脏检查
+    team.team_tasks = list(team.team_tasks or []) + [task]
 
     db.commit()
     return {"success": True, "task": task}
