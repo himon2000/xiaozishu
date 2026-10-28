@@ -11,9 +11,11 @@
     <view class="history-item" wx:for="{{history}}" wx:key="id">
       <view class="history-q">{{item.question}}</view>
       <view class="history-a">{{item.answer}}</view>
+      <view wx:for="{{item.sources}}" wx:for-item="source" wx:key="id" bindtap="onCopySource" data-url="{{source.url}}">{{source.title}} · 复制来源链接</view>
       <text class="history-time">{{item.created_at}}</text>
     </view>
-    <view class="empty-state" wx:if="{{!loading && history.length === 0}}">
+    <view wx:if="{{historyError}}" bindtap="loadHistory">{{historyError}}</view>
+    <view class="empty-state" wx:if="{{!loading && !historyError && history.length === 0}}">
       <text class="empty-icon">📜</text>
       <text class="empty-text">暂无问答历史</text>
     </view>

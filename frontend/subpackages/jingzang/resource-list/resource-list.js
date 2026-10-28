@@ -152,6 +152,10 @@ Page({
   },
 
   // 发布资源
+  onSchoolWiki() {
+    wx.navigateTo({ url: '/subpackages/jingzang/school-wiki/school-wiki' });
+  },
+
   onPublish() {
     wx.navigateTo({
       url: '/subpackages/jingzang/publish-resource/publish-resource',

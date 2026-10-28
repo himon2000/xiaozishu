@@ -1,0 +1,8 @@
+.env*
+__pycache__/
+*.pyc
+tests/
+*.log
+*.db
+README.md
+compose.yml
