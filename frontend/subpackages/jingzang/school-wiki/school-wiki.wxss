@@ -1,4 +1,13 @@
 /* subpackages/jingzang/school-wiki/school-wiki.wxss */
+.knowledge-toggle { margin: 0 24rpx 16rpx; color: #7d3c98; font-size: 26rpx; }
+.service-error { display:block; color:#a12f42; font-size:24rpx; margin-top:12rpx; }
+.evidence-status { display:block; color:#4a7252; font-size:22rpx; margin-top:12rpx; }
+.source-card,.knowledge-card { background:#f5f0fa; border-radius:12rpx; padding:16rpx; margin-top:16rpx; font-size:23rpx; }
+.source-card text,.knowledge-card text { display:block; overflow-wrap:anywhere; }
+.source-title { font-weight:600; color:#573067; }
+.source-copy { color:#7d3c98; padding:12rpx 0; }
+.answer-caveat { display:block; color:#777; font-size:21rpx; margin-top:10rpx; }
+.topic-active { background:#7d3c98 !important; color:white !important; }
 .page {
   height: 100vh;
   display: flex;

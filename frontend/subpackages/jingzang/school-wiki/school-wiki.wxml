@@ -12,12 +12,13 @@
   <!-- 简介卡片 -->
   <view class="intro-card">
     <text class="intro-title">高校百科 AI 助手</text>
-    <text class="intro-desc">输入你想了解的高校或相关问题，AI 助手为你解答关于录取、选专业、校园生活等各类问题</text>
+    <text class="intro-desc">查询已接入高校的专业、课程、招生政策与科研知识。当前为知识图谱规则检索，答案附官网来源；未调用语言模型。</text>
+    <text class="service-error" wx:if="{{schoolError}}" bindtap="loadSchools">{{schoolError}} · 点击重试</text>
   </view>
 
   <!-- 高校选择 -->
   <view class="school-section">
-    <view class="section-label">选择目标高校（可选）</view>
+    <view class="section-label">选择已接入高校</view>
     <scroll-view scroll-x class="school-scroll">
       <view
         class="school-chip {{selectedSchool === item.name ? 'selected' : ''}}"
@@ -31,8 +32,10 @@
     </scroll-view>
   </view>
 
+  <view class="knowledge-toggle" bindtap="onToggleKnowledge">{{showKnowledge ? '返回图谱问答' : '浏览高校知识图谱 →'}}</view>
+
   <!-- 快捷问题 -->
-  <view class="quick-questions">
+  <view class="quick-questions" wx:if="{{!showKnowledge}}">
     <text class="section-label">快捷问题</text>
     <view class="question-chips">
       <view
@@ -46,12 +49,12 @@
   </view>
 
   <!-- 问答区 -->
-  <scroll-view scroll-y class="qa-area">
+  <scroll-view scroll-y class="qa-area" wx:if="{{!showKnowledge}}">
     <!-- AI 回复 -->
     <view class="ai-intro" wx:if="{{messages.length === 0 && !loading}}">
       <text class="ai-avatar">🤖</text>
       <view class="ai-bubble">
-        <text>你好！我是万宗宝鉴 AI 助手。你可以问我关于任何高校的问题，例如：\n• XX大学的录取分数线是多少？\n• XX大学的王牌专业有哪些？\n• XX大学的校园环境怎么样？</text>
+        <text>请选择已接入高校，再查询专业、课程、专修方向、招生政策或科研项目。\n未收录不代表不存在；招生政策不能替代招生人数计划、报名资格或录取概率。</text>
       </view>
     </view>
 
@@ -60,6 +63,15 @@
       <text class="msg-avatar">{{item.role === 'user' ? '🧑' : '🤖'}}</text>
       <view class="msg-bubble">
         <text class="msg-text">{{item.content}}</text>
+        <text class="evidence-status" wx:if="{{item.evidenceStatus}}">{{item.evidenceStatus === 'supported' ? '已匹配官网证据' : '图谱证据不足'}}</text>
+        <view class="source-card" wx:for="{{item.sources}}" wx:for-item="source" wx:key="id">
+          <text class="source-title">{{source.title}}</text>
+          <text>{{source.locator}}</text>
+          <text>核验日期：{{source.reviewed_on}}</text>
+          <text class="source-copy" bindtap="onCopySource" data-url="{{source.url}}">复制官网链接</text>
+        </view>
+        <text class="answer-caveat" wx:for="{{item.caveats}}" wx:for-item="caveat" wx:key="*this">{{caveat}}</text>
+        <text class="answer-caveat" wx:if="{{item.historyWarning}}">{{item.historyWarning}}</text>
         <text class="msg-time" wx:if="{{item.time}}">{{item.time}}</text>
       </view>
     </view>
@@ -76,14 +88,35 @@
     </view>
   </scroll-view>
 
+  <scroll-view scroll-y class="qa-area" wx:else>
+    <view class="question-chips">
+      <view wx:for="{{topics}}" wx:key="id" class="q-chip {{topic === item.id ? 'topic-active' : ''}}" bindtap="onTopic" data-id="{{item.id}}">{{item.label}}</view>
+    </view>
+    <text class="answer-caveat">官网公开知识首版；不含实时成绩、课表、经费或审批记录。</text>
+    <text wx:if="{{knowledgeLoading}}">读取图谱中...</text>
+    <text class="service-error" wx:if="{{knowledgeError}}" bindtap="loadKnowledge">{{knowledgeError}}</text>
+    <text wx:if="{{!knowledgeLoading && !knowledgeError && knowledge.length === 0}}">当前分类暂未收录记录。</text>
+    <view class="knowledge-card" wx:for="{{knowledge}}" wx:key="id">
+      <text class="source-title">{{item.name}}</text>
+      <text wx:if="{{item.properties.status}}">{{item.properties.status}}</text>
+      <text wx:if="{{item.properties.execution_status}}">状态：{{item.properties.execution_status}}</text>
+    </view>
+    <view class="source-card" wx:for="{{knowledgeSources}}" wx:key="id">
+      <text class="source-title">{{item.title}}</text>
+      <text>核验日期：{{item.reviewed_on}}</text>
+      <text class="source-copy" bindtap="onCopySource" data-url="{{item.url}}">复制官网链接</text>
+    </view>
+  </scroll-view>
+
   <!-- 输入区 -->
-  <view class="input-area safe-area-bottom">
+  <view class="input-area safe-area-bottom" wx:if="{{!showKnowledge}}">
     <input
       class="question-input"
       placeholder="输入关于高校的问题..."
       bindconfirm="onAsk"
       bindinput="onInput"
       value="{{inputText}}"
+      maxlength="1000"
     />
     <view class="ask-btn" bindtap="onAsk">提问</view>
   </view>

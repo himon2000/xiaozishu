@@ -5,6 +5,7 @@
     <view class="nav-inner">
       <text class="nav-title">📖 道藏天阁</text>
       <view class="nav-actions">
+        <view class="nav-btn" bindtap="onSchoolWiki">🎓 高校百科</view>
         <view class="nav-btn" bindtap="onPublish">✏️ 发布</view>
       </view>
     </view>

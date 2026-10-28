@@ -56,6 +56,10 @@ class Settings(BaseSettings):
     payment_enabled: bool = False
     dividend_enabled: bool = False
     demo_enabled: bool = False
+    # 独立高校知识服务：只允许服务端配置；小程序不直接连接图谱。
+    university_kg_url: str = ""
+    university_kg_service_token: str = ""
+    university_kg_timeout: float = 8.0
     content_moderation_enabled: bool = True
 
     class Config:

@@ -1,0 +1,1351 @@
+{
+  "nodes": [
+    {
+      "id": "cuhksz:university",
+      "type": "University",
+      "content": "香港中文大学（深圳）",
+      "properties": {
+        "aliases": [
+          "港中大深圳",
+          "港中深"
+        ],
+        "campus": "深圳",
+        "ontology_class": "https://example.org/university/University",
+        "source_file": "https://admissions.cuhk.edu.cn/article/2240",
+        "source_document": "https://admissions.cuhk.edu.cn/article/2240",
+        "source_location": "三、本科招生专业；四、招生专业方案"
+      },
+      "metadata": {
+        "dataset": "university-public-v1",
+        "evidence_ids": [
+          "source:admissions2026"
+        ],
+        "visibility": "public",
+        "reviewed_on": "2026-10-26"
+      }
+    },
+    {
+      "id": "cuhksz:sds",
+      "type": "School",
+      "content": "数据科学学院",
+      "properties": {
+        "ontology_class": "https://example.org/university/School",
+        "source_file": "https://admissions.cuhk.edu.cn/article/2240",
+        "source_document": "https://admissions.cuhk.edu.cn/article/2240",
+        "source_location": "三、本科招生专业；四、招生专业方案"
+      },
+      "metadata": {
+        "dataset": "university-public-v1",
+        "evidence_ids": [
+          "source:admissions2026"
+        ],
+        "visibility": "public",
+        "reviewed_on": "2026-10-26"
+      }
+    },
+    {
+      "id": "cuhksz:major:ds",
+      "type": "Major",
+      "content": "数据科学与大数据技术",
+      "properties": {
+        "degree_level": "本科",
+        "ontology_class": "https://example.org/university/Major",
+        "source_file": "https://admissions.cuhk.edu.cn/article/2240",
+        "source_document": "https://admissions.cuhk.edu.cn/article/2240",
+        "source_location": "三、本科招生专业；四、招生专业方案"
+      },
+      "metadata": {
+        "dataset": "university-public-v1",
+        "evidence_ids": [
+          "source:admissions2026"
+        ],
+        "visibility": "public",
+        "reviewed_on": "2026-10-26"
+      }
+    },
+    {
+      "id": "cuhksz:major:stat",
+      "type": "Major",
+      "content": "统计学",
+      "properties": {
+        "degree_level": "本科",
+        "ontology_class": "https://example.org/university/Major",
+        "source_file": "https://admissions.cuhk.edu.cn/article/2240",
+        "source_document": "https://admissions.cuhk.edu.cn/article/2240",
+        "source_location": "三、本科招生专业；四、招生专业方案"
+      },
+      "metadata": {
+        "dataset": "university-public-v1",
+        "evidence_ids": [
+          "source:admissions2026"
+        ],
+        "visibility": "public",
+        "reviewed_on": "2026-10-26"
+      }
+    },
+    {
+      "id": "cuhksz:major:cs",
+      "type": "Major",
+      "content": "计算机科学与技术",
+      "properties": {
+        "degree_level": "本科",
+        "ontology_class": "https://example.org/university/Major",
+        "source_file": "https://admissions.cuhk.edu.cn/article/2240",
+        "source_document": "https://admissions.cuhk.edu.cn/article/2240",
+        "source_location": "三、本科招生专业；四、招生专业方案"
+      },
+      "metadata": {
+        "dataset": "university-public-v1",
+        "evidence_ids": [
+          "source:admissions2026"
+        ],
+        "visibility": "public",
+        "reviewed_on": "2026-10-26"
+      }
+    },
+    {
+      "id": "cuhksz:major:fe",
+      "type": "Major",
+      "content": "金融工程",
+      "properties": {
+        "degree_level": "本科",
+        "ontology_class": "https://example.org/university/Major",
+        "source_file": "https://admissions.cuhk.edu.cn/article/2240",
+        "source_document": "https://admissions.cuhk.edu.cn/article/2240",
+        "source_location": "三、本科招生专业；四、招生专业方案"
+      },
+      "metadata": {
+        "dataset": "university-public-v1",
+        "evidence_ids": [
+          "source:admissions2026"
+        ],
+        "visibility": "public",
+        "reviewed_on": "2026-10-26"
+      }
+    },
+    {
+      "id": "cuhksz:sme",
+      "type": "School",
+      "content": "经管学院",
+      "properties": {
+        "ontology_class": "https://example.org/university/School",
+        "source_file": "https://admissions.cuhk.edu.cn/article/2240",
+        "source_document": "https://admissions.cuhk.edu.cn/article/2240",
+        "source_location": "三、本科招生专业；四、招生专业方案"
+      },
+      "metadata": {
+        "dataset": "university-public-v1",
+        "evidence_ids": [
+          "source:admissions2026"
+        ],
+        "visibility": "public",
+        "reviewed_on": "2026-10-26"
+      }
+    },
+    {
+      "id": "cuhksz:sse",
+      "type": "School",
+      "content": "理工学院",
+      "properties": {
+        "ontology_class": "https://example.org/university/School",
+        "source_file": "https://admissions.cuhk.edu.cn/article/2240",
+        "source_document": "https://admissions.cuhk.edu.cn/article/2240",
+        "source_location": "三、本科招生专业；四、招生专业方案"
+      },
+      "metadata": {
+        "dataset": "university-public-v1",
+        "evidence_ids": [
+          "source:admissions2026"
+        ],
+        "visibility": "public",
+        "reviewed_on": "2026-10-26"
+      }
+    },
+    {
+      "id": "cuhksz:course:ml",
+      "type": "Course",
+      "content": "机器学习",
+      "properties": {
+        "cohort": null,
+        "course_code": null,
+        "status": "官网介绍列示，适用年级待核验",
+        "ontology_class": "https://example.org/university/Course",
+        "source_file": "https://admissions.cuhk.edu.cn/page/1458",
+        "source_document": "https://admissions.cuhk.edu.cn/page/1458",
+        "source_location": "三、培养规格；四、课程体系"
+      },
+      "metadata": {
+        "dataset": "university-public-v1",
+        "evidence_ids": [
+          "source:major"
+        ],
+        "visibility": "public",
+        "reviewed_on": "2026-10-26"
+      }
+    },
+    {
+      "id": "cuhksz:course:structures",
+      "type": "Course",
+      "content": "数据结构",
+      "properties": {
+        "cohort": null,
+        "course_code": null,
+        "status": "官网介绍列示，适用年级待核验",
+        "ontology_class": "https://example.org/university/Course",
+        "source_file": "https://admissions.cuhk.edu.cn/page/1458",
+        "source_document": "https://admissions.cuhk.edu.cn/page/1458",
+        "source_location": "三、培养规格；四、课程体系"
+      },
+      "metadata": {
+        "dataset": "university-public-v1",
+        "evidence_ids": [
+          "source:major"
+        ],
+        "visibility": "public",
+        "reviewed_on": "2026-10-26"
+      }
+    },
+    {
+      "id": "cuhksz:course:optimization",
+      "type": "Course",
+      "content": "最优化",
+      "properties": {
+        "cohort": null,
+        "course_code": null,
+        "status": "官网介绍列示，适用年级待核验",
+        "ontology_class": "https://example.org/university/Course",
+        "source_file": "https://admissions.cuhk.edu.cn/page/1458",
+        "source_document": "https://admissions.cuhk.edu.cn/page/1458",
+        "source_location": "三、培养规格；四、课程体系"
+      },
+      "metadata": {
+        "dataset": "university-public-v1",
+        "evidence_ids": [
+          "source:major"
+        ],
+        "visibility": "public",
+        "reviewed_on": "2026-10-26"
+      }
+    },
+    {
+      "id": "cuhksz:course:stochastic",
+      "type": "Course",
+      "content": "随机过程",
+      "properties": {
+        "cohort": null,
+        "course_code": null,
+        "status": "官网介绍列示，适用年级待核验",
+        "ontology_class": "https://example.org/university/Course",
+        "source_file": "https://admissions.cuhk.edu.cn/page/1458",
+        "source_document": "https://admissions.cuhk.edu.cn/page/1458",
+        "source_location": "三、培养规格；四、课程体系"
+      },
+      "metadata": {
+        "dataset": "university-public-v1",
+        "evidence_ids": [
+          "source:major"
+        ],
+        "visibility": "public",
+        "reviewed_on": "2026-10-26"
+      }
+    },
+    {
+      "id": "cuhksz:track:0",
+      "type": "Specialization",
+      "content": "方法论和理论方向",
+      "properties": {
+        "ontology_class": "https://example.org/university/Specialization",
+        "source_file": "https://sds.cuhk.edu.cn/page/361",
+        "source_document": "https://sds.cuhk.edu.cn/page/361",
+        "source_location": "项目简介"
+      },
+      "metadata": {
+        "dataset": "university-public-v1",
+        "evidence_ids": [
+          "source:tracks"
+        ],
+        "visibility": "public",
+        "reviewed_on": "2026-10-26"
+      }
+    },
+    {
+      "id": "cuhksz:track:1",
+      "type": "Specialization",
+      "content": "金融及经济方向",
+      "properties": {
+        "ontology_class": "https://example.org/university/Specialization",
+        "source_file": "https://sds.cuhk.edu.cn/page/361",
+        "source_document": "https://sds.cuhk.edu.cn/page/361",
+        "source_location": "项目简介"
+      },
+      "metadata": {
+        "dataset": "university-public-v1",
+        "evidence_ids": [
+          "source:tracks"
+        ],
+        "visibility": "public",
+        "reviewed_on": "2026-10-26"
+      }
+    },
+    {
+      "id": "cuhksz:track:2",
+      "type": "Specialization",
+      "content": "运筹管理方向",
+      "properties": {
+        "ontology_class": "https://example.org/university/Specialization",
+        "source_file": "https://sds.cuhk.edu.cn/page/361",
+        "source_document": "https://sds.cuhk.edu.cn/page/361",
+        "source_location": "项目简介"
+      },
+      "metadata": {
+        "dataset": "university-public-v1",
+        "evidence_ids": [
+          "source:tracks"
+        ],
+        "visibility": "public",
+        "reviewed_on": "2026-10-26"
+      }
+    },
+    {
+      "id": "cuhksz:track:3",
+      "type": "Specialization",
+      "content": "生命科学方向",
+      "properties": {
+        "ontology_class": "https://example.org/university/Specialization",
+        "source_file": "https://sds.cuhk.edu.cn/page/361",
+        "source_document": "https://sds.cuhk.edu.cn/page/361",
+        "source_location": "项目简介"
+      },
+      "metadata": {
+        "dataset": "university-public-v1",
+        "evidence_ids": [
+          "source:tracks"
+        ],
+        "visibility": "public",
+        "reviewed_on": "2026-10-26"
+      }
+    },
+    {
+      "id": "cuhksz:track:4",
+      "type": "Specialization",
+      "content": "计算方向",
+      "properties": {
+        "ontology_class": "https://example.org/university/Specialization",
+        "source_file": "https://sds.cuhk.edu.cn/page/361",
+        "source_document": "https://sds.cuhk.edu.cn/page/361",
+        "source_location": "项目简介"
+      },
+      "metadata": {
+        "dataset": "university-public-v1",
+        "evidence_ids": [
+          "source:tracks"
+        ],
+        "visibility": "public",
+        "reviewed_on": "2026-10-26"
+      }
+    },
+    {
+      "id": "cuhksz:policy:2026:comprehensive",
+      "type": "AdmissionPolicy",
+      "content": "2026年六省市综合评价",
+      "properties": {
+        "year": 2026,
+        "provinces": [
+          "广东",
+          "浙江",
+          "上海",
+          "山东",
+          "福建",
+          "江苏"
+        ],
+        "admission_type": "综合评价",
+        "published_on": "2026-02-11",
+        "application_status": "历史通知，未核验当前报名开放状态",
+        "eligibility_status": "需逐省核验完整条件，不以省份匹配判定报名资格",
+        "ontology_class": "https://example.org/university/AdmissionPolicy",
+        "source_file": "https://admissions.cuhk.edu.cn/article/2240",
+        "source_document": "https://admissions.cuhk.edu.cn/article/2240",
+        "source_location": "三、本科招生专业；四、招生专业方案"
+      },
+      "metadata": {
+        "dataset": "university-public-v1",
+        "evidence_ids": [
+          "source:admissions2026"
+        ],
+        "visibility": "public",
+        "reviewed_on": "2026-10-26"
+      }
+    },
+    {
+      "id": "cuhksz:lab:0",
+      "type": "ResearchPlatform",
+      "content": "广东省大数据计算基础理论与方法重点实验室",
+      "properties": {
+        "ownership": "学院官网列示；组织隶属待独立核验",
+        "ontology_class": "https://example.org/university/ResearchPlatform",
+        "source_file": "https://sds.cuhk.edu.cn/research",
+        "source_document": "https://sds.cuhk.edu.cn/research",
+        "source_location": "实验室与研究中心"
+      },
+      "metadata": {
+        "dataset": "university-public-v1",
+        "evidence_ids": [
+          "source:research"
+        ],
+        "visibility": "public",
+        "reviewed_on": "2026-10-26"
+      }
+    },
+    {
+      "id": "cuhksz:lab:1",
+      "type": "ResearchPlatform",
+      "content": "广东省人工智能数理基础重点实验室",
+      "properties": {
+        "ownership": "学院官网列示；组织隶属待独立核验",
+        "ontology_class": "https://example.org/university/ResearchPlatform",
+        "source_file": "https://sds.cuhk.edu.cn/research",
+        "source_document": "https://sds.cuhk.edu.cn/research",
+        "source_location": "实验室与研究中心"
+      },
+      "metadata": {
+        "dataset": "university-public-v1",
+        "evidence_ids": [
+          "source:research"
+        ],
+        "visibility": "public",
+        "reviewed_on": "2026-10-26"
+      }
+    },
+    {
+      "id": "cuhksz:lab:2",
+      "type": "ResearchPlatform",
+      "content": "语音与语言处理实验室",
+      "properties": {
+        "ownership": "学院官网列示；组织隶属待独立核验",
+        "ontology_class": "https://example.org/university/ResearchPlatform",
+        "source_file": "https://sds.cuhk.edu.cn/research",
+        "source_document": "https://sds.cuhk.edu.cn/research",
+        "source_location": "实验室与研究中心"
+      },
+      "metadata": {
+        "dataset": "university-public-v1",
+        "evidence_ids": [
+          "source:research"
+        ],
+        "visibility": "public",
+        "reviewed_on": "2026-10-26"
+      }
+    },
+    {
+      "id": "cuhksz:lab:3",
+      "type": "ResearchPlatform",
+      "content": "香港中文大学（深圳）系统软件实验室",
+      "properties": {
+        "ownership": "学院官网列示；组织隶属待独立核验",
+        "ontology_class": "https://example.org/university/ResearchPlatform",
+        "source_file": "https://sds.cuhk.edu.cn/research",
+        "source_document": "https://sds.cuhk.edu.cn/research",
+        "source_location": "实验室与研究中心"
+      },
+      "metadata": {
+        "dataset": "university-public-v1",
+        "evidence_ids": [
+          "source:research"
+        ],
+        "visibility": "public",
+        "reviewed_on": "2026-10-26"
+      }
+    },
+    {
+      "id": "cuhksz:project:0",
+      "type": "ResearchProject",
+      "content": "数据缺乏和模型变化下的在线机器学习和优化算法",
+      "properties": {
+        "category": "国家自然科学基金原创探索计划项目",
+        "principal_investigator": null,
+        "project_number": null,
+        "start_date": null,
+        "end_date": null,
+        "execution_status": "未公开",
+        "ontology_class": "https://example.org/university/ResearchProject",
+        "source_file": "https://sds.cuhk.edu.cn/page/766",
+        "source_document": "https://sds.cuhk.edu.cn/page/766",
+        "source_location": "国家自然科学基金项目列表"
+      },
+      "metadata": {
+        "dataset": "university-public-v1",
+        "evidence_ids": [
+          "source:projects"
+        ],
+        "visibility": "public",
+        "reviewed_on": "2026-10-26"
+      }
+    },
+    {
+      "id": "cuhksz:project:1",
+      "type": "ResearchProject",
+      "content": "数据驱动的排队系统在线优化算法研究",
+      "properties": {
+        "category": "国家自然科学基金面上项目",
+        "principal_investigator": null,
+        "project_number": null,
+        "start_date": null,
+        "end_date": null,
+        "execution_status": "未公开",
+        "ontology_class": "https://example.org/university/ResearchProject",
+        "source_file": "https://sds.cuhk.edu.cn/page/766",
+        "source_document": "https://sds.cuhk.edu.cn/page/766",
+        "source_location": "国家自然科学基金项目列表"
+      },
+      "metadata": {
+        "dataset": "university-public-v1",
+        "evidence_ids": [
+          "source:projects"
+        ],
+        "visibility": "public",
+        "reviewed_on": "2026-10-26"
+      }
+    },
+    {
+      "id": "cuhksz:project:2",
+      "type": "ResearchProject",
+      "content": "大规模非接触式多模态掌纹识别研究",
+      "properties": {
+        "category": "国家自然科学基金面上项目",
+        "principal_investigator": null,
+        "project_number": null,
+        "start_date": null,
+        "end_date": null,
+        "execution_status": "未公开",
+        "ontology_class": "https://example.org/university/ResearchProject",
+        "source_file": "https://sds.cuhk.edu.cn/page/766",
+        "source_document": "https://sds.cuhk.edu.cn/page/766",
+        "source_location": "国家自然科学基金项目列表"
+      },
+      "metadata": {
+        "dataset": "university-public-v1",
+        "evidence_ids": [
+          "source:projects"
+        ],
+        "visibility": "public",
+        "reviewed_on": "2026-10-26"
+      }
+    },
+    {
+      "id": "source:admissions2026",
+      "type": "SourceDocument",
+      "content": "2026年六省市综合评价报名通知",
+      "properties": {
+        "url": "https://admissions.cuhk.edu.cn/article/2240",
+        "published_on": "2026-02-11",
+        "retrieved_on": "2026-10-26",
+        "locator": "三、本科招生专业；四、招生专业方案",
+        "review_note": "2026年通知列出数据科学学院三个本科专业，金融工程为三院联合培养。适用广东、浙江、上海、山东、福建、江苏综合评价。",
+        "snapshot_status": "人工核验网页，未保存全文快照",
+        "ontology_class": "https://example.org/university/SourceDocument"
+      },
+      "metadata": {
+        "dataset": "university-public-v1",
+        "visibility": "public"
+      }
+    },
+    {
+      "id": "source:major",
+      "type": "SourceDocument",
+      "content": "数据科学与大数据技术专业介绍",
+      "properties": {
+        "url": "https://admissions.cuhk.edu.cn/page/1458",
+        "published_on": null,
+        "retrieved_on": "2026-10-26",
+        "locator": "三、培养规格；四、课程体系",
+        "review_note": "页面列有机器学习、数据结构、最优化等课程；未标明适用入学年级，不能直接作为当前毕业审核依据。",
+        "snapshot_status": "人工核验网页，未保存全文快照",
+        "ontology_class": "https://example.org/university/SourceDocument"
+      },
+      "metadata": {
+        "dataset": "university-public-v1",
+        "visibility": "public"
+      }
+    },
+    {
+      "id": "source:tracks",
+      "type": "SourceDocument",
+      "content": "数据科学与大数据技术项目简介",
+      "properties": {
+        "url": "https://sds.cuhk.edu.cn/page/361",
+        "published_on": null,
+        "retrieved_on": "2026-10-26",
+        "locator": "项目简介",
+        "review_note": "列有方法论和理论、金融及经济、运筹管理、生命科学、计算五个专修方向，允许不带专业方向毕业。",
+        "snapshot_status": "人工核验网页，未保存全文快照",
+        "ontology_class": "https://example.org/university/SourceDocument"
+      },
+      "metadata": {
+        "dataset": "university-public-v1",
+        "visibility": "public"
+      }
+    },
+    {
+      "id": "source:research",
+      "type": "SourceDocument",
+      "content": "学术科研",
+      "properties": {
+        "url": "https://sds.cuhk.edu.cn/research",
+        "published_on": null,
+        "retrieved_on": "2026-10-26",
+        "locator": "实验室与研究中心",
+        "review_note": "学院科研页面列有省级重点实验室、语音与语言处理实验室和系统软件实验室等平台。",
+        "snapshot_status": "人工核验网页，未保存全文快照",
+        "ontology_class": "https://example.org/university/SourceDocument"
+      },
+      "metadata": {
+        "dataset": "university-public-v1",
+        "visibility": "public"
+      }
+    },
+    {
+      "id": "source:projects",
+      "type": "SourceDocument",
+      "content": "科研项目（国家级）",
+      "properties": {
+        "url": "https://sds.cuhk.edu.cn/page/766",
+        "published_on": null,
+        "retrieved_on": "2026-10-26",
+        "locator": "国家自然科学基金项目列表",
+        "review_note": "公开列表列有在线机器学习、排队系统在线优化、多模态掌纹识别项目；未公开负责人、起止时间或执行状态。",
+        "snapshot_status": "人工核验网页，未保存全文快照",
+        "ontology_class": "https://example.org/university/SourceDocument"
+      },
+      "metadata": {
+        "dataset": "university-public-v1",
+        "visibility": "public"
+      }
+    }
+  ],
+  "edges": [
+    {
+      "id": "rel:3eaa12d4348c4ff86092",
+      "source": "cuhksz:university",
+      "target": "cuhksz:sds",
+      "type": "has_school",
+      "properties": {},
+      "metadata": {
+        "dataset": "university-public-v1",
+        "evidence_ids": [
+          "source:admissions2026"
+        ]
+      }
+    },
+    {
+      "id": "rel:66f6841eb65d35067ddb",
+      "source": "cuhksz:sds",
+      "target": "cuhksz:major:ds",
+      "type": "offers",
+      "properties": {
+        "year": 2026
+      },
+      "metadata": {
+        "dataset": "university-public-v1",
+        "evidence_ids": [
+          "source:admissions2026"
+        ]
+      }
+    },
+    {
+      "id": "rel:26e580e46ece69c6e3a1",
+      "source": "cuhksz:sds",
+      "target": "cuhksz:major:stat",
+      "type": "offers",
+      "properties": {
+        "year": 2026
+      },
+      "metadata": {
+        "dataset": "university-public-v1",
+        "evidence_ids": [
+          "source:admissions2026"
+        ]
+      }
+    },
+    {
+      "id": "rel:b477f6e9f6f7f4fad928",
+      "source": "cuhksz:sds",
+      "target": "cuhksz:major:cs",
+      "type": "offers",
+      "properties": {
+        "year": 2026
+      },
+      "metadata": {
+        "dataset": "university-public-v1",
+        "evidence_ids": [
+          "source:admissions2026"
+        ]
+      }
+    },
+    {
+      "id": "rel:10822b1d6f0af9ec6bf3",
+      "source": "cuhksz:sds",
+      "target": "cuhksz:major:fe",
+      "type": "jointly_offers",
+      "properties": {
+        "year": 2026
+      },
+      "metadata": {
+        "dataset": "university-public-v1",
+        "evidence_ids": [
+          "source:admissions2026"
+        ]
+      }
+    },
+    {
+      "id": "rel:1189fab8c5bd53084532",
+      "source": "cuhksz:university",
+      "target": "cuhksz:sme",
+      "type": "has_school",
+      "properties": {},
+      "metadata": {
+        "dataset": "university-public-v1",
+        "evidence_ids": [
+          "source:admissions2026"
+        ]
+      }
+    },
+    {
+      "id": "rel:f3ae1edd37266a2963c1",
+      "source": "cuhksz:sme",
+      "target": "cuhksz:major:fe",
+      "type": "jointly_offers",
+      "properties": {
+        "year": 2026
+      },
+      "metadata": {
+        "dataset": "university-public-v1",
+        "evidence_ids": [
+          "source:admissions2026"
+        ]
+      }
+    },
+    {
+      "id": "rel:bd27d4803d8480464dd6",
+      "source": "cuhksz:university",
+      "target": "cuhksz:sse",
+      "type": "has_school",
+      "properties": {},
+      "metadata": {
+        "dataset": "university-public-v1",
+        "evidence_ids": [
+          "source:admissions2026"
+        ]
+      }
+    },
+    {
+      "id": "rel:7fb65e51824e96bde7ff",
+      "source": "cuhksz:sse",
+      "target": "cuhksz:major:fe",
+      "type": "jointly_offers",
+      "properties": {
+        "year": 2026
+      },
+      "metadata": {
+        "dataset": "university-public-v1",
+        "evidence_ids": [
+          "source:admissions2026"
+        ]
+      }
+    },
+    {
+      "id": "rel:da9991039d435e2bcf49",
+      "source": "cuhksz:major:ds",
+      "target": "cuhksz:course:ml",
+      "type": "lists_course",
+      "properties": {},
+      "metadata": {
+        "dataset": "university-public-v1",
+        "evidence_ids": [
+          "source:major"
+        ]
+      }
+    },
+    {
+      "id": "rel:dff25d8a8b5662fb4dfb",
+      "source": "cuhksz:major:ds",
+      "target": "cuhksz:course:structures",
+      "type": "lists_course",
+      "properties": {},
+      "metadata": {
+        "dataset": "university-public-v1",
+        "evidence_ids": [
+          "source:major"
+        ]
+      }
+    },
+    {
+      "id": "rel:f9debdf9bce0e23a341c",
+      "source": "cuhksz:major:ds",
+      "target": "cuhksz:course:optimization",
+      "type": "lists_course",
+      "properties": {},
+      "metadata": {
+        "dataset": "university-public-v1",
+        "evidence_ids": [
+          "source:major"
+        ]
+      }
+    },
+    {
+      "id": "rel:b7d4fe7fc05e81dbd7b4",
+      "source": "cuhksz:major:ds",
+      "target": "cuhksz:course:stochastic",
+      "type": "lists_course",
+      "properties": {},
+      "metadata": {
+        "dataset": "university-public-v1",
+        "evidence_ids": [
+          "source:major"
+        ]
+      }
+    },
+    {
+      "id": "rel:c53f5b389f8012f21cf3",
+      "source": "cuhksz:major:ds",
+      "target": "cuhksz:track:0",
+      "type": "has_specialization",
+      "properties": {
+        "optional": true
+      },
+      "metadata": {
+        "dataset": "university-public-v1",
+        "evidence_ids": [
+          "source:tracks"
+        ]
+      }
+    },
+    {
+      "id": "rel:e9cbcf73e200b8666948",
+      "source": "cuhksz:major:ds",
+      "target": "cuhksz:track:1",
+      "type": "has_specialization",
+      "properties": {
+        "optional": true
+      },
+      "metadata": {
+        "dataset": "university-public-v1",
+        "evidence_ids": [
+          "source:tracks"
+        ]
+      }
+    },
+    {
+      "id": "rel:afd19a5d754797c35f16",
+      "source": "cuhksz:major:ds",
+      "target": "cuhksz:track:2",
+      "type": "has_specialization",
+      "properties": {
+        "optional": true
+      },
+      "metadata": {
+        "dataset": "university-public-v1",
+        "evidence_ids": [
+          "source:tracks"
+        ]
+      }
+    },
+    {
+      "id": "rel:7452620dc8f18febdbe6",
+      "source": "cuhksz:major:ds",
+      "target": "cuhksz:track:3",
+      "type": "has_specialization",
+      "properties": {
+        "optional": true
+      },
+      "metadata": {
+        "dataset": "university-public-v1",
+        "evidence_ids": [
+          "source:tracks"
+        ]
+      }
+    },
+    {
+      "id": "rel:4aa6a4c5228ffc0a7769",
+      "source": "cuhksz:major:ds",
+      "target": "cuhksz:track:4",
+      "type": "has_specialization",
+      "properties": {
+        "optional": true
+      },
+      "metadata": {
+        "dataset": "university-public-v1",
+        "evidence_ids": [
+          "source:tracks"
+        ]
+      }
+    },
+    {
+      "id": "rel:ba3c1173706c28e335d2",
+      "source": "cuhksz:university",
+      "target": "cuhksz:policy:2026:comprehensive",
+      "type": "publishes",
+      "properties": {},
+      "metadata": {
+        "dataset": "university-public-v1",
+        "evidence_ids": [
+          "source:admissions2026"
+        ]
+      }
+    },
+    {
+      "id": "rel:90b17ff34a3c5509ea1a",
+      "source": "cuhksz:policy:2026:comprehensive",
+      "target": "cuhksz:major:ds",
+      "type": "lists_major",
+      "properties": {},
+      "metadata": {
+        "dataset": "university-public-v1",
+        "evidence_ids": [
+          "source:admissions2026"
+        ]
+      }
+    },
+    {
+      "id": "rel:4bd89be48ab143ff1215",
+      "source": "cuhksz:policy:2026:comprehensive",
+      "target": "cuhksz:major:stat",
+      "type": "lists_major",
+      "properties": {},
+      "metadata": {
+        "dataset": "university-public-v1",
+        "evidence_ids": [
+          "source:admissions2026"
+        ]
+      }
+    },
+    {
+      "id": "rel:3faec773c21ccaaffc70",
+      "source": "cuhksz:policy:2026:comprehensive",
+      "target": "cuhksz:major:cs",
+      "type": "lists_major",
+      "properties": {},
+      "metadata": {
+        "dataset": "university-public-v1",
+        "evidence_ids": [
+          "source:admissions2026"
+        ]
+      }
+    },
+    {
+      "id": "rel:4760951af28bc4469355",
+      "source": "cuhksz:policy:2026:comprehensive",
+      "target": "cuhksz:major:fe",
+      "type": "lists_major",
+      "properties": {},
+      "metadata": {
+        "dataset": "university-public-v1",
+        "evidence_ids": [
+          "source:admissions2026"
+        ]
+      }
+    },
+    {
+      "id": "rel:011978d3bb35d98fcf91",
+      "source": "cuhksz:sds",
+      "target": "cuhksz:lab:0",
+      "type": "lists_platform",
+      "properties": {},
+      "metadata": {
+        "dataset": "university-public-v1",
+        "evidence_ids": [
+          "source:research"
+        ]
+      }
+    },
+    {
+      "id": "rel:595496f17a8bab5089c6",
+      "source": "cuhksz:sds",
+      "target": "cuhksz:lab:1",
+      "type": "lists_platform",
+      "properties": {},
+      "metadata": {
+        "dataset": "university-public-v1",
+        "evidence_ids": [
+          "source:research"
+        ]
+      }
+    },
+    {
+      "id": "rel:341cac5c388dc93ad1b6",
+      "source": "cuhksz:sds",
+      "target": "cuhksz:lab:2",
+      "type": "lists_platform",
+      "properties": {},
+      "metadata": {
+        "dataset": "university-public-v1",
+        "evidence_ids": [
+          "source:research"
+        ]
+      }
+    },
+    {
+      "id": "rel:281655927578d4392901",
+      "source": "cuhksz:sds",
+      "target": "cuhksz:lab:3",
+      "type": "lists_platform",
+      "properties": {},
+      "metadata": {
+        "dataset": "university-public-v1",
+        "evidence_ids": [
+          "source:research"
+        ]
+      }
+    },
+    {
+      "id": "rel:7b5106bdbb9ccdfb2daf",
+      "source": "cuhksz:sds",
+      "target": "cuhksz:project:0",
+      "type": "lists_project",
+      "properties": {},
+      "metadata": {
+        "dataset": "university-public-v1",
+        "evidence_ids": [
+          "source:projects"
+        ]
+      }
+    },
+    {
+      "id": "rel:734a6a3b59191c845167",
+      "source": "cuhksz:sds",
+      "target": "cuhksz:project:1",
+      "type": "lists_project",
+      "properties": {},
+      "metadata": {
+        "dataset": "university-public-v1",
+        "evidence_ids": [
+          "source:projects"
+        ]
+      }
+    },
+    {
+      "id": "rel:3d3936d2d22f1677b49a",
+      "source": "cuhksz:sds",
+      "target": "cuhksz:project:2",
+      "type": "lists_project",
+      "properties": {},
+      "metadata": {
+        "dataset": "university-public-v1",
+        "evidence_ids": [
+          "source:projects"
+        ]
+      }
+    },
+    {
+      "id": "evidence:cuhksz:university:source:admissions2026",
+      "source": "cuhksz:university",
+      "target": "source:admissions2026",
+      "type": "supported_by",
+      "metadata": {
+        "dataset": "university-public-v1",
+        "evidence_ids": [
+          "source:admissions2026"
+        ]
+      }
+    },
+    {
+      "id": "evidence:cuhksz:sds:source:admissions2026",
+      "source": "cuhksz:sds",
+      "target": "source:admissions2026",
+      "type": "supported_by",
+      "metadata": {
+        "dataset": "university-public-v1",
+        "evidence_ids": [
+          "source:admissions2026"
+        ]
+      }
+    },
+    {
+      "id": "evidence:cuhksz:major:ds:source:admissions2026",
+      "source": "cuhksz:major:ds",
+      "target": "source:admissions2026",
+      "type": "supported_by",
+      "metadata": {
+        "dataset": "university-public-v1",
+        "evidence_ids": [
+          "source:admissions2026"
+        ]
+      }
+    },
+    {
+      "id": "evidence:cuhksz:major:stat:source:admissions2026",
+      "source": "cuhksz:major:stat",
+      "target": "source:admissions2026",
+      "type": "supported_by",
+      "metadata": {
+        "dataset": "university-public-v1",
+        "evidence_ids": [
+          "source:admissions2026"
+        ]
+      }
+    },
+    {
+      "id": "evidence:cuhksz:major:cs:source:admissions2026",
+      "source": "cuhksz:major:cs",
+      "target": "source:admissions2026",
+      "type": "supported_by",
+      "metadata": {
+        "dataset": "university-public-v1",
+        "evidence_ids": [
+          "source:admissions2026"
+        ]
+      }
+    },
+    {
+      "id": "evidence:cuhksz:major:fe:source:admissions2026",
+      "source": "cuhksz:major:fe",
+      "target": "source:admissions2026",
+      "type": "supported_by",
+      "metadata": {
+        "dataset": "university-public-v1",
+        "evidence_ids": [
+          "source:admissions2026"
+        ]
+      }
+    },
+    {
+      "id": "evidence:cuhksz:sme:source:admissions2026",
+      "source": "cuhksz:sme",
+      "target": "source:admissions2026",
+      "type": "supported_by",
+      "metadata": {
+        "dataset": "university-public-v1",
+        "evidence_ids": [
+          "source:admissions2026"
+        ]
+      }
+    },
+    {
+      "id": "evidence:cuhksz:sse:source:admissions2026",
+      "source": "cuhksz:sse",
+      "target": "source:admissions2026",
+      "type": "supported_by",
+      "metadata": {
+        "dataset": "university-public-v1",
+        "evidence_ids": [
+          "source:admissions2026"
+        ]
+      }
+    },
+    {
+      "id": "evidence:cuhksz:course:ml:source:major",
+      "source": "cuhksz:course:ml",
+      "target": "source:major",
+      "type": "supported_by",
+      "metadata": {
+        "dataset": "university-public-v1",
+        "evidence_ids": [
+          "source:major"
+        ]
+      }
+    },
+    {
+      "id": "evidence:cuhksz:course:structures:source:major",
+      "source": "cuhksz:course:structures",
+      "target": "source:major",
+      "type": "supported_by",
+      "metadata": {
+        "dataset": "university-public-v1",
+        "evidence_ids": [
+          "source:major"
+        ]
+      }
+    },
+    {
+      "id": "evidence:cuhksz:course:optimization:source:major",
+      "source": "cuhksz:course:optimization",
+      "target": "source:major",
+      "type": "supported_by",
+      "metadata": {
+        "dataset": "university-public-v1",
+        "evidence_ids": [
+          "source:major"
+        ]
+      }
+    },
+    {
+      "id": "evidence:cuhksz:course:stochastic:source:major",
+      "source": "cuhksz:course:stochastic",
+      "target": "source:major",
+      "type": "supported_by",
+      "metadata": {
+        "dataset": "university-public-v1",
+        "evidence_ids": [
+          "source:major"
+        ]
+      }
+    },
+    {
+      "id": "evidence:cuhksz:track:0:source:tracks",
+      "source": "cuhksz:track:0",
+      "target": "source:tracks",
+      "type": "supported_by",
+      "metadata": {
+        "dataset": "university-public-v1",
+        "evidence_ids": [
+          "source:tracks"
+        ]
+      }
+    },
+    {
+      "id": "evidence:cuhksz:track:1:source:tracks",
+      "source": "cuhksz:track:1",
+      "target": "source:tracks",
+      "type": "supported_by",
+      "metadata": {
+        "dataset": "university-public-v1",
+        "evidence_ids": [
+          "source:tracks"
+        ]
+      }
+    },
+    {
+      "id": "evidence:cuhksz:track:2:source:tracks",
+      "source": "cuhksz:track:2",
+      "target": "source:tracks",
+      "type": "supported_by",
+      "metadata": {
+        "dataset": "university-public-v1",
+        "evidence_ids": [
+          "source:tracks"
+        ]
+      }
+    },
+    {
+      "id": "evidence:cuhksz:track:3:source:tracks",
+      "source": "cuhksz:track:3",
+      "target": "source:tracks",
+      "type": "supported_by",
+      "metadata": {
+        "dataset": "university-public-v1",
+        "evidence_ids": [
+          "source:tracks"
+        ]
+      }
+    },
+    {
+      "id": "evidence:cuhksz:track:4:source:tracks",
+      "source": "cuhksz:track:4",
+      "target": "source:tracks",
+      "type": "supported_by",
+      "metadata": {
+        "dataset": "university-public-v1",
+        "evidence_ids": [
+          "source:tracks"
+        ]
+      }
+    },
+    {
+      "id": "evidence:cuhksz:policy:2026:comprehensive:source:admissions2026",
+      "source": "cuhksz:policy:2026:comprehensive",
+      "target": "source:admissions2026",
+      "type": "supported_by",
+      "metadata": {
+        "dataset": "university-public-v1",
+        "evidence_ids": [
+          "source:admissions2026"
+        ]
+      }
+    },
+    {
+      "id": "evidence:cuhksz:lab:0:source:research",
+      "source": "cuhksz:lab:0",
+      "target": "source:research",
+      "type": "supported_by",
+      "metadata": {
+        "dataset": "university-public-v1",
+        "evidence_ids": [
+          "source:research"
+        ]
+      }
+    },
+    {
+      "id": "evidence:cuhksz:lab:1:source:research",
+      "source": "cuhksz:lab:1",
+      "target": "source:research",
+      "type": "supported_by",
+      "metadata": {
+        "dataset": "university-public-v1",
+        "evidence_ids": [
+          "source:research"
+        ]
+      }
+    },
+    {
+      "id": "evidence:cuhksz:lab:2:source:research",
+      "source": "cuhksz:lab:2",
+      "target": "source:research",
+      "type": "supported_by",
+      "metadata": {
+        "dataset": "university-public-v1",
+        "evidence_ids": [
+          "source:research"
+        ]
+      }
+    },
+    {
+      "id": "evidence:cuhksz:lab:3:source:research",
+      "source": "cuhksz:lab:3",
+      "target": "source:research",
+      "type": "supported_by",
+      "metadata": {
+        "dataset": "university-public-v1",
+        "evidence_ids": [
+          "source:research"
+        ]
+      }
+    },
+    {
+      "id": "evidence:cuhksz:project:0:source:projects",
+      "source": "cuhksz:project:0",
+      "target": "source:projects",
+      "type": "supported_by",
+      "metadata": {
+        "dataset": "university-public-v1",
+        "evidence_ids": [
+          "source:projects"
+        ]
+      }
+    },
+    {
+      "id": "evidence:cuhksz:project:1:source:projects",
+      "source": "cuhksz:project:1",
+      "target": "source:projects",
+      "type": "supported_by",
+      "metadata": {
+        "dataset": "university-public-v1",
+        "evidence_ids": [
+          "source:projects"
+        ]
+      }
+    },
+    {
+      "id": "evidence:cuhksz:project:2:source:projects",
+      "source": "cuhksz:project:2",
+      "target": "source:projects",
+      "type": "supported_by",
+      "metadata": {
+        "dataset": "university-public-v1",
+        "evidence_ids": [
+          "source:projects"
+        ]
+      }
+    }
+  ],
+  "metadata": {
+    "dataset": "university-public-v1",
+    "title": "高校知识图谱·官网事实首版",
+    "as_of": "2026-10-26",
+    "scope": "一所高校的数据科学学院及关联招生、课程、科研公开信息",
+    "limitations": [
+      "无录取分数及位次数据",
+      "无教师任课事实",
+      "无在读学生、成绩、排课或科研经费台账",
+      "未接入Neo4j或语言模型"
+    ]
+  }
+}

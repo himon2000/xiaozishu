@@ -1,0 +1,75 @@
+@prefix uni: <https://example.org/university/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+<https://example.org/university/> a owl:Ontology ; rdfs:label "高校教学科研与招生本体"@zh ; owl:versionInfo "1.0.0" ; rdfs:comment "高校领域设计本体；类定义不表示对应业务事实已经收录。"@zh .
+uni:University a owl:Class ; rdfs:label "高校"@zh .
+uni:Campus a owl:Class ; rdfs:label "校区"@zh .
+uni:School a owl:Class ; rdfs:label "学院"@zh .
+uni:Department a owl:Class ; rdfs:label "系所"@zh .
+uni:Major a owl:Class ; rdfs:label "专业"@zh .
+uni:ProgramVersion a owl:Class ; rdfs:label "培养方案版本"@zh .
+uni:Specialization a owl:Class ; rdfs:label "专修方向"@zh .
+uni:Course a owl:Class ; rdfs:label "课程"@zh .
+uni:CourseOffering a owl:Class ; rdfs:label "学期开课"@zh .
+uni:Person a owl:Class ; rdfs:label "人员"@zh .
+uni:TeachingAssignment a owl:Class ; rdfs:label "教学任务"@zh .
+uni:Enrollment a owl:Class ; rdfs:label "选课记录"@zh .
+uni:Assessment a owl:Class ; rdfs:label "考核记录"@zh .
+uni:AdmissionPolicy a owl:Class ; rdfs:label "招生政策"@zh .
+uni:AdmissionPlan a owl:Class ; rdfs:label "招生计划"@zh .
+uni:AdmissionResult a owl:Class ; rdfs:label "录取结果"@zh .
+uni:FeeRule a owl:Class ; rdfs:label "收费规则"@zh .
+uni:OutcomeReport a owl:Class ; rdfs:label "升学就业报告"@zh .
+uni:ResearchPlatform a owl:Class ; rdfs:label "科研平台"@zh .
+uni:ResearchProject a owl:Class ; rdfs:label "科研项目"@zh .
+uni:Publication a owl:Class ; rdfs:label "学术成果"@zh .
+uni:Patent a owl:Class ; rdfs:label "专利"@zh .
+uni:Grant a owl:Class ; rdfs:label "科研资助"@zh .
+uni:Milestone a owl:Class ; rdfs:label "项目里程碑"@zh .
+uni:SourceDocument a owl:Class ; rdfs:label "来源文档"@zh .
+uni:EvidenceSpan a owl:Class ; rdfs:label "证据片段"@zh .
+uni:ReviewIssue a owl:Class ; rdfs:label "待核验事项"@zh .
+uni:has_campus a owl:ObjectProperty ; rdfs:label "设有校区"@zh ; rdfs:domain uni:University ; rdfs:range uni:Campus .
+uni:has_school a owl:ObjectProperty ; rdfs:label "设有学院"@zh ; rdfs:domain uni:University ; rdfs:range uni:School .
+uni:has_department a owl:ObjectProperty ; rdfs:label "设有系所"@zh ; rdfs:domain uni:School ; rdfs:range uni:Department .
+uni:offers a owl:ObjectProperty ; rdfs:label "开设专业"@zh ; rdfs:domain uni:School ; rdfs:range uni:Major .
+uni:jointly_offers a owl:ObjectProperty ; rdfs:label "联合培养"@zh ; rdfs:domain uni:School ; rdfs:range uni:Major .
+uni:has_version a owl:ObjectProperty ; rdfs:label "采用培养方案"@zh ; rdfs:domain uni:Major ; rdfs:range uni:ProgramVersion .
+uni:has_specialization a owl:ObjectProperty ; rdfs:label "设专修方向"@zh ; rdfs:domain uni:Major ; rdfs:range uni:Specialization .
+uni:lists_course a owl:ObjectProperty ; rdfs:label "介绍列示课程"@zh ; rdfs:domain uni:Major ; rdfs:range uni:Course .
+uni:requires_course a owl:ObjectProperty ; rdfs:label "方案要求课程"@zh ; rdfs:domain uni:ProgramVersion ; rdfs:range uni:Course .
+uni:prerequisite a owl:ObjectProperty ; rdfs:label "先修课程"@zh ; rdfs:domain uni:Course ; rdfs:range uni:Course .
+uni:has_offering a owl:ObjectProperty ; rdfs:label "开课实例"@zh ; rdfs:domain uni:Course ; rdfs:range uni:CourseOffering .
+uni:assigned_person a owl:ObjectProperty ; rdfs:label "任课人员"@zh ; rdfs:domain uni:TeachingAssignment ; rdfs:range uni:Person .
+uni:assigned_offering a owl:ObjectProperty ; rdfs:label "对应开课"@zh ; rdfs:domain uni:TeachingAssignment ; rdfs:range uni:CourseOffering .
+uni:publishes a owl:ObjectProperty ; rdfs:label "发布政策"@zh ; rdfs:domain uni:University ; rdfs:range uni:AdmissionPolicy .
+uni:lists_major a owl:ObjectProperty ; rdfs:label "政策列示专业"@zh ; rdfs:domain uni:AdmissionPolicy ; rdfs:range uni:Major .
+uni:has_plan a owl:ObjectProperty ; rdfs:label "设招生计划"@zh ; rdfs:domain uni:AdmissionPolicy ; rdfs:range uni:AdmissionPlan .
+uni:reports_result a owl:ObjectProperty ; rdfs:label "公布录取结果"@zh ; rdfs:domain uni:AdmissionPlan ; rdfs:range uni:AdmissionResult .
+uni:lists_platform a owl:ObjectProperty ; rdfs:label "官网列示平台"@zh ; rdfs:domain uni:School ; rdfs:range uni:ResearchPlatform .
+uni:lists_project a owl:ObjectProperty ; rdfs:label "官网列示项目"@zh ; rdfs:domain uni:School ; rdfs:range uni:ResearchProject .
+uni:leads a owl:ObjectProperty ; rdfs:label "负责项目"@zh ; rdfs:domain uni:Person ; rdfs:range uni:ResearchProject .
+uni:participates_in a owl:ObjectProperty ; rdfs:label "参与项目"@zh ; rdfs:domain uni:Person ; rdfs:range uni:ResearchProject .
+uni:funded_by a owl:ObjectProperty ; rdfs:label "获得资助"@zh ; rdfs:domain uni:ResearchProject ; rdfs:range uni:Grant .
+uni:produces a owl:ObjectProperty ; rdfs:label "产出成果"@zh ; rdfs:domain uni:ResearchProject ; rdfs:range uni:Publication .
+uni:has_milestone a owl:ObjectProperty ; rdfs:label "包含里程碑"@zh ; rdfs:domain uni:ResearchProject ; rdfs:range uni:Milestone .
+uni:supported_by a owl:ObjectProperty ; rdfs:label "证据支持"@zh ; rdfs:range uni:SourceDocument .
+uni:year a owl:DatatypeProperty ; rdfs:label "适用年份"@zh ; rdfs:domain uni:AdmissionPolicy ; rdfs:range xsd:integer .
+uni:provinces a owl:DatatypeProperty ; rdfs:label "适用省份"@zh ; rdfs:domain uni:AdmissionPolicy ; rdfs:range xsd:string .
+uni:admission_type a owl:DatatypeProperty ; rdfs:label "招生类型"@zh ; rdfs:domain uni:AdmissionPolicy ; rdfs:range xsd:string .
+uni:subject_requirements a owl:DatatypeProperty ; rdfs:label "选科要求"@zh ; rdfs:domain uni:AdmissionPlan ; rdfs:range xsd:string .
+uni:quota a owl:DatatypeProperty ; rdfs:label "招生人数"@zh ; rdfs:domain uni:AdmissionPlan ; rdfs:range xsd:integer .
+uni:score a owl:DatatypeProperty ; rdfs:label "录取分数"@zh ; rdfs:domain uni:AdmissionResult ; rdfs:range xsd:decimal .
+uni:rank a owl:DatatypeProperty ; rdfs:label "录取位次"@zh ; rdfs:domain uni:AdmissionResult ; rdfs:range xsd:integer .
+uni:cohort a owl:DatatypeProperty ; rdfs:label "适用年级"@zh ; rdfs:domain uni:ProgramVersion ; rdfs:range xsd:string .
+uni:course_code a owl:DatatypeProperty ; rdfs:label "课程代码"@zh ; rdfs:domain uni:Course ; rdfs:range xsd:string .
+uni:credits a owl:DatatypeProperty ; rdfs:label "学分"@zh ; rdfs:domain uni:Course ; rdfs:range xsd:decimal .
+uni:semester a owl:DatatypeProperty ; rdfs:label "开课学期"@zh ; rdfs:domain uni:CourseOffering ; rdfs:range xsd:string .
+uni:project_number a owl:DatatypeProperty ; rdfs:label "项目编号"@zh ; rdfs:domain uni:ResearchProject ; rdfs:range xsd:string .
+uni:start_date a owl:DatatypeProperty ; rdfs:label "开始日期"@zh ; rdfs:domain uni:ResearchProject ; rdfs:range xsd:date .
+uni:end_date a owl:DatatypeProperty ; rdfs:label "结束日期"@zh ; rdfs:domain uni:ResearchProject ; rdfs:range xsd:date .
+uni:budget a owl:DatatypeProperty ; rdfs:label "预算金额"@zh ; rdfs:domain uni:Grant ; rdfs:range xsd:decimal .
+uni:execution_status a owl:DatatypeProperty ; rdfs:label "执行状态"@zh ; rdfs:domain uni:ResearchProject ; rdfs:range xsd:string .
+uni:url a owl:DatatypeProperty ; rdfs:label "来源链接"@zh ; rdfs:domain uni:SourceDocument ; rdfs:range xsd:anyURI .
+uni:retrieved_on a owl:DatatypeProperty ; rdfs:label "核验日期"@zh ; rdfs:domain uni:SourceDocument ; rdfs:range xsd:date .

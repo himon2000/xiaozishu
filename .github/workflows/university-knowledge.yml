@@ -1,0 +1,64 @@
+name: University knowledge module
+
+on:
+  push:
+    paths:
+      - 'university-knowledge/**'
+      - 'backend/routers/school_wiki.py'
+      - 'backend/services/*knowledge*'
+      - 'backend/services/school_wiki_service.py'
+      - 'backend/config.py'
+      - 'backend/test_school_wiki_knowledge.py'
+      - 'frontend/subpackages/jingzang/**'
+      - 'scripts/test-school-wiki.mjs'
+      - '.github/workflows/university-knowledge.yml'
+  pull_request:
+    paths:
+      - 'university-knowledge/**'
+      - 'backend/**'
+      - 'frontend/subpackages/jingzang/**'
+      - 'scripts/test-school-wiki.mjs'
+      - '.github/workflows/university-knowledge.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  contracts:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - run: python -m pip install -r backend/requirements.txt
+      - run: python -m unittest -v test_knowledge
+        working-directory: university-knowledge
+      - run: python -m unittest -v test_school_wiki_knowledge
+        working-directory: backend
+      - run: node --test scripts/test-school-wiki.mjs
+  independent-image:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - run: docker build -t university-knowledge:ci university-knowledge
+      - run: docker run -d --name university-knowledge-ci -p 127.0.0.1:18028:8080 --read-only --tmpfs /tmp university-knowledge:ci
+      - name: Verify independent readiness
+        run: |
+          for attempt in $(seq 1 30); do
+            if curl --fail --silent http://127.0.0.1:18028/health > /tmp/knowledge-health.json; then
+              python -c "import json; data=json.load(open('/tmp/knowledge-health.json')); assert data['status']=='ok' and data['nodes'] > 0 and data['graph_version']; print(data)"
+              exit 0
+            fi
+            sleep 1
+          done
+          docker logs university-knowledge-ci
+          exit 1
+      - if: always()
+        run: docker rm -f university-knowledge-ci

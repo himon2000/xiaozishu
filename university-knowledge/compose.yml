@@ -1,0 +1,24 @@
+services:
+  university-knowledge:
+    build: .
+    image: xiaozishu-university-knowledge:1.0.0
+    ports:
+      - "127.0.0.1:8028:8080"
+    environment:
+      UNIVERSITY_KG_SERVICE_TOKEN: ${UNIVERSITY_KG_SERVICE_TOKEN:-}
+      UNIVERSITY_GRAPH_PATH: /data/university_graph.json
+    volumes:
+      - ./data:/data:ro
+    read_only: true
+    tmpfs:
+      - /tmp
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    restart: unless-stopped
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
